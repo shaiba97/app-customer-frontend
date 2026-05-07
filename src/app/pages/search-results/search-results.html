@@ -1,0 +1,444 @@
+
+<div dir="rtl"
+     class="min-h-screen bg-[var(--bg-base)]">
+
+     <!-- SEARC H -->
+
+  <div class="w-full
+              bg-gradient-to-bl
+              from-[var(--primary)]
+              via-[var(--primary-hover)]
+              to-[var(--primary)]
+              py-6 px-4 md:px-8 lg:px-16
+              shadow-lg">
+
+    <div class="max-w-5xl mx-auto
+                flex flex-col gap-4">
+
+      <div class="flex flex-col md:flex-row
+                  items-stretch
+                  bg-[var(--bg-card)]
+                  rounded-2xl
+                  shadow-[0_8px_40px_rgba(0,0,0,0.25)]
+                  overflow-hidden
+                  min-h-[68px]">
+
+        <div class="flex items-center gap-3
+                    flex-1 px-5 py-4
+                    border-b md:border-b-0
+                    md:border-l
+                    border-[var(--border)]
+                    hover:bg-[var(--primary-light)]
+                    transition-all duration-150
+                    group">
+          <svg lucideBus
+               class="w-5 h-5 flex-shrink-0
+                      text-[var(--primary)]">
+          </svg>
+          <div class="flex flex-col gap-0.5 flex-1">
+            <span class="text-[9px] font-bold
+                         text-[var(--text-muted)]
+                         uppercase tracking-widest">
+              من
+            </span>
+            <input
+              type="text"
+              [ngModel]="from()"
+              (ngModelChange)="from.set($event)"
+              placeholder="مدينة المغادرة"
+              class="bg-transparent border-none
+                     outline-none w-full
+                     text-sm font-semibold
+                     text-[var(--text-primary)]
+                     placeholder:text-[var(--text-muted)]
+                     placeholder:font-normal">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center
+                    px-3 flex-shrink-0
+                    border-b md:border-b-0
+                    md:border-l border-[var(--border)]
+                    py-3 md:py-0">
+          <button
+            type="button"
+            (click)="swap()"
+            class="w-9 h-9 rounded-full
+                   border-2 border-[var(--border)]
+                   flex items-center justify-center
+                   bg-[var(--bg-card)]
+                   text-[var(--text-secondary)]
+                   hover:bg-[var(--primary)]
+                   hover:border-[var(--primary)]
+                   hover:text-white
+                   transition-all duration-200
+                   active:scale-90">
+            <svg lucideArrowLeftRight
+                 class="w-4 h-4">
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3
+                    flex-1 px-5 py-4
+                    border-b md:border-b-0
+                    md:border-l border-[var(--border)]
+                    hover:bg-[var(--primary-light)]
+                    transition-all duration-150">
+          <svg lucideBus
+               class="w-5 h-5 flex-shrink-0
+                      text-[var(--primary)]">
+          </svg>
+          <div class="flex flex-col gap-0.5 flex-1">
+            <span class="text-[9px] font-bold
+                         text-[var(--text-muted)]
+                         uppercase tracking-widest">
+              إلى
+            </span>
+            <input
+              type="text"
+              [ngModel]="to()"
+              (ngModelChange)="to.set($event)"
+              placeholder="مدينة الوصول"
+              class="bg-transparent border-none
+                     outline-none w-full
+                     text-sm font-semibold
+                     text-[var(--text-primary)]
+                     placeholder:text-[var(--text-muted)]
+                     placeholder:font-normal">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3
+                    flex-1 px-5 py-4
+                    border-b md:border-b-0
+                    md:border-l border-[var(--border)]
+                    hover:bg-[var(--primary-light)]
+                    transition-all duration-150">
+          <svg lucideCalendar
+               class="w-5 h-5 flex-shrink-0
+                      text-[var(--primary)]">
+          </svg>
+          <div class="flex flex-col gap-0.5 flex-1">
+            <span class="text-[9px] font-bold
+                         text-[var(--text-muted)]
+                         uppercase tracking-widest">
+              تاريخ السفر
+            </span>
+            <input
+              type="date"
+              [ngModel]="date()"
+              (ngModelChange)="date.set($event)"
+              [min]="today"
+              class="bg-transparent border-none
+                     outline-none w-full
+                     text-sm font-semibold
+                     text-[var(--text-primary)]
+                     cursor-pointer">
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="onSearch()"
+          [disabled]="isLoading()"
+          class="flex items-center justify-center
+                 gap-3 px-8 py-4
+                 bg-[var(--primary)]
+                 hover:bg-[var(--primary-hover)]
+                 disabled:opacity-60
+                 disabled:cursor-not-allowed
+                 text-white font-bold text-sm
+                 uppercase tracking-wider
+                 transition-all duration-150
+                 active:scale-[0.98]
+                 min-w-[160px] flex-shrink-0
+                 w-full md:w-auto">
+          @if (isLoading()) {
+            <svg lucideLoaderCircle
+                 class="w-5 h-5 animate-spin">
+            </svg>
+            <span>جاري البحث...</span>
+          } @else {
+            <svg lucideSearch class="w-5 h-5">
+            </svg>
+            <span>ابحث عن رحلة</span>
+          }
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="max-w-5xl mx-auto
+              px-4 md:px-8 lg:px-16
+              py-8">
+
+    @if (!isLoading()) {
+      <div class="flex flex-col sm:flex-row
+                  items-start sm:items-center
+                  justify-between gap-4 mb-6">
+
+        <div class="flex flex-col gap-1">
+
+          <div class="flex items-center gap-2">
+            <svg lucideMapPin
+                 class="w-4 h-4 flex-shrink-0
+                        text-[var(--primary)]">
+            </svg>
+            <h2 class="text-lg font-bold
+                       text-[var(--text-primary)]">
+              {{ searchLabel() }}
+            </h2>
+          </div>
+
+          <div class="flex items-center gap-3
+                      text-sm
+                      text-[var(--text-secondary)]">
+            <div class="flex items-center gap-1">
+              <svg lucideClock
+                   class="w-3.5 h-3.5
+                          text-[var(--text-muted)]">
+              </svg>
+              <span>{{ dateLabel() }}</span>
+            </div>
+
+            @if (hasResults()) {
+              <span class="text-[var(--border)]">|</span>
+              <span class="font-semibold
+                           text-[var(--primary)]">
+                {{ resultCount() }} رحلة متاحة
+              </span>
+            }
+          </div>
+
+        </div>
+
+        @if (hasResults()) {
+          <div class="flex items-center gap-2
+                      flex-shrink-0">
+            <svg lucideArrowUpDown
+                 class="w-4 h-4
+                        text-[var(--text-muted)]">
+            </svg>
+            <span class="text-xs font-medium
+                         text-[var(--text-muted)]">
+              ترتيب حسب:
+            </span>
+            <div class="relative">
+              <select
+                [ngModel]="sortBy()"
+                (ngModelChange)="sortBy.set($event)"
+                class="appearance-none
+                       bg-[var(--bg-card)]
+                       border border-[var(--border)]
+                       text-[var(--text-primary)]
+                       text-sm font-semibold
+                       rounded-xl
+                       px-4 py-2 pr-8
+                       outline-none
+                       cursor-pointer
+                       hover:border-[var(--primary)]
+                       transition-colors duration-150">
+                       <option value=" " selected> التصنيفات </option>
+                @for (opt of sortOptions; track opt.value) {
+                  <option [value]="opt.value">
+                    {{ opt.label }}
+                  </option>
+                }
+              </select>
+              <svg lucideChevronDown
+                   class="w-3.5 h-3.5
+                          absolute left-2 top-1/2
+                          -translate-y-1/2
+                          text-[var(--text-muted)]
+                          pointer-events-none">
+              </svg>
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+
+    @if (isLoading()) {
+      <div class="flex flex-col items-center
+                  justify-center py-24 gap-5">
+
+        <div class="w-full flex flex-col gap-4">
+          @for (i of [1,2,3]; track i) {
+            <div class="w-full bg-[var(--bg-card)]
+                        border border-[var(--border)]
+                        rounded-2xl p-5
+                        animate-pulse">
+              <div class="flex items-center
+                          justify-between gap-6">
+                <div class="flex flex-col gap-3
+                            flex-1">
+                  <div class="h-4 w-32
+                              bg-[var(--border)]
+                              rounded-lg">
+                  </div>
+                  <div class="flex items-center
+                              gap-4">
+                    <div class="h-8 w-16
+                                bg-[var(--border)]
+                                rounded-lg">
+                    </div>
+                    <div class="flex-1 h-2
+                                bg-[var(--border)]
+                                rounded-full">
+                    </div>
+                    <div class="h-8 w-16
+                                bg-[var(--border)]
+                                rounded-lg">
+                    </div>
+                  </div>
+                  <div class="h-6 w-28
+                              bg-[var(--border)]
+                              rounded-full">
+                  </div>
+                </div>
+                <div class="flex flex-col
+                            items-end gap-3
+                            flex-shrink-0">
+                  <div class="h-8 w-24
+                              bg-[var(--border)]
+                              rounded-lg">
+                  </div>
+                  <div class="h-10 w-32
+                              bg-[var(--border)]
+                              rounded-xl">
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <p class="text-sm font-medium
+                  text-[var(--text-muted)]
+                  mt-2">
+          جاري البحث عن أفضل الرحلات...
+        </p>
+
+      </div>
+    }
+
+    <!-- ERROR -->
+
+    @if (!isLoading() && error()) {
+      <div class="flex flex-col items-center
+                  justify-center gap-5">
+        <div class="w-20 h-20 rounded-full
+                    bg-red-50
+                    flex items-center
+                    justify-center">
+          <svg lucideSearchX
+               class="w-9 h-9 text-red-400">
+          </svg>
+        </div>
+        <div class="flex flex-col items-center
+                    gap-2 text-center">
+          <h3 class="text-lg font-bold
+                     text-[var(--text-primary)]">
+            حدث خطأ أثناء البحث
+          </h3>
+          <p class="text-sm
+                    text-[var(--text-secondary)]
+                    max-w-sm">
+            {{ error() }}
+          </p>
+        </div>
+        <button
+          (click)="loadTrips()"
+          class="flex items-center gap-2
+                 px-6 py-3 rounded-xl
+                 bg-[var(--primary)]
+                 hover:bg-[var(--primary-hover)]
+                 text-white text-sm font-bold
+                 transition-all duration-150
+                 active:scale-95">
+          <svg lucideSearch class="w-4 h-4">
+          </svg>
+          <span>حاول مجدداً</span>
+        </button>
+      </div>
+    }
+
+    <!-- EMPTY -->
+
+    @if (isEmpty()) {
+      <div class="flex flex-col items-center
+                  justify-center py-24 gap-5">
+        <div class="w-24 h-24 rounded-full
+                    bg-[var(--primary-light)]
+                    flex items-center
+                    justify-center">
+          <svg lucideBus
+               class="w-10 h-10
+                      text-[var(--primary)]">
+          </svg>
+        </div>
+        <div class="flex flex-col items-center
+                    gap-2 text-center">
+          <h3 class="text-lg font-bold
+                     text-[var(--text-primary)]">
+            لا توجد رحلات متاحة
+          </h3>
+          <p class="text-sm
+                    text-[var(--text-secondary)]
+                    max-w-sm leading-relaxed">
+            لم نجد رحلات من
+            <span class="font-bold
+                         text-[var(--primary)]">
+              {{ from() }}
+            </span>
+            إلى
+            <span class="font-bold
+                         text-[var(--primary)]">
+              {{ to() }}
+            </span>
+            بتاريخ {{ dateLabel() }}.
+            حاول تغيير التاريخ.
+          </p>
+        </div>
+        <button
+          (click)="goHome()"
+          class="flex items-center gap-2
+                 px-6 py-3 rounded-xl
+                 border-2 border-[var(--primary)]
+                 text-[var(--primary)]
+                 text-sm font-bold
+                 hover:bg-[var(--primary-light)]
+                 transition-all duration-150
+                 active:scale-95">
+          <svg lucideX class="w-4 h-4"></svg>
+          <span>ابحث عن مسار آخر</span>
+        </button>
+      </div>
+    }
+
+    @if (hasResults()) {
+      <div class="flex flex-col gap-4">
+        @for (trip of sortedTrips(); track trip.id) {
+          <app-trip-card
+            [trip]="trip"
+            (selected)="onTripSelected($event)">
+          </app-trip-card>
+        }
+      </div>
+
+      <div class="mt-8 flex items-center
+                  justify-center">
+        <p class="text-xs text-[var(--text-muted)]
+                    text-center">
+          عرض جميع الرحلات المتاحة ({{ resultCount() }})
+          . الأسعار شاملة جميع الرسوم
+        </p>
+      </div>
+    }
+
+  </div>
+</div>

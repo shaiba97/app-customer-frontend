@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+:root {
+  --primary:        #0D9488;
+  --primary-hover:  #0F766E;
+  --primary-light:  #CCFBF1;
+  --primary-muted:  #5EEAD4;
+  --bg-base:        #F0FDFA;
+  --bg-card:        #FFFFFF;
+  --border:         #99F6E4;
+  --text-primary:   #134E4A;
+  --text-secondary: #0F766E;
+  --text-muted:     #5EEAD4;
+  --shadow:         rgba(13, 148, 136, 0.1);
+}
+
+.dark {
+  --primary:        #2DD4BF;
+  --primary-hover:  #5EEAD4;
+  --primary-light:  #042F2E;
+  --bg-base:        #021A19;
+  --bg-card:        #042F2E;
+  --bg-sidebar:     #021A19;
+  --border:         #0F4F4A;
+  --text-primary:   #CCFBF1;
+  --text-secondary: #5EEAD4;
+  --text-muted:     #0D9488;
+  --shadow:         rgba(0, 0, 0, 0.3);
+}
