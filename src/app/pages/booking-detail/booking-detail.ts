@@ -1,18 +1,17 @@
 import { Component, signal, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { LucideArrowRight, LucideBus, LucideCalendar, LucideUser, LucideCreditCard, LucideDownload, LucideMapPin } from '@lucide/angular';
-import { ArabicNumberPipe } from '../../../pipes/arabic-number/arabic-number-pipe';
-import { TimeFormatPipe } from '../../../pipes/time-format/time-format-pipe';
-import { DatePipe, JsonPipe, NgClass } from '@angular/common';
+import { Location } from '@angular/common';
+import { LucideArrowRight, LucideBus, LucideCalendar, LucideUser, LucideCreditCard, LucideDownload, LucideMapPin, LucideEye } from '@lucide/angular';
+import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
+import { TimeFormatPipe } from '../../pipes/time-format/time-format-pipe';
+import { DatePipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-booking-detail',
-  imports: [LucideArrowRight, LucideBus, LucideCalendar, LucideUser, LucideCreditCard, LucideDownload, LucideMapPin, ArabicNumberPipe, TimeFormatPipe, DatePipe, NgClass],
+  imports: [LucideArrowRight, LucideBus, LucideCalendar, LucideUser, LucideCreditCard, LucideDownload, LucideMapPin, LucideEye, ArabicNumberPipe, TimeFormatPipe, DatePipe, NgClass],
   templateUrl: './booking-detail.html',
 })
-export class BookingDetail {
-  private router = inject(Router);
-
+export class BookingDetailComponent {
+  private location = inject(Location);
 
   booking = signal<any>(history.state?.booking ?? null);
 
@@ -66,7 +65,13 @@ export class BookingDetail {
     window.location.href = `http://${window.location.hostname}:3002${url}`;
   }
 
+  viewTicket(): void {
+    const url = this.booking()?.TicketPDF?.ticketUrl;
+    if (!url) return;
+    window.open(`http://${window.location.hostname}:3002${url}`, '_blank');
+  }
+
   goBack(): void {
-    history.back();
+    this.location.back();
   }
 }

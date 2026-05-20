@@ -2,10 +2,10 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye, LucideX } from '@lucide/angular';
-import { ArabicNumberPipe } from '../../../pipes/arabic-number/arabic-number-pipe';
-import { TimeFormatPipe } from '../../../pipes/time-format/time-format-pipe';
-import { BookingService } from '../../../services/booking/booking.service';
-import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
+import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
+import { TimeFormatPipe } from '../../pipes/time-format/time-format-pipe';
+import { BookingService } from '../../services/booking/booking.service';
+import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { NgClass, DatePipe } from '@angular/common';
 
 @Component({
@@ -13,7 +13,7 @@ import { NgClass, DatePipe } from '@angular/common';
   imports: [LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye, LucideX, ArabicNumberPipe, TimeFormatPipe, NgClass, DatePipe],
   templateUrl: './bookings.html',
 })
-export class Bookings implements OnInit {
+export class BookingsComponent implements OnInit {
   private router = inject(Router);
   private bookingSvc = inject(BookingService);
   private sanitizer = inject(DomSanitizer);
@@ -26,7 +26,6 @@ export class Bookings implements OnInit {
   activeTicketUrl = signal<string>('');
 
   ngOnInit(): void {
-    
     if (this.authStore.isLoggedIn()) {
       this.loadBookings();
     }
@@ -44,15 +43,15 @@ export class Bookings implements OnInit {
   }
 
   openDetail(booking: any): void {
-    this.router.navigate(['/m/booking', booking.id], { state: { booking } });
+    this.router.navigate(['/booking', booking.id], { state: { booking } });
   }
 
   goToLogin(): void {
-    this.router.navigate(['/m/login']);
+    this.router.navigate(['/login']);
   }
 
   goHome(): void {
-    this.router.navigate(['/m/home']);
+    this.router.navigate(['/home']);
   }
 
   statusClass(status: string): Record<string, boolean> {
