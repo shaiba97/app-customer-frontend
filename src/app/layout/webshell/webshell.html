@@ -1,0 +1,197 @@
+<div dir="rtl" class="h-screen w-full overflow-hidden bg-[var(--bg-base)] flex flex-col">
+
+  <!-- ==================== DESKTOP NAVBAR ==================== -->
+  <header
+    class="max-md:hidden w-full sticky top-0 z-50
+           bg-[var(--bg-card)]/95 backdrop-blur-md
+           border-b border-[var(--border)]
+           shadow-[0_1px_8px_var(--shadow)]">
+
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-16">
+
+      <!-- Logo -->
+      <a routerLink="/home"
+         class="flex items-center gap-2.5 no-underline flex-shrink-0 group">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center
+                    bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)]
+                    shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
+          <svg lucideBus class="w-5 h-5" color="white"></svg>
+        </div>
+        <div class="flex flex-col leading-none">
+          <span class="text-lg font-extrabold text-[var(--primary)] leading-tight">رحلة</span>
+          <span class="text-[9px] font-medium text-[var(--text-muted)] tracking-wider">RIHLA</span>
+        </div>
+      </a>
+
+      <!-- Desktop actions -->
+      <div class="flex items-center gap-2">
+
+        <!-- Theme toggle -->
+        <button (click)="themeService.toggle()"
+          class="w-9 h-9 rounded-xl flex items-center justify-center
+                 text-[var(--text-secondary)]
+                 hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+                 transition-all duration-150">
+          @if (themeService.isDark()) {
+            <svg lucideSun class="w-[18px] h-[18px] text-warning"></svg>
+          } @else {
+            <svg lucideMoon class="w-[18px] h-[18px]"></svg>
+          }
+        </button>
+
+        <!-- NOT LOGGED IN -->
+        @if (!isLoggedIn()) {
+          <div class="w-px h-6 bg-[var(--border)] mx-1"></div>
+          <div class="flex items-center gap-2">
+            <a routerLink="/login"
+               class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold
+                      text-[var(--primary)] hover:bg-[var(--primary-light)]
+                      transition-all duration-150 no-underline">
+              <svg lucideLogIn class="w-4 h-4 flex-shrink-0"></svg>
+              <span>تسجيل الدخول</span>
+            </a>
+            <a routerLink="/register"
+               class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold
+                      bg-[var(--primary)] text-white
+                      hover:bg-[var(--primary-hover)] active:scale-95
+                      transition-all duration-150 no-underline shadow-sm hover:shadow-md">
+              <svg lucideUserPlus class="w-4 h-4 flex-shrink-0"></svg>
+              <span>إنشاء حساب</span>
+            </a>
+          </div>
+        }
+
+        <!-- LOGGED IN -->
+        @if (isLoggedIn()) {
+          <div class="w-px h-6 bg-[var(--border)] mx-1"></div>
+          <div class="relative" data-user-menu>
+            <button (click)="toggleUserMenu()"
+              class="flex items-center gap-2 px-2 py-1.5 rounded-xl
+                     hover:bg-[var(--primary-light)] transition-all duration-150 cursor-pointer">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
+                          bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)] shadow-sm">
+                <svg lucideUserRound class="w-4 h-4" color="white"></svg>
+              </div>
+              <div class="flex flex-col items-end leading-none gap-0.5">
+                <span class="text-xs font-semibold text-[var(--text-primary)]">{{ userName() }}</span>
+                <span class="text-[9px] text-[var(--text-muted)]">مرحباً بك</span>
+              </div>
+              <svg lucideChevronDown
+                   class="w-3.5 h-3.5 text-[var(--text-muted)] transition-transform duration-200"
+                   [class.rotate-180]="showUserMenu()"></svg>
+            </button>
+
+            @if (showUserMenu()) {
+              <div class="absolute left-0 top-12 w-56
+                          bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl
+                          shadow-[0_8px_32px_var(--shadow)] overflow-hidden z-50">
+                <div class="px-4 py-3 bg-[var(--primary-light)] border-b border-[var(--border)]">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0
+                                bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)]">
+                      <svg lucideUserRound class="w-5 h-5" color="white"></svg>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="text-sm font-bold text-[var(--text-primary)] truncate">{{ userName() }}</span>
+                      <span class="text-xs text-[var(--text-secondary)]">عميل</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-1.5 flex flex-col gap-0.5">
+                  <a routerLink="/bookings" (click)="showUserMenu.set(false)"
+                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+                            text-[var(--text-secondary)]
+                            hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+                            transition-all duration-150 no-underline group">
+                    <svg lucideCalendarCheck class="w-4 h-4 flex-shrink-0 text-[var(--text-muted)]
+                                                    group-hover:text-[var(--primary)] transition-colors"></svg>
+                    <span>حجوزاتي</span>
+                  </a>
+                  <a routerLink="/profile" (click)="showUserMenu.set(false)"
+                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+                            text-[var(--text-secondary)]
+                            hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+                            transition-all duration-150 no-underline group">
+                    <svg lucideSettings class="w-4 h-4 flex-shrink-0 text-[var(--text-muted)]
+                                              group-hover:text-[var(--primary)] transition-colors"></svg>
+                    <span>الملف الشخصي</span>
+                  </a>
+                  <div class="h-px bg-[var(--border)] my-1"></div>
+                  <button (click)="logout()"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-right
+                           hover:bg-red-50 dark:hover:bg-red-950/20 transition-all duration-150 group text-danger">
+                    <svg lucideLogOut class="w-4 h-4 flex-shrink-0 transition-transform duration-150
+                                            group-hover:-translate-x-0.5"></svg>
+                    <span>تسجيل الخروج</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== MOBILE TOPBAR ==================== -->
+  <header
+    class="max-md:flex md:hidden items-center justify-between
+           bg-[var(--bg-card)]/95 backdrop-blur-md
+           border-b border-[var(--border)] px-4 h-14 flex-shrink-0">
+
+    <a routerLink="/home" class="flex items-center gap-2 no-underline group">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center
+                  bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)] shadow-sm">
+        <svg lucideBus class="w-4 h-4" color="white"></svg>
+      </div>
+      <span class="text-base font-extrabold text-[var(--primary)]">رحلة</span>
+    </a>
+
+    <button (click)="themeService.toggle()"
+      class="w-9 h-9 rounded-xl flex items-center justify-center
+             text-[var(--text-secondary)]
+             hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+             transition-all duration-150">
+      @if (themeService.isDark()) {
+        <svg lucideSun class="w-[18px] h-[18px] text-warning"></svg>
+      } @else {
+        <svg lucideMoon class="w-[18px] h-[18px]"></svg>
+      }
+    </button>
+  </header>
+
+  <!-- ==================== CONTENT (shared) ==================== -->
+  <main class="flex-1 overflow-y-auto">
+    <router-outlet />
+  </main>
+
+  <!-- ==================== MOBILE BOTTOM NAV ==================== -->
+  <nav class="max-md:flex md:hidden flex-shrink-0
+              bg-[var(--bg-card)] border-t border-[var(--border)]
+              flex items-center justify-around px-2 py-1
+              shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+
+    <a routerLink="/home"
+      class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
+      [ngClass]="isHomeActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
+      <svg lucideHome class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isHomeActive()"></svg>
+      <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isHomeActive()">الرئيسية</span>
+    </a>
+
+    <a routerLink="/bookings"
+      class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
+      [ngClass]="isBookingsActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
+      <svg lucideCalendarClock class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isBookingsActive()"></svg>
+      <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isBookingsActive()">حجوزاتي</span>
+    </a>
+
+    <a routerLink="/profile"
+      class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
+      [ngClass]="isProfileActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
+      <svg lucideUser class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isProfileActive()"></svg>
+      <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isProfileActive()">حسابي</span>
+    </a>
+  </nav>
+
+</div>

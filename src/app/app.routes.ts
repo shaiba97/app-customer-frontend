@@ -1,7 +1,41 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/m/home', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () => import('./layout/webshell/webshell').then(m => m.WebShell),
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      {
+        path: 'home',
+        loadComponent: () => import('./pages/home/main/main').then(m => m.Main),
+      },
+      {
+        path: 'search-results',
+        loadComponent: () => import('./pages/search-results/search-results').then(m => m.SearchResultsComponent),
+      },
+      {
+        path: 'login',
+        loadComponent: () => import('./pages/auth/login/login').then(m => m.Login),
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./pages/auth/register/register').then(m => m.Register),
+      },
+      {
+        path: 'bookings',
+        loadComponent: () => import('./pages/bookings/bookings').then(m => m.BookingsComponent),
+      },
+      {
+        path: 'booking/:id',
+        loadComponent: () => import('./pages/booking-detail/booking-detail').then(m => m.BookingDetailComponent),
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./pages/profile/profile').then(m => m.ProfileComponent),
+      },
+    ],
+  },
   {
     path: 'm',
     children: [
@@ -53,60 +87,5 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/mobile/payment-details').then(m => m.PaymentDetails),
       },
     ],
-  },
-  {
-    path: '',
-    loadComponent: () =>
-    import('./layout/navbar/navbar.component')
-    .then(m => m.NavbarComponent),
-    children: [
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
-      },
-      {
-        path: 'home',
-        loadComponent: () =>
-        import('./pages/home/main/main')
-        .then(m => m.Main),
-      },
-      {
-        path: 'search-results',
-        loadComponent: () =>
-        import('./pages/search-results/search-results')
-        .then(m => m.SearchResultsComponent),
-      },
-      {
-        path: 'login',
-        loadComponent: () =>
-        import('./pages/auth/login/login')
-        .then(m => m.Login),
-      },
-      {
-        path: 'register',
-        loadComponent: () =>
-        import('./pages/auth/register/register')
-        .then(m => m.Register),
-      },
-      {
-        path: 'bookings',
-        loadComponent: () =>
-        import('./pages/bookings/bookings')
-        .then(m => m.BookingsComponent),
-      },
-      {
-        path: 'booking/:id',
-        loadComponent: () =>
-        import('./pages/booking-detail/booking-detail')
-        .then(m => m.BookingDetailComponent),
-      },
-      {
-        path: 'profile',
-        loadComponent: () =>
-        import('./pages/profile/profile')
-        .then(m => m.ProfileComponent),
-      },
-    ]
   },
 ];
