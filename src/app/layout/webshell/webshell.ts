@@ -17,6 +17,7 @@ import {
   LucideCalendarClock,
   LucideUser,
   LucideBell,
+  LucideNewspaper,
 } from '@lucide/angular';
 import { ThemeService } from '../../core/services/theme.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
@@ -43,6 +44,7 @@ import { NotificationsService } from '../../core/services/notifications/notifica
     LucideCalendarClock,
     LucideUser,
     LucideBell,
+  LucideNewspaper,
     NotificationBellComponent,
   ],
   templateUrl: './webshell.html',
@@ -98,6 +100,10 @@ export class WebShell implements OnInit, OnDestroy {
     const url = this.currentUrl();
     return url.startsWith('/notifications');
   });
+  isBlogActive = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/blog') || url.startsWith('/m/blogs');
+  });
 
   unreadCount = this.notifSvc.unreadCount;
 
@@ -111,6 +117,10 @@ export class WebShell implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/login']);
     }
+  }
+
+  goToBlog(): void {
+    this.router.navigate(['/blog']);
   }
 
   toggleUserMenu(): void {

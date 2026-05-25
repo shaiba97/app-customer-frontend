@@ -1,5 +1,5 @@
 import {
-  Component, input, output, computed, signal,
+  Component, input, computed, signal,
   inject,
 } from '@angular/core';
 import { NgClass, DatePipe } from '@angular/common';
@@ -84,7 +84,6 @@ export class TripCardComponent {
   private bookingService = inject(BookingService);
 
   trip     = input.required<Trip>();
-  selected = output<Trip>();
 
   currency = 'ج. س';
   showModal = signal<boolean>(false);
@@ -121,10 +120,6 @@ export class TripCardComponent {
     this.showModal.set(true);
   }
   closeModal(): void { this.showModal.set(false); }
-
-  onSelect(): void {
-    this.selected.emit(this.trip());
-  }
 
   getActiveFee(){
     this.bookingService.getActiveFee().subscribe({

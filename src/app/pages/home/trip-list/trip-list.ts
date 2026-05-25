@@ -1,8 +1,7 @@
 import {
   Component, signal, inject, OnInit, computed,
 } from '@angular/core';
-import { ActivatedRoute, Router }
-  from '@angular/router';
+
 // import { NgClass } from '@angular/common';
 import {
   LucideLoaderCircle,
@@ -30,8 +29,6 @@ import { ArabicNumberPipe } from '../../../pipes/arabic-number/arabic-number-pip
   templateUrl: './trip-list.html',
 })
 export class TripListComponent implements OnInit {
-  private route             = inject(ActivatedRoute);
-  private router            = inject(Router);
   private tripsService = inject(Trips);
 
   trips     = signal<Trip[]>([]);
@@ -99,9 +96,5 @@ export class TripListComponent implements OnInit {
     });
   }
 
-  onTripSelected(trip: Trip): void {
-    this.router.navigate(
-      ['/booking', trip.id]
-    );
-  }
+
 }

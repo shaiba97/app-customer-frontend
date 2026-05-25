@@ -125,6 +125,12 @@ export class PaymentDetails implements OnInit {
     const passengers = this.passengers();
     const selectedSeats = this.selectedSeats();
     const formVal = this.paymentForm.value;
+    const seatCount = selectedSeats.length;
+    const tripPrice = Number(trip?.price ?? 0);
+    const perSeatFee = this.platformFee();
+    const companyAmount = tripPrice * seatCount;
+    const platformFeeAmount = perSeatFee * seatCount;
+    const totalAmount = companyAmount + platformFeeAmount;
 
     const selectedAccount = this.selectedAccount();
     this.bookingSvc.createBookingWithPayment({
@@ -135,9 +141,10 @@ export class PaymentDetails implements OnInit {
       paymentMethod: selectedAccount?.gatewayName ?? formVal.paymentMethod!,
       transactionId: formVal.transactionId!,
       receiptFile: this.receiptFile() ?? undefined,
-      totalAmount: this.totalAmount(),
-      baseAmount: this.baseAmount(),
-      platformFeeAmount: this.platformFee(),
+      totalAmount,
+      baseAmount: companyAmount,
+      platformFeeAmount,
+      price: tripPrice,
       currency: 'SDG',
     }).subscribe({
       next: () => {

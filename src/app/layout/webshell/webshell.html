@@ -39,6 +39,14 @@
           }
         </button>
 
+        <button (click)="goToBlog()"
+          class="w-9 h-9 rounded-xl flex items-center justify-center
+                 text-[var(--text-secondary)]
+                 hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+                 transition-all duration-150">
+          <svg lucideNewspaper class="w-[18px] h-[18px]"></svg>
+        </button>
+
         @if (isLoggedIn()) {
           <app-notification-bell></app-notification-bell>
         }
@@ -119,6 +127,15 @@
                     <svg lucideSettings class="w-4 h-4 flex-shrink-0 text-[var(--text-muted)]
                                               group-hover:text-[var(--primary)] transition-colors"></svg>
                     <span>الملف الشخصي</span>
+                  </a>
+                  <a routerLink="/blog" (click)="showUserMenu.set(false)"
+                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+                            text-[var(--text-secondary)]
+                            hover:bg-[var(--primary-light)] hover:text-[var(--primary)]
+                            transition-all duration-150 no-underline group">
+                    <svg lucideNewspaper class="w-4 h-4 flex-shrink-0 text-[var(--text-muted)]
+                                              group-hover:text-[var(--primary)] transition-colors"></svg>
+                    <span>المدونة</span>
                   </a>
                   <div class="h-px bg-[var(--border)] my-1"></div>
                   <button (click)="logout()"
@@ -212,6 +229,13 @@
         }
       </div>
       <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isNotifsActive()">الإشعارات</span>
+    </a>
+
+    <a routerLink="/m/blogs"
+      class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200 no-underline"
+      [ngClass]="isBlogActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
+      <svg lucideNewspaper class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isBlogActive()"></svg>
+      <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isBlogActive()">المدونة</span>
     </a>
 
     <a routerLink="/profile"

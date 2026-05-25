@@ -50,8 +50,7 @@
     <div class="flex flex-col gap-4">
       @for (trip of trips(); track trip.id) {
         <app-trip-card
-          [trip]="trip"
-          (selected)="onTripSelected($event)">
+          [trip]="trip">
         </app-trip-card>
       }
     </div>

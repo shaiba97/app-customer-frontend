@@ -271,10 +271,6 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-  onTripSelected(trip: Trip): void {
-    this.router.navigate(['/booking', trip.id]);
-  }
-
   goHome(): void {
     this.router.navigate(['/']);
   }

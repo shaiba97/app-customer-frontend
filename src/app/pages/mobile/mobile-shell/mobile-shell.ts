@@ -1,12 +1,12 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { LucideCalendarClock, LucideUser, LucideHome, LucideBell } from '@lucide/angular';
+import { LucideCalendarClock, LucideUser, LucideHome, LucideBell, LucideNewspaper } from '@lucide/angular';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mobile-shell',
-  imports: [RouterOutlet, RouterLink, NgClass, LucideCalendarClock, LucideUser, LucideHome, LucideBell],
+  imports: [RouterOutlet, RouterLink, NgClass, LucideCalendarClock, LucideUser, LucideHome, LucideBell, LucideNewspaper],
   templateUrl: './mobile-shell.html',
 })
 export class MobileShell {
@@ -33,5 +33,9 @@ export class MobileShell {
   isNotifsActive = computed(() => {
     const url = this.currentUrl();
     return url.startsWith('/m/notifications');
+  });
+  isBlogActive = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/m/blogs');
   });
 }

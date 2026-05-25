@@ -38,6 +38,14 @@ export const routes: Routes = [
         path: 'notifications/:id',
         loadComponent: () => import('./pages/notification-detail/notification-detail').then(m => m.NotificationDetailPage),
       },
+      {
+        path: 'blog',
+        loadComponent: () => import('./pages/blog/blog').then(m => m.BlogComponent),
+      },
+      {
+        path: 'blog/:slug',
+        loadComponent: () => import('./pages/blog-detail/blog-detail').then(m => m.BlogDetailComponent),
+      },
     ],
   },
   {
@@ -67,6 +75,14 @@ export const routes: Routes = [
           {
             path: 'notifications/:id',
             loadComponent: () => import('./pages/notification-detail/notification-detail').then(m => m.NotificationDetailPage),
+          },
+          {
+            path: 'blogs',
+            loadComponent: () => import('./pages/blog/blog').then(m => m.BlogComponent),
+          },
+          {
+            path: 'blogs/blog/:slug',
+            loadComponent: () => import('./pages/blog-detail/blog-detail').then(m => m.BlogDetailComponent),
           },
           {
             path: 'login',

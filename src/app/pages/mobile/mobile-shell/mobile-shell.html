@@ -23,6 +23,12 @@
       </div>
       <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isNotifsActive()">الإشعارات</span>
     </a>
+    <a routerLink="/m/blogs"
+      class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
+      [ngClass]="isBlogActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
+      <svg lucideNewspaper class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isBlogActive()"></svg>
+      <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isBlogActive()">المدونة</span>
+    </a>
     <a routerLink="/m/profile"
       class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
       [ngClass]="isProfileActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">

@@ -95,6 +95,7 @@ export class BookingService {
     totalAmount: number;
     baseAmount: number;
     platformFeeAmount: number;
+    price?: number;
     currency: string;
     paymentMethod: string;
     transactionId: string;
@@ -109,6 +110,7 @@ export class BookingService {
     formData.append('companyAmount', String(data.baseAmount));
     formData.append('commissionAmount', '0');
     formData.append('platformFeeAmount', String(data.platformFeeAmount));
+    if (data.price != null) formData.append('price', String(data.price));
     formData.append('currency', data.currency);
     formData.append('paymentMethod', data.paymentMethod);
     formData.append('transactionId', data.transactionId);
