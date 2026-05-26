@@ -23,7 +23,6 @@ import {
   LucideLandmark,
   LucideUpload,
   LucideCheck,
-  LucideShare2,
 } from '@lucide/angular';
 import { BookingStep, SeatMap, PassengerForm, ContactForm } from './booking.interfaces';
 import { WsService } from '../../../services/ws.service';
@@ -60,7 +59,6 @@ import { ArabicNumberPipe } from '../../../pipes/arabic-number/arabic-number-pip
     LucideLandmark,
     LucideUpload,
     LucideCheck,
-    LucideShare2,
   ],
   templateUrl: './booking-modal.component.html',
 })
