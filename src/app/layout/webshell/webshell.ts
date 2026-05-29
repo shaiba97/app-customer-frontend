@@ -118,7 +118,7 @@ export class WebShell implements OnInit, OnDestroy {
     if (this.authStore.isLoggedIn()) {
       this.router.navigate(['/bookings']);
     } else {
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/login']);
     }
   }
 
