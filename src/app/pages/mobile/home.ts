@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, DestroyRef, NgZone } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgClass, DatePipe } from '@angular/common';
@@ -9,6 +9,7 @@ import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 @Component({
   selector: 'app-home',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent],
   templateUrl: './home.html',
 })
@@ -17,7 +18,6 @@ export class Home implements OnInit, AfterViewInit {
   private tripSvc = inject(TripSearchService);
   private hostElement = inject(ElementRef<HTMLElement>);
   private destroyRef = inject(DestroyRef);
-  private zone = inject(NgZone);
 
   from = signal<string>('');
   to = signal<string>('');
@@ -89,7 +89,7 @@ export class Home implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const el = this.hostElement.nativeElement.closest('.overflow-y-auto') as HTMLElement | null;
     if (el) {
-      const handler = () => this.zone.run(() => this.scrollY.set(el.scrollTop));
+      const handler = () => this.scrollY.set(el.scrollTop);
       el.addEventListener('scroll', handler, { passive: true });
       this.destroyRef.onDestroy(() => el.removeEventListener('scroll', handler));
     }
