@@ -1,8 +1,8 @@
 <div dir="rtl" class="h-screen w-full overflow-hidden bg-[var(--bg-base)] flex flex-col">
-  <div class="flex-1 overflow-y-auto">
+  <div class="flex-1 overflow-y-auto pb-[60px]">
     <router-outlet />
   </div>
-  <nav class="flex-shrink-0 bg-[var(--bg-card)] border-t border-[var(--border)] flex items-center justify-around px-2 py-1 shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[var(--bg-card)] border-t border-[var(--border)] flex items-center justify-around px-2 py-1 shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
     <a routerLink="/m/home"
       class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
       [ngClass]="isHomeActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
