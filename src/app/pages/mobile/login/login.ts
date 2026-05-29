@@ -43,7 +43,7 @@ export class Login {
         }
         this.authStore.setSession(token, user);
         this.isLoading.set(false);
-        this.router.navigate(['/m/home']);
+        this.router.navigate(['/home']);
       },
       error: (err: any) => {
         this.error.set(err?.error?.message ?? 'بيانات الدخول غير صحيحة');
