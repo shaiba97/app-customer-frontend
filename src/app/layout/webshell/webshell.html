@@ -205,8 +205,8 @@
     <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isHomeActive()">الرئيسية</span>
   </a>
 
-  <a routerLink="/bookings"
-    class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200"
+  <a (click)="goToBookings()"
+    class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200 cursor-pointer no-underline"
     [ngClass]="isBookingsActive() ? 'bg-[var(--primary-light)] text-[var(--primary)]' : 'text-[var(--text-muted)]'">
     <svg lucideCalendarClock class="w-5 h-5 transition-colors duration-200" [class.text-[var(--primary)]]="isBookingsActive()"></svg>
     <span class="text-[10px] font-bold transition-colors duration-200" [class.text-[var(--primary)]]="isBookingsActive()">حجوزاتي</span>

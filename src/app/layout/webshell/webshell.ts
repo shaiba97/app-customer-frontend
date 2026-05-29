@@ -114,6 +114,14 @@ export class WebShell implements OnInit, OnDestroy {
     return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
   }
 
+  goToBookings(): void {
+    if (this.authStore.isLoggedIn()) {
+      this.router.navigate(['/bookings']);
+    } else {
+      this.router.navigate(['/profile']);
+    }
+  }
+
   goToNotifs(): void {
     if (this.authStore.isLoggedIn()) {
       this.router.navigate(['/notifications']);
