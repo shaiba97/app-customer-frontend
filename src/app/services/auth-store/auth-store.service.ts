@@ -104,7 +104,7 @@ export class AuthStoreService {
 
   login(data: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/users/post-login`, {
-      phone: data.phone || data.email || '',
+      phone: data.phone,
       email: data.email,
       password: data.password,
     });

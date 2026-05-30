@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LucideArrowRight, LucideLock, LucideUser, LucideUserPlus, LucidePhone } from '@lucide/angular';
 import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -40,27 +41,26 @@ export class Register {
     const isEmail = id.includes('@');
     const phone = isEmail ? undefined : id;
     const email = isEmail ? id : undefined;
-    this.authStore.register({ name: n, phone, email, password: pw }).subscribe({
-      next: () => {
-        this.authStore.login({ phone, email, password: pw }).subscribe({
-          next: (res: any) => {
-            const token = res?.token;
-            const user = res?.user;
-            if (token && user) {
-              this.authStore.setSession(token, user);
-            }
-            this.isLoading.set(false);
-            this.router.navigate(['/m/home']);
-          },
-          error: () => {
-            this.isLoading.set(false);
-            this.router.navigate(['/m/login']);
-          },
-        });
+    this.authStore.register({ name: n, phone, email, password: pw }).pipe(
+      switchMap(() => this.authStore.login({ phone, email, password: pw })),
+    ).subscribe({
+      next: (res: any) => {
+        const token = res?.token;
+        const user = res?.user;
+        if (token && user) {
+          this.authStore.setSession(token, user);
+        }
+        this.isLoading.set(false);
+        this.router.navigate(['/m/home']);
       },
       error: (err: any) => {
-        this.error.set(err?.error?.message ?? 'فشل إنشاء الحساب');
         this.isLoading.set(false);
+        const msg = err?.error?.message;
+        if (msg) {
+          this.error.set(msg);
+        } else {
+          this.router.navigate(['/m/login']);
+        }
       },
     });
   }

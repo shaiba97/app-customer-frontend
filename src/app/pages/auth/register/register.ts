@@ -2,7 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LucideBus, LucideLock, LucideUser, LucideUserPlus, LucidePhone } from '@lucide/angular';
-import { AuthStoreService, LoginResponse, CreateUserResponse } from '../../../services/auth-store/auth-store.service';
+import { AuthStoreService, LoginResponse } from '../../../services/auth-store/auth-store.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -40,27 +41,26 @@ export class Register {
     const isEmail = id.includes('@');
     const phone = isEmail ? undefined : id;
     const email = isEmail ? id : undefined;
-    this.authStore.register({ name: n, phone, email, password: pw }).subscribe({
-      next: () => {
-        this.authStore.login({ phone, email, password: pw }).subscribe({
-          next: (res: LoginResponse) => {
-            const token = res.token;
-            const user = res.user;
-            if (token && user) {
-              this.authStore.setSession(token, user);
-            }
-            this.isLoading.set(false);
-            this.router.navigate(['/home']);
-          },
-          error: () => {
-            this.isLoading.set(false);
-            this.router.navigate(['/login']);
-          },
-        });
+    this.authStore.register({ name: n, phone, email, password: pw }).pipe(
+      switchMap(() => this.authStore.login({ phone, email, password: pw })),
+    ).subscribe({
+      next: (res: LoginResponse) => {
+        const token = res.token;
+        const user = res.user;
+        if (token && user) {
+          this.authStore.setSession(token, user);
+        }
+        this.isLoading.set(false);
+        this.router.navigate(['/home']);
       },
       error: (err: any) => {
-        this.error.set(err?.error?.message ?? 'فشل إنشاء الحساب');
         this.isLoading.set(false);
+        const msg = err?.error?.message;
+        if (msg) {
+          this.error.set(msg);
+        } else {
+          this.router.navigate(['/login']);
+        }
       },
     });
   }
