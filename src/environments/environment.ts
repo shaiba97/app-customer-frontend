@@ -5,4 +5,5 @@ export const environment = {
     customer: '/api-customer',
   },
   wsUrl: 'http://localhost:3002',
+  fileUrl: 'http://localhost:3002',
 };

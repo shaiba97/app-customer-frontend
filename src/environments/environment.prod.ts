@@ -5,4 +5,5 @@ export const environment = {
     customer: 'https://rihla-backend-rbh7.onrender.com/api-customer',
   },
   wsUrl: 'https://rihla-backend-rbh7.onrender.com',
+  fileUrl: 'https://rihla-backend-rbh7.onrender.com',
 };

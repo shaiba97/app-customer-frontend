@@ -8,6 +8,7 @@ import { BookingService } from '../../../services/booking/booking.service';
 import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
 import { WsService } from '../../../services/ws.service';
 import { NgClass, DatePipe } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-bookings',
@@ -83,13 +84,13 @@ export class Bookings implements OnInit, OnDestroy {
   downloadTicket(e: Event, url: string): void {
     e.stopPropagation();
     if (!url) return;
-    window.location.href = `http://${window.location.hostname}:3002${url}`;
+    window.open(environment.fileUrl + url, '_blank');
   }
 
   viewTicket(e: Event, url: string): void {
     e.stopPropagation();
     if (!url) return;
-    this.activeTicketUrl.set(`http://${window.location.hostname}:3002${url}`);
+    this.activeTicketUrl.set(environment.fileUrl + url);
     this.showTicketModal.set(true);
   }
 
