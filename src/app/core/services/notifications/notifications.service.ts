@@ -35,7 +35,7 @@ export class NotificationsService {
   private api = environment.apiUrl.customer;
   private wsUrl = environment.wsUrl;
 
-  private   socket: Socket | null = null;
+  private socket: Socket | null = null;
   get connected(): boolean { return this.socket?.connected ?? false; }
   private readonly SETTINGS_KEY = 'rihla_notif_settings';
   private audioUnlocked = false;
@@ -45,6 +45,13 @@ export class NotificationsService {
   unreadCount = computed(() => this.notifications().filter(n => !n.isRead).length);
 
   private audioCtx: AudioContext | null = null;
+
+  constructor() {
+    // Expose for console debugging
+    if (typeof window !== 'undefined') {
+      (window as any).__notifSvc = this;
+    }
+  }
 
   private getAudioCtx(): AudioContext {
     if (!this.audioCtx) {
