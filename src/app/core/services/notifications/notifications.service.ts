@@ -205,9 +205,10 @@ export class NotificationsService {
       this.showBrowserNotification(data);
     });
 
-    // Unlock audio on first user gesture
+    // Unlock audio & request notification permission on first user gesture
     const unlock = () => {
       this.unlockAudio();
+      this.requestBrowserPermission();
       document.removeEventListener('click', unlock, true);
       document.removeEventListener('touchstart', unlock, true);
     };

@@ -49,6 +49,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
   togglePanel(): void {
     this.isPanelOpen.update(v => !v);
     if (this.showSettings()) this.showSettings.set(false);
+    this.notifSvc.requestBrowserPermission();
   }
 
   toggleSettings(): void {
