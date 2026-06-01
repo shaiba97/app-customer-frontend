@@ -42,7 +42,7 @@ export class Register {
     const phone = isEmail ? undefined : id;
     const email = isEmail ? id : undefined;
     this.authStore.register({ name: n, phone, email, password: pw }).pipe(
-      switchMap(() => this.authStore.login({ phone, email, password: pw })),
+      switchMap(() => this.authStore.login({ phone, email: id, password: pw })),
     ).subscribe({
       next: (res: LoginResponse) => {
         const token = res.token;
