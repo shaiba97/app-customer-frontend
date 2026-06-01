@@ -14,6 +14,7 @@ const env = `export const environment = {
     customer: '${base}/api-customer',
   },
   wsUrl: '${base}',
+  fileUrl: '${base}',
 };
 `;
 

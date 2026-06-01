@@ -4,13 +4,13 @@
 
 :root {
   --primary:        #0D9488;
+  --text-primary:   #134E4A;
   --primary-hover:  #0F766E;
   --primary-light:  #CCFBF1;
   --primary-muted:  #5EEAD4;
   --bg-base:        #F0FDFA;
   --bg-card:        #FFFFFF;
   --border:         #99F6E4;
-  --text-primary:   #134E4A;
   --text-secondary: #0F766E;
   --text-muted:     #5EEAD4;
   --shadow:         rgba(13, 148, 136, 0.1);

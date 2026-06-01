@@ -74,9 +74,11 @@ export class TicketPreviewComponent {
   visible = input<boolean>(false);
   closed = output<void>();
 
+  private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
+
   pdfUrl(): string {
     const url = this.ticketUrl();
-    return url ? environment.fileUrl + url : '';
+    return url ? this.fileUrl + url : '';
   }
 
   close(): void {

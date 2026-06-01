@@ -21,6 +21,8 @@ export class Bookings implements OnInit, OnDestroy {
   private ws = inject(WsService);
   authStore = inject(AuthStoreService);
 
+  private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
+
   bookings = signal<any[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string>('');
@@ -82,7 +84,7 @@ export class Bookings implements OnInit, OnDestroy {
   downloadTicket(e: Event, url: string): void {
     e.stopPropagation();
     if (!url) return;
-    window.open(environment.fileUrl + url, '_blank');
+    window.open(this.fileUrl + url, '_blank');
   }
 
   showTicketView(e: Event, booking: any): void {
