@@ -5,20 +5,25 @@ import { NgClass, DatePipe } from '@angular/common';
 import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { TripSearchService } from '../../services/trip-search/trip-search.service';
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
+import { CitiesService } from '../../services/cities/cities.service';
+import { CitySelectComponent } from '../../shared/city-select/city-select';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent],
+  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private tripSvc = inject(TripSearchService);
+  private citiesSvc = inject(CitiesService);
   private hostElement = inject(ElementRef<HTMLElement>);
   private destroyRef = inject(DestroyRef);
+
+
 
   from = signal<string>('');
   to = signal<string>('');
@@ -78,7 +83,9 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.tripSvc.getAllCities().subscribe({ next: r => this.cities.set([...new Set(r.data ?? [])]), error: () => {} });
+    this.citiesSvc.getAllCities().subscribe({
+      next: data => this.cities.set(data),
+    });
     this.isLoadingTrips.set(true);
     this.tripSvc.getAllTrips().subscribe({
       next: r => { this.featuredTrips.set(r.data ?? []); this.isLoadingTrips.set(false); },

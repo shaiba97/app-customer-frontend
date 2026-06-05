@@ -56,8 +56,7 @@
           <svg lucideMapPin class="w-5 h-5 flex-shrink-0 text-[var(--primary)]"></svg>
           <div class="flex flex-col flex-1 min-w-0">
             <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">من</span>
-            <input type="text" [ngModel]="from()" (ngModelChange)="from.set($event)" placeholder="مدينة المغادرة" list="home-from-cities" class="bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-muted)] placeholder:font-normal w-full">
-            <datalist id="home-from-cities">@for (c of cities(); track c) {<option [value]="c"></option>}</datalist>
+            <app-city-select #homeFromCitySelect [placeholder]="'مدينة المغادرة'" [allCities]="cities()" [(value)]="from"></app-city-select>
           </div>
         </div>
       </div>
@@ -80,8 +79,7 @@
           <svg lucideBus class="w-5 h-5 flex-shrink-0 text-[var(--primary)]"></svg>
           <div class="flex flex-col flex-1 min-w-0">
             <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">إلى</span>
-            <input type="text" [ngModel]="to()" (ngModelChange)="to.set($event)" placeholder="مدينة الوصول" list="home-to-cities" class="bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-muted)] placeholder:font-normal w-full">
-            <datalist id="home-to-cities">@for (c of cities(); track c) {<option [value]="c"></option>}</datalist>
+            <app-city-select #homeToCitySelect [placeholder]="'مدينة الوصول'" [allCities]="cities()" [(value)]="to"></app-city-select>
           </div>
         </div>
       </div>
@@ -155,8 +153,7 @@
               <svg lucideMapPin class="w-5 h-5 flex-shrink-0 text-[var(--primary)]"></svg>
               <div class="flex flex-col flex-1">
                 <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">من</span>
-                <input type="text" [ngModel]="from()" (ngModelChange)="from.set($event)" placeholder="مدينة المغادرة" list="modal-from-cities" class="bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-muted)] placeholder:font-normal w-full">
-                <datalist id="modal-from-cities">@for (c of cities(); track c) {<option [value]="c"></option>}</datalist>
+                <app-city-select #modalFromCitySelect [placeholder]="'مدينة المغادرة'" [allCities]="cities()" [(value)]="from"></app-city-select>
               </div>
             </div>
           </div>
@@ -175,8 +172,7 @@
               <svg lucideBus class="w-5 h-5 flex-shrink-0 text-[var(--primary)]"></svg>
               <div class="flex flex-col flex-1">
                 <span class="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">إلى</span>
-                <input type="text" [ngModel]="to()" (ngModelChange)="to.set($event)" placeholder="مدينة الوصول" list="modal-to-cities" class="bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-muted)] placeholder:font-normal w-full">
-                <datalist id="modal-to-cities">@for (c of cities(); track c) {<option [value]="c"></option>}</datalist>
+                <app-city-select #modalToCitySelect [placeholder]="'مدينة الوصول'" [allCities]="cities()" [(value)]="to"></app-city-select>
               </div>
             </div>
           </div>
