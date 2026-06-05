@@ -1,13 +1,13 @@
 import { Component, computed } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { useIsMobile } from '../../shared/is-mobile';
-import { Login as MobileLogin } from '../mobile/login/login';
-import { Login as DesktopLogin } from '../auth/login/login';
+import { useIsMobile } from '../../../shared/is-mobile';
+import { Login as MobileLogin } from '../../mobile/login/login';
+import { Login as DesktopLogin } from '../../auth/login/login';
 
 @Component({
   selector: 'app-responsive-login',
   imports: [NgComponentOutlet],
-  template: `<ng-component [ngComponentOutlet]="cmp()" />`,
+  templateUrl: 'login.html',
 })
 export class ResponsiveLogin {
   isMobile = useIsMobile();
