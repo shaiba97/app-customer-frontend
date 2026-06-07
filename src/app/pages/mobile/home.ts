@@ -7,12 +7,13 @@ import { TripSearchService } from '../../services/trip-search/trip-search.servic
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 import { CitiesService } from '../../services/cities/cities.service';
 import { CitySelectComponent } from '../../shared/city-select/city-select';
+import { ArabicNumberPipe } from "../../pipes/arabic-number/arabic-number-pipe";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
+  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent, ArabicNumberPipe],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit {

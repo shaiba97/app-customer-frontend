@@ -117,7 +117,24 @@
   <div class="px-4 pb-4 flex flex-col gap-4 min-h-0 transition-[padding] duration-150 ease-out"
     [style.padding-top.px]="20 + 100 * Math.max(0, 1 - searchCardProgress() * 2)">
     <div class="flex items-center justify-between">
-      <h2 class="text-base font-bold text-[var(--text-primary)]">رحلات مميزة</h2>
+      <h2 class="text-base font-bold text-[var(--text-primary)]"> 
+        كل الرحلات  
+      </h2>
+      <h2 class="text-xl font-bold
+                 text-[var(--text-primary)]">
+       <span>
+         كل الرحلات
+       </span>
+       <span class="text-sm
+                  text-[var(--text-secondary)]">
+        @if (featuredTrips().length > 0) {
+          <span class="text-sm
+                    text-[var(--text-secondary)]">
+            {{ featuredTrips().length | arabicNumber }}
+          </span>
+        }
+      </span>
+      </h2>
     </div>
     <div class="flex flex-col gap-3">
       @if (featuredTrips().length === 0) {
@@ -135,8 +152,8 @@
 
   <!-- SEARCH MODAL -->
   @if (showSearchModal()) {
-    <div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" (click)="closeSearchModal()"></div>
-    <div class="fixed top-0 right-0 left-0 z-50 bg-[var(--bg-card)] rounded-b-3xl shadow-[0_8px_40px_rgba(0,0,0,0.25)] border-b border-[var(--border)] animate-in slide-in-from-top-2 duration-250">
+    <div class="sticky inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" (click)="closeSearchModal()"></div>
+    <div class="sticky top-0 right-0 left-0 z-50 bg-[var(--bg-card)] rounded-b-3xl shadow-[0_8px_40px_rgba(0,0,0,0.25)] border-b border-[var(--border)] animate-in slide-in-from-top-2 duration-250">
       <div class="flex items-center justify-between px-4 py-4 border-b border-[var(--border)]">
         <span class="text-[16px] font-bold text-[var(--text-primary)]">البحث عن رحلة</span>
         <button (click)="closeSearchModal()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--bg-base)] text-[var(--text-muted)] active:scale-90 transition-all duration-150">
