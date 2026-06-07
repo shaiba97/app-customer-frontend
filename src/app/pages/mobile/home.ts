@@ -7,13 +7,12 @@ import { TripSearchService } from '../../services/trip-search/trip-search.servic
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 import { CitiesService } from '../../services/cities/cities.service';
 import { CitySelectComponent } from '../../shared/city-select/city-select';
-import { ArabicNumberPipe } from "../../pipes/arabic-number/arabic-number-pipe";
 
 @Component({
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent, ArabicNumberPipe],
+  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit {
@@ -41,7 +40,7 @@ export class Home implements OnInit, AfterViewInit {
 
   protected readonly Math = Math;
 
-  scrollProgress = computed(() => Math.min(1, this.scrollY() / 200));
+  scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
   toggleBarOpacity = computed(() => this.scrollProgress());
   heroOpacity = computed(() => 1 - this.scrollProgress());
   heroHeight = computed(() => Math.max(0, 280 * (1 - this.scrollProgress())));

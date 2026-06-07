@@ -120,21 +120,6 @@
       <h2 class="text-base font-bold text-[var(--text-primary)]"> 
         كل الرحلات  
       </h2>
-      <h2 class="text-xl font-bold
-                 text-[var(--text-primary)]">
-       <span>
-         كل الرحلات
-       </span>
-       <span class="text-sm
-                  text-[var(--text-secondary)]">
-        @if (featuredTrips().length > 0) {
-          <span class="text-sm
-                    text-[var(--text-secondary)]">
-            {{ featuredTrips().length | arabicNumber }}
-          </span>
-        }
-      </span>
-      </h2>
     </div>
     <div class="flex flex-col gap-3">
       @if (featuredTrips().length === 0) {
