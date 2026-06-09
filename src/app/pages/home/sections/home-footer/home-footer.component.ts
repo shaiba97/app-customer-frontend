@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideGlobe, LucideMail, LucideCamera } from '@lucide/angular';
-
 @Component({
   selector: 'app-home-footer',
-  imports: [RouterLink, LucideGlobe, LucideMail, LucideCamera],
+  imports: [RouterLink],
   templateUrl: './home-footer.component.html',
 })
 export class HomeFooterComponent {
