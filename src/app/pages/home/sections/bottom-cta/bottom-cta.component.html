@@ -6,9 +6,9 @@
     <p class="text-base text-[var(--primary)] max-w-md leading-relaxed">
       انضم إلى آلاف المسافرين السعداء وابدأ احجز رحلتك اليوم بضغطة زر واحدة.
     </p>
-    <a routerLink="/search-results"
-       class="mt-2 px-10 py-3.5 bg-[var(--primary)] text-white font-bold text-base rounded-xl hover:bg-[var(--primary-hover)] transition-all duration-150 active:scale-95 shadow-[0_4px_12px_var(--shadow)]">
+    <button (click)="scrollToSearch()"
+       class="mt-2 px-10 py-3.5 bg-[var(--primary)] text-white font-bold text-base rounded-xl hover:bg-[var(--primary-hover)] transition-all duration-150 active:scale-95 shadow-[0_4px_12px_var(--shadow)] cursor-pointer">
       احجز الآن
-    </a>
+    </button>
   </div>
 </section>

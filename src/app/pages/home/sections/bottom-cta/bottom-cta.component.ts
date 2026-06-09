@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-bottom-cta',
-  imports: [RouterLink],
   templateUrl: './bottom-cta.component.html',
 })
-export class BottomCtaComponent {}
+export class BottomCtaComponent {
+  scrollToSearch(): void {
+    const el = document.getElementById('search-hero');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
