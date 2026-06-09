@@ -100,5 +100,9 @@ export class SearchResults implements OnInit {
     this.router.navigate(['../seat', trip.id], { relativeTo: this.route, state: { trip } });
   }
   dismissAuthError(): void { this.authError.set(false); }
-  goToLogin(): void { this.authError.set(false); this.router.navigate(['/m/login']); }
+  goToLogin(): void {
+    this.authError.set(false);
+    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+    this.router.navigate([`${prefix}/login`]);
+  }
 }

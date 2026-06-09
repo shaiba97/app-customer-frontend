@@ -66,11 +66,13 @@ export class Bookings implements OnInit, OnDestroy {
   }
 
   goToLogin(): void {
-    this.router.navigate(['/m/login']);
+    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+    this.router.navigate([`${prefix}/login`]);
   }
 
   goHome(): void {
-    this.router.navigate(['/m/home']);
+    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+    this.router.navigate([`${prefix}/home`]);
   }
 
   statusClass(status: string): Record<string, boolean> {

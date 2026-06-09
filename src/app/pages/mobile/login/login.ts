@@ -55,4 +55,9 @@ export class Login {
   goBack(): void {
     history.back();
   }
+
+  goToRegister(): void {
+    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+    this.router.navigate([`${prefix}/register`]);
+  }
 }

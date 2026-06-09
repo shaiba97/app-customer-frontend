@@ -51,7 +51,8 @@ export class Register {
           this.authStore.setSession(token, user);
         }
         this.isLoading.set(false);
-        this.router.navigate(['/m/home']);
+        const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+        this.router.navigate([`${prefix}/home`]);
       },
       error: (err: any) => {
         this.isLoading.set(false);
@@ -59,7 +60,8 @@ export class Register {
         if (msg) {
           this.error.set(msg);
         } else {
-          this.router.navigate(['/m/login']);
+          const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+          this.router.navigate([`${prefix}/login`]);
         }
       },
     });
@@ -67,5 +69,10 @@ export class Register {
 
   goBack(): void {
     history.back();
+  }
+
+  goToLogin(): void {
+    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
+    this.router.navigate([`${prefix}/login`]);
   }
 }

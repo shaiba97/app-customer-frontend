@@ -1,0 +1,46 @@
+<footer class="w-full bg-[var(--bg-card)] border-t border-[var(--border)] px-16 pt-12 pb-8" dir="rtl">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-end gap-16 mb-10">
+      <div class="flex flex-col items-end gap-4 max-w-xs">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-[var(--primary-light)] flex items-center justify-center">
+            <span class="text-sm font-extrabold text-[var(--primary)]">ر</span>
+          </div>
+          <span class="text-xl font-extrabold text-[var(--primary)]">رحلة</span>
+        </div>
+        <p class="text-sm text-[var(--text-muted)] text-right leading-relaxed">
+          المنصة الرائدة في السودان لحجز تذاكر الحافلات والرحلات البرية بكل سهولة وأمان.
+        </p>
+        <div class="flex items-center gap-3 mt-1">
+          @for (icon of ['facebook','mail','instagram']; track icon) {
+            <button class="w-9 h-9 rounded-lg bg-[var(--primary-light)] flex items-center justify-center hover:bg-[var(--primary-muted)] transition-all">
+              @switch (icon) {
+                @case ('facebook') {
+                  <svg lucideGlobe class="w-4 h-4 text-[var(--primary)]"></svg>
+                }
+                @case ('mail') {
+                  <svg lucideMail class="w-4 h-4 text-[var(--primary)]"></svg>
+                }
+                @case ('instagram') {
+                  <svg lucideCamera class="w-4 h-4 text-[var(--primary)]"></svg>
+                }
+              }
+            </button>
+          }
+        </div>
+      </div>
+      <div class="flex flex-col items-end gap-3">
+        <h4 class="text-sm font-bold text-[var(--text-primary)] mb-1">الدعم</h4>
+        @for (link of supportLinks; track link.path) {
+          <a [routerLink]="link.path" class="text-sm text-[var(--primary)] hover:underline transition-all">
+            {{ link.label }}
+          </a>
+        }
+      </div>
+    </div>
+    <div class="h-px bg-[var(--border)] mb-6"></div>
+    <p class="text-xs text-[var(--text-muted)] text-center">
+      © {{ currentYear }} رحلة (Rihla). جميع الحقوق محفوظة.
+    </p>
+  </div>
+</footer>
