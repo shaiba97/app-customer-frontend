@@ -34,7 +34,10 @@ export class MobileTripCardComponent implements OnInit {
       error: () => {},
     });
     this.bookingSvc.getBookedSeats(this.trip().id).subscribe({
-      next: (res: any) => this.bookedSeats.set(Array.isArray(res) ? res : []),
+      next: (res: any) => {
+        const seats = res?.data ?? res;
+        this.bookedSeats.set(Array.isArray(seats) ? seats : []);
+      },
       error: () => this.bookedSeats.set([]),
     });
   }
