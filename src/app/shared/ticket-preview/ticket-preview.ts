@@ -1,4 +1,5 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, inject } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideX } from '@lucide/angular';
 import { environment } from '../../../environments/environment';
 
@@ -74,13 +75,14 @@ export class TicketPreviewComponent {
   visible = input<boolean>(false);
   closed = output<void>();
 
+  private sanitizer = inject(DomSanitizer);
   private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
 
-  pdfUrl(): string {
+  pdfUrl(): SafeResourceUrl {
     const url = this.ticketUrl();
     if (!url) return '';
-    if (url.startsWith('data:')) return url;
-    return this.fileUrl + url;
+    const fullUrl = url.startsWith('data:') ? url : this.fileUrl + url;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
 
   close(): void {
