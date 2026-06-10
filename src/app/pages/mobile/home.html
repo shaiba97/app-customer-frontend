@@ -1,6 +1,6 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-  <!-- ZONE C: COMPACT TOGGLE BAR (always sticky, always 52px) -->
+  <!-- ZONE C: COMPACT TOGGLE BAR (sticky always visible) -->
   <div class="sticky top-0 z-40 bg-[var(--bg-card)] border-b border-[var(--border)] h-[52px]"
     [style.box-shadow]="scrollProgress() > 0.05 ? '0 2px 16px rgba(13,148,136,0.15)' : 'none'">
     <div class="flex items-center justify-between px-4 h-[52px]">
@@ -18,10 +18,10 @@
     </div>
   </div>
 
-  <!-- ZONE A: HERO HEADER (absolute, out of flow, fades via CSS transition) -->
-  <div class="absolute top-[52px] left-0 right-0 h-[280px] overflow-hidden pointer-events-none"
+  <!-- ZONE A: HERO HEADER (in normal flow, fixed 280px height, no layout thrash) -->
+  <div class="relative h-[280px] overflow-hidden"
     [style.opacity]="heroOpacity()"
-    style="z-index: 5; transition: opacity 0.3s ease;">
+    style="transition: opacity 0.3s ease;">
     <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--primary-hover)] to-[var(--primary)]"></div>
     <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:24px 24px"></div>
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-2">
@@ -33,8 +33,8 @@
     </div>
   </div>
 
-  <!-- ZONE B: SEARCH CARD (sticky below compact bar, always visible) -->
-  <div class="sticky top-[52px] z-30 px-4 bg-[var(--bg-base)] pt-4 pb-3">
+  <!-- ZONE B: SEARCH CARD (sticky — naturally sits below hero, sticks at top:52px on scroll) -->
+  <div class="sticky top-[52px] z-30 bg-[var(--bg-base)] px-4 pt-4 pb-3">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
@@ -102,8 +102,8 @@
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </div>
 
-  <!-- ZONE D: SCROLL CONTENT (padding-top for hero space, pb-24 for bottom nav) -->
-  <div class="px-4 pb-24 flex flex-col gap-4" style="padding-top: 280px;">
+  <!-- ZONE D: SCROLL CONTENT (pb-24 for bottom nav clearance) -->
+  <div class="px-4 pb-24 flex flex-col gap-4">
     <div class="flex items-center justify-between">
       <h2 class="text-base font-bold text-[var(--text-primary)]"> 
         كل الرحلات  
