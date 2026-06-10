@@ -30,8 +30,7 @@ export class Profile {
   deleteError = signal<string>('');
 
   login(): void {
-    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
-    this.router.navigate([`${prefix}/login`]);
+    this.router.navigate(['/login']);
   }
 
   logout(): void {
@@ -98,8 +97,7 @@ export class Profile {
         this.authStore.logout();
         this.isDeleting.set(false);
         this.showConfirmDelete.set(false);
-        const prefix = this.router.url.startsWith('/m') ? '/m' : '';
-        this.router.navigate([`${prefix}/home`]);
+        this.router.navigate(['/home']);
       },
       error: (err: any) => {
         this.isDeleting.set(false);

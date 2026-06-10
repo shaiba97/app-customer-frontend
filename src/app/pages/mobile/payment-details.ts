@@ -168,11 +168,10 @@ export class PaymentDetails implements OnInit {
   }
 
   goToLogin(): void {
-    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
-    this.router.navigate([prefix + '/login']);
+    this.router.navigate(['/login']);
   }
   goHome(): void {
-    this.router.navigate(['/m']);
+    this.router.navigate(['/home']);
   }
 
   goBack(): void {

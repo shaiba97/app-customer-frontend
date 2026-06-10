@@ -121,7 +121,7 @@ export class Home implements OnInit, AfterViewInit {
   onSearch(): void {
     if (!this.from() || !this.to() || !this.date()) { this.error.set('يرجى تعبئة جميع الحقول'); return; }
     this.error.set('');
-    this.router.navigate(['../results'], { relativeTo: this.route, queryParams: { from: this.from(), to: this.to(), date: this.date() } });
+    this.router.navigate(['/search-results'], { queryParams: { from: this.from(), to: this.to(), date: this.date() } });
   }
 
   openSearchModal(): void { this.showSearchModal.set(true); }

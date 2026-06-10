@@ -109,7 +109,7 @@ export class WebShell implements OnInit, OnDestroy {
   });
   isBlogActive = computed(() => {
     const url = this.currentUrl();
-    return url.startsWith('/blogs') || url.startsWith('/m/blogs');
+    return url.startsWith('/blogs');
   });
 
   unreadCount = this.notifSvc.unreadCount;

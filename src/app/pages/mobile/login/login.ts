@@ -57,7 +57,6 @@ export class Login {
   }
 
   goToRegister(): void {
-    const prefix = this.router.url.startsWith('/m') ? '/m' : '';
-    this.router.navigate([`${prefix}/register`]);
+    this.router.navigate(['/register']);
   }
 }
