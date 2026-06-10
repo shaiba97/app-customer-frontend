@@ -1,4 +1,4 @@
-import { Component, input, output, inject } from '@angular/core';
+import { Component, input, output, inject, signal, effect, DestroyRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideX } from '@lucide/angular';
 import { environment } from '../../../environments/environment';
@@ -15,20 +15,16 @@ import { environment } from '../../../environments/environment';
         aria-modal="true"
         aria-label="عرض التذكرة"
       >
-        <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="close()"></div>
 
-        <!-- Sheet -->
         <div
           class="relative w-full sm:max-w-lg max-h-[90vh] bg-[var(--bg-card)] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-slide-up"
           (click)="$event.stopPropagation()"
         >
-          <!-- Handle bar (mobile) -->
           <div class="flex sm:hidden items-center justify-center pt-3 pb-1">
             <div class="w-10 h-1 rounded-full bg-[var(--border)]"></div>
           </div>
 
-          <!-- Header -->
           <div class="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
             <h2 class="text-base font-bold text-[var(--text-primary)]">عرض التذكرة</h2>
             <button
@@ -40,11 +36,10 @@ import { environment } from '../../../environments/environment';
             </button>
           </div>
 
-          <!-- PDF viewer -->
           <div class="flex-1 overflow-auto bg-[var(--bg-base)] min-h-[50vh]">
             @if (ticketUrl()) {
               <embed
-                [src]="pdfUrl()"
+                [src]="safeUrl()"
                 type="application/pdf"
                 class="w-full h-[70vh] sm:h-[65vh]"
               />
@@ -76,13 +71,48 @@ export class TicketPreviewComponent {
   closed = output<void>();
 
   private sanitizer = inject(DomSanitizer);
+  private destroyRef = inject(DestroyRef);
   private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
+  private blobUrl = '';
 
-  pdfUrl(): SafeResourceUrl {
-    const url = this.ticketUrl();
-    if (!url) return '';
-    const fullUrl = url.startsWith('data:') ? url : this.fileUrl + url;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
+  safeUrl = signal<SafeResourceUrl>('');
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.revokeBlobUrl();
+    });
+
+    effect(() => {
+      const url = this.ticketUrl();
+      this.revokeBlobUrl();
+      if (!url) {
+        this.safeUrl.set('');
+        return;
+      }
+      if (url.startsWith('data:')) {
+        this.resolveDataUrl(url);
+      } else {
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.fileUrl + url));
+      }
+    });
+  }
+
+  private async resolveDataUrl(dataUrl: string) {
+    try {
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      this.blobUrl = URL.createObjectURL(blob);
+      this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl));
+    } catch {
+      this.safeUrl.set('');
+    }
+  }
+
+  private revokeBlobUrl() {
+    if (this.blobUrl) {
+      URL.revokeObjectURL(this.blobUrl);
+      this.blobUrl = '';
+    }
   }
 
   close(): void {
