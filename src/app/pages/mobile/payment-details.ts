@@ -2,7 +2,7 @@ import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn } from '@lucide/angular';
+import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle } from '@lucide/angular';
 import { BookingService } from '../../services/booking/booking.service';
 import { SessionService } from '../../services/session/session.service';
 import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
@@ -11,7 +11,7 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-payment-details',
-  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn],
+  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle],
   templateUrl: './payment-details.html',
 })
 export class PaymentDetails implements OnInit {
