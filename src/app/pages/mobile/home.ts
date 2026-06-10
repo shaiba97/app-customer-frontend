@@ -38,14 +38,8 @@ export class Home implements OnInit, AfterViewInit {
   scrollY = signal<number>(0);
   showSearchModal = signal<boolean>(false);
 
-  protected readonly Math = Math;
-
   scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
-  toggleBarOpacity = computed(() => this.scrollProgress());
-  heroOpacity = computed(() => 1 - this.scrollProgress());
-  heroHeight = computed(() => Math.max(0, 280 * (1 - this.scrollProgress())));
-  heroOverlap = computed(() => this.heroHeight() * 0.25);
-  searchCardProgress = computed(() => this.scrollProgress());
+  heroOpacity = computed(() => Math.max(0, 1 - this.scrollProgress() * 2));
   swapped = signal<boolean>(false);
 
   routeLabel = computed(() => {
