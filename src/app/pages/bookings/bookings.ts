@@ -92,7 +92,14 @@ export class BookingsComponent implements OnInit, OnDestroy {
   downloadTicket(e: Event, url: string): void {
     e.stopPropagation();
     if (!url) return;
-    window.open(this.fileUrl + url, '_blank');
+    if (url.startsWith('data:')) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ticket.pdf';
+      a.click();
+    } else {
+      window.open(this.fileUrl + url, '_blank');
+    }
   }
 
   showTicketView(e: Event, booking: any): void {

@@ -78,7 +78,9 @@ export class TicketPreviewComponent {
 
   pdfUrl(): string {
     const url = this.ticketUrl();
-    return url ? this.fileUrl + url : '';
+    if (!url) return '';
+    if (url.startsWith('data:')) return url;
+    return this.fileUrl + url;
   }
 
   close(): void {
