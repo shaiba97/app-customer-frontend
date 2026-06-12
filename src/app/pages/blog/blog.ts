@@ -41,7 +41,11 @@ import { LucideCalendar, LucideArrowRight, LucideArrowLeft, LucideLoaderCircle, 
         <div class="grid gap-4 md:grid-cols-2">
           @for (post of posts(); track post.id) {
             <a [routerLink]="['/blogs/blog', post.slug]"
-              class="block bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-5 hover:shadow-md hover:border-[var(--primary)]/30 transition-all no-underline group">
+              class="block bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] hover:shadow-md hover:border-[var(--primary)]/30 transition-all no-underline group overflow-hidden">
+              @if (post.coverImage) {
+                <img [src]="post.coverImage" alt="" class="w-full h-40 object-cover">
+              }
+              <div class="p-5">
               <div class="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-3">
                 <svg lucideCalendar class="w-3.5 h-3.5"></svg>
                 <span>{{ post.createdAt | date:'d MMM yyyy' }}</span>
@@ -56,6 +60,7 @@ import { LucideCalendar, LucideArrowRight, LucideArrowLeft, LucideLoaderCircle, 
                 <span>اقرأ المزيد</span>
                 <svg lucideArrowLeft class="w-3.5 h-3.5"></svg>
               </div>
+            </div>
             </a>
           }
         </div>

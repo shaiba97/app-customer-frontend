@@ -34,6 +34,9 @@ import { LucideCalendar, LucideArrowRight, LucideLoaderCircle, LucideUser, Lucid
             <svg lucideUser class="w-3.5 h-3.5"></svg>
             <span>{{ post()!.author.name }}</span>
           </div>
+          @if (post()!.coverImage) {
+            <img [src]="post()!.coverImage" alt="" class="w-full h-56 object-cover rounded-xl mb-4">
+          }
           <h1 class="text-2xl font-extrabold text-[var(--text-primary)] mb-4">{{ post()!.title }}</h1>
           @if (post()!.excerpt) {
             <p class="text-[var(--text-secondary)] mb-6">{{ post()!.excerpt }}</p>
