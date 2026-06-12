@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BlogService, BlogPost } from '../../core/services/blog/blog.service';
 import { LucideCalendar, LucideArrowRight, LucideLoaderCircle, LucideUser, LucideFileText } from '@lucide/angular';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-blog-detail',
@@ -35,7 +36,7 @@ import { LucideCalendar, LucideArrowRight, LucideLoaderCircle, LucideUser, Lucid
             <span>{{ post()!.author.name }}</span>
           </div>
           @if (post()!.coverImage) {
-            <img [src]="post()!.coverImage" alt="" class="w-full h-56 object-cover rounded-xl mb-4">
+            <img [src]="getFileUrl(post()!.coverImage)" alt="" class="w-full h-56 object-cover rounded-xl mb-4">
           }
           <h1 class="text-2xl font-extrabold text-[var(--text-primary)] mb-4">{{ post()!.title }}</h1>
           @if (post()!.excerpt) {
@@ -53,6 +54,11 @@ export class BlogDetailComponent implements OnInit {
   post = signal<BlogPost | null>(null);
   loading = signal(true);
   error = signal(false);
+
+  getFileUrl(path: string): string {
+    if (!path || path.startsWith('http')) return path;
+    return `${environment.fileUrl}${path}`;
+  }
 
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug');

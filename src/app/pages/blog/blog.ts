@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BlogService, BlogPost } from '../../core/services/blog/blog.service';
 import { LucideCalendar, LucideArrowRight, LucideArrowLeft, LucideLoaderCircle, LucideFileText } from '@lucide/angular';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-blog',
@@ -43,7 +44,7 @@ import { LucideCalendar, LucideArrowRight, LucideArrowLeft, LucideLoaderCircle, 
             <a [routerLink]="['/blogs/blog', post.slug]"
               class="block bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] hover:shadow-md hover:border-[var(--primary)]/30 transition-all no-underline group overflow-hidden">
               @if (post.coverImage) {
-                <img [src]="post.coverImage" alt="" class="w-full h-40 object-cover">
+                <img [src]="getFileUrl(post.coverImage)" alt="" class="w-full h-40 object-cover">
               }
               <div class="p-5">
               <div class="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-3">
@@ -73,6 +74,11 @@ export class BlogComponent implements OnInit {
   posts = signal<BlogPost[]>([]);
   loading = signal(true);
   error = signal(false);
+
+  getFileUrl(path: string): string {
+    if (!path || path.startsWith('http')) return path;
+    return `${environment.fileUrl}${path}`;
+  }
 
   ngOnInit(): void {
     this.blogSvc.getPosts().subscribe({
