@@ -1,15 +1,15 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-
+<style>@keyframes cardSlideIn { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }</style>
 
   <!-- ZONE A: WELCOME CARD (full-width, white background, half hero height = 140px) -->
-  <div class="bg-[var(--bg-card)] rounded-none px-5 shadow-sm flex items-center" style="min-height:140px">
-    <div class="flex items-center gap-4 w-full">
-      <div class="w-14 h-14 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary)] text-2xl font-bold shrink-0">&#x2665;</div>
-      <div class="flex flex-col min-w-0">
-        <span class="text-xl font-extrabold text-[var(--text-primary)] truncate">{{ welcomeGreeting() }}</span>
-        <span class="text-[14px] text-[var(--text-muted)] font-medium">احجز رحلتك بسهولة</span>
-      </div>
+  <div class="bg-[var(--bg-card)] rounded-none px-5 shadow-sm" style="min-height:140px">
+    <div class="flex flex-col justify-center h-full gap-0.5">
+      <span class="text-base font-medium text-[var(--text-muted)]">مرحباً</span>
+      @if (authStore.customerName()) {
+        <span class="text-2xl font-extrabold text-[var(--text-primary)] leading-tight">{{ authStore.customerName() }}</span>
+      }
+      <span class="text-sm text-[var(--text-muted)] mt-1">سافر بأمان وراحة في السودان</span>
     </div>
   </div>
 
@@ -21,15 +21,17 @@
     <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:24px 24px"></div>
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-2">
       <div class="flex items-center gap-3">
-        <img src="/customerLogo.png" alt="رحلة" class="w-12 h-12 object-contain brightness-0 invert">
+        <img src="/customerLogo.png" alt="رحلة" class="w-16 h-16 object-contain brightness-0 invert">
         <span class="text-3xl font-extrabold text-white">رحلة</span>
       </div>
       <p class="text-white/80 text-sm font-medium">سافر بأمان وراحة في السودان</p>
     </div>
   </div>
 
-  <!-- ZONE C: SEARCH CARD (sticky — sits below hero by default, sticks at top-0 on scroll) -->
-  <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3">
+  <!-- ZONE C: SEARCH CARD (hidden by default via @if, appears with animation when hero scrolls past) -->
+  @if (showSearchCard()) {
+    <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3"
+      style="animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
@@ -96,6 +98,7 @@
     </div>
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </div>
+  }
 
   <!-- ZONE D: SCROLL CONTENT (pb-24 for bottom nav clearance) -->
   <div class="px-4 pb-24 flex flex-col gap-4">
