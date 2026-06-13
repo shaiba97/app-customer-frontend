@@ -27,12 +27,14 @@ export class BookingsComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   error = signal<string>('');
   selectedBooking = signal<any | null>(null);
+  supportContacts = signal<any[]>([]);
   private wsCleanups: (() => void)[] = [];
 
   ngOnInit(): void {
     if (this.authStore.isLoggedIn()) {
       this.loadBookings();
     }
+    this.loadSupportContacts();
 
     this.wsCleanups.push(this.ws.on('booking:created', () => this.silentRefresh()));
     this.wsCleanups.push(this.ws.on('booking:cancelled', () => this.silentRefresh()));
@@ -61,6 +63,12 @@ export class BookingsComponent implements OnInit, OnDestroy {
     this.bookingSvc.getMyBookings('customerId', customerId).subscribe({
       next: r => { this.bookings.set(r.data ?? []); this.isLoading.set(false); },
       error: () => { this.error.set('حدث خطأ أثناء تحميل الحجوزات'); this.isLoading.set(false); },
+    });
+  }
+
+  private loadSupportContacts(): void {
+    this.bookingSvc.getSupportContacts().subscribe({
+      next: r => this.supportContacts.set(r ?? []),
     });
   }
 

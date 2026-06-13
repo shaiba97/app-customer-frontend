@@ -89,6 +89,20 @@
                     عرض
                   </button>
                 </div>
+              } @else if (['cancelled', 'failed', 'refunded'].includes(b.status?.toLowerCase())) {
+                <div class="text-[11px] text-[var(--text-muted)] flex items-center gap-2 flex-wrap">
+                  <span>للاستفسار:</span>
+                  @for (c of supportContacts(); track c.id) {
+                    @if (c.type === 'whatsapp') {
+                      <a href="https://wa.me/{{ c.value }}" target="_blank" class="text-[var(--primary)] font-bold hover:underline" rel="noopener">{{ c.label || c.value }}</a>
+                    } @else if (c.type === 'email') {
+                      <a href="mailto:{{ c.value }}" class="text-[var(--primary)] font-bold hover:underline">{{ c.label || c.value }}</a>
+                    }
+                  }
+                  @if (supportContacts().length === 0) {
+                    <span class="text-[var(--text-muted)]">لا توجد معلومات تواصل</span>
+                  }
+                </div>
               }
             </div>
           </div>
