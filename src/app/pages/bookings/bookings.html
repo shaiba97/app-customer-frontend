@@ -80,7 +80,7 @@
               </div>
               @if (b.status === 'CONFIRMED') {
                 <div class="flex items-center gap-2">
-                  <button (click)="downloadTicket($event, b.TicketPDF?.ticketUrl)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--primary)] text-white text-[11px] font-bold hover:bg-[var(--primary-hover)] active:scale-95 transition-all">
+                  <button (click)="downloadTicket($event, b)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--primary)] text-white text-[11px] font-bold hover:bg-[var(--primary-hover)] active:scale-95 transition-all">
                     <svg lucideDownload class="w-3.5 h-3.5"></svg>
                     تذكرة
                   </button>
@@ -100,6 +100,7 @@
 
 <app-ticket-preview
   [ticketUrl]="selectedBooking()?.TicketPDF?.ticketUrl"
+  [bookingId]="selectedBooking()?.id"
   [visible]="!!selectedBooking()"
   (closed)="closeTicketView()"
 />

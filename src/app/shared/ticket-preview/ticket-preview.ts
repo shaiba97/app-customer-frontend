@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal, effect, DestroyRef } from '@angular/core';
+import { Component, input, output, inject, signal, effect } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideX } from '@lucide/angular';
 import { environment } from '../../../environments/environment';
@@ -38,11 +38,15 @@ import { environment } from '../../../environments/environment';
 
           <div class="flex-1 overflow-auto bg-[var(--bg-base)] min-h-[50vh]">
             @if (ticketUrl()) {
-              <embed
-                [src]="safeUrl()"
+              <object
+                [data]="safeUrl()"
                 type="application/pdf"
                 class="w-full h-[70vh] sm:h-[65vh]"
-              />
+              >
+                <div class="flex items-center justify-center h-[50vh] text-sm text-[var(--text-muted)]">
+                  تعذر تحميل التذكرة
+                </div>
+              </object>
             } @else {
               <div class="flex items-center justify-center h-[50vh] text-sm text-[var(--text-muted)]">
                 لا توجد تذكرة متاحة
@@ -67,52 +71,33 @@ import { environment } from '../../../environments/environment';
 })
 export class TicketPreviewComponent {
   ticketUrl = input<string>('');
+  bookingId = input<string>('');
   visible = input<boolean>(false);
   closed = output<void>();
 
   private sanitizer = inject(DomSanitizer);
-  private destroyRef = inject(DestroyRef);
-  private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
-  private blobUrl = '';
+  private fileUrl = environment.fileUrl;
 
   safeUrl = signal<SafeResourceUrl>('');
 
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.revokeBlobUrl();
-    });
-
     effect(() => {
       const url = this.ticketUrl();
-      this.revokeBlobUrl();
-      if (!url) {
+      const id = this.bookingId();
+      if (!url || !id) {
         this.safeUrl.set('');
         return;
       }
       if (url.startsWith('data:')) {
-        this.resolveDataUrl(url);
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
       } else {
-        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.fileUrl + url));
+        this.safeUrl.set(
+          this.sanitizer.bypassSecurityTrustResourceUrl(
+            this.fileUrl + '/api-customer/tickets/view/' + id,
+          ),
+        );
       }
     });
-  }
-
-  private async resolveDataUrl(dataUrl: string) {
-    try {
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
-      this.blobUrl = URL.createObjectURL(blob);
-      this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl));
-    } catch {
-      this.safeUrl.set('');
-    }
-  }
-
-  private revokeBlobUrl() {
-    if (this.blobUrl) {
-      URL.revokeObjectURL(this.blobUrl);
-      this.blobUrl = '';
-    }
   }
 
   close(): void {

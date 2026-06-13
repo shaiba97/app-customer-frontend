@@ -21,7 +21,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   private ws = inject(WsService);
   authStore = inject(AuthStoreService);
 
-  private fileUrl = environment.apiUrl.customer.replace('/api-customer', '');
+  private fileUrl = environment.fileUrl;
 
   bookings = signal<any[]>([]);
   isLoading = signal<boolean>(false);
@@ -89,17 +89,10 @@ export class BookingsComponent implements OnInit, OnDestroy {
     return map[status?.toLowerCase()] ?? status;
   }
 
-  downloadTicket(e: Event, url: string): void {
+  downloadTicket(e: Event, booking: any): void {
     e.stopPropagation();
-    if (!url) return;
-    if (url.startsWith('data:')) {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'ticket.pdf';
-      a.click();
-    } else {
-      window.open(this.fileUrl + url, '_blank');
-    }
+    if (!booking?.id) return;
+    window.open(this.fileUrl + '/api-customer/tickets/download/' + booking.id);
   }
 
   showTicketView(e: Event, booking: any): void {
