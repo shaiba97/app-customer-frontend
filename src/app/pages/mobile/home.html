@@ -28,10 +28,8 @@
     </div>
   </div>
 
-  <!-- ZONE C: SEARCH CARD (hidden by default via @if, appears with animation when hero scrolls past) -->
-  @if (showSearchCard()) {
-    <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3"
-      style="animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
+  <!-- ZONE C: FULL SEARCH FORM (always visible below hero) -->
+  <div class="bg-[var(--bg-base)] px-4 pt-4 pb-3">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
@@ -98,6 +96,26 @@
     </div>
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </div>
+
+  <!-- ZONE C2: COMPACT SEARCH BAR (hidden by default, appears sticky at top-0 when full form scrolls past) -->
+  @if (showCompactBar()) {
+    <div class="sticky top-0 z-[9999] bg-[var(--bg-card)] border-b border-[var(--border)]"
+      style="animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
+      <div class="flex items-center justify-between px-4 h-[52px]">
+        <button (click)="openSearchModal()" class="flex-1 flex items-center gap-2 text-right overflow-hidden min-w-0">
+          <svg lucideSearch class="w-4 h-4 flex-shrink-0 text-[var(--primary)]"></svg>
+          <div class="flex flex-col text-right flex-1 min-w-0">
+            <span class="text-[14px] font-bold text-[var(--text-primary)] truncate">{{ routeLabel() }}</span>
+            @if (selectedDate()) {
+              <span class="text-[10px] text-[var(--text-muted)]">{{ selectedDate() | date:'EEE d MMM':'':'ar' }}</span>
+            }
+          </div>
+        </button>
+        <button (click)="openSearchModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-[var(--primary-light)] text-[var(--primary)] flex-shrink-0 mr-2 active:scale-90 transition-all duration-150">
+          <svg lucidePencil class="w-4 h-4"></svg>
+        </button>
+      </div>
+    </div>
   }
 
   <!-- ZONE D: SCROLL CONTENT (pb-24 for bottom nav clearance) -->
