@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BlogService, BlogPost } from '../../core/services/blog/blog.service';
 import { LucideCalendar, LucideArrowRight, LucideArrowLeft, LucideLoaderCircle, LucideFileText } from '@lucide/angular';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-blog',
