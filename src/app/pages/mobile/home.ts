@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit,
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgClass, DatePipe } from '@angular/common';
-import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
+import { LucideBus, LucideMapPin, LucideSearch, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { TripSearchService } from '../../services/trip-search/trip-search.service';
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 import { CitiesService } from '../../services/cities/cities.service';
@@ -12,7 +12,7 @@ import { CitySelectComponent } from '../../shared/city-select/city-select';
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
+  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit {
@@ -40,6 +40,7 @@ export class Home implements OnInit, AfterViewInit {
 
   scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
   heroOpacity = computed(() => Math.max(0, 1 - this.scrollProgress() * 2));
+  showSearchCard = computed(() => this.scrollY() >= 280);
   swapped = signal<boolean>(false);
 
   routeLabel = computed(() => {

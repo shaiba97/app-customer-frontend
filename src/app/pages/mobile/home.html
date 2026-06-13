@@ -1,40 +1,39 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-  <!-- ZONE C: COMPACT TOGGLE BAR (sticky always visible) -->
-  <div class="sticky top-0 z-40 bg-[var(--bg-card)] border-b border-[var(--border)] h-[52px]"
-    [style.box-shadow]="scrollProgress() > 0.05 ? '0 2px 16px rgba(13,148,136,0.15)' : 'none'">
-    <div class="flex items-center justify-between px-4 h-[52px]">
-      <button (click)="openSearchModal()" class="flex-1 flex items-center gap-2 text-right overflow-hidden">
-        <div class="flex flex-col text-right flex-1 min-w-0">
-          <span class="text-[14px] font-bold text-[var(--text-primary)] truncate">{{ routeLabel() }}</span>
-          @if (selectedDate()) {
-            <span class="text-[10px] text-[var(--text-muted)]">{{ selectedDate() | date:'EEE d MMM':'':'ar' }}</span>
-          }
+  <!-- ZONE A: WELCOME CARD -->
+  <div class="mx-4 mt-3">
+    <div class="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] px-4 py-3 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary)] text-base font-bold">&#x2764;</div>
+        <div class="flex flex-col">
+          <span class="text-sm font-bold text-[var(--text-primary)]">مرحباً بك</span>
+          <span class="text-[11px] text-[var(--text-muted)]">احجز رحلتك بسهولة</span>
         </div>
-      </button>
-      <button (click)="openSearchModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-[var(--primary-light)] text-[var(--primary)] flex-shrink-0 mr-2 active:scale-90 transition-all duration-150">
-        <svg lucidePencil class="w-4 h-4"></svg>
-      </button>
+      </div>
     </div>
   </div>
 
-  <!-- ZONE A: HERO HEADER (in normal flow, fixed 280px height, no layout thrash) -->
-  <div class="relative h-[280px] overflow-hidden"
+  <!-- ZONE B: HERO HEADER (in normal flow, fixed 280px height) -->
+  <div class="relative h-[280px] overflow-hidden mt-3"
     [style.opacity]="heroOpacity()"
     style="transition: opacity 0.3s ease;">
     <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--primary-hover)] to-[var(--primary)]"></div>
     <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:24px 24px"></div>
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-2">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center"><svg lucideBus class="w-6 h-6 text-white"></svg></div>
+        <img src="/customerLogo.png" alt="رحلة" class="w-12 h-12 object-contain brightness-0 invert">
         <span class="text-3xl font-extrabold text-white">رحلة</span>
       </div>
       <p class="text-white/80 text-sm font-medium">سافر بأمان وراحة في السودان</p>
     </div>
   </div>
 
-  <!-- ZONE B: SEARCH CARD (sticky — naturally sits below hero, sticks at top:52px on scroll) -->
-  <div class="sticky top-[52px] z-30 bg-[var(--bg-base)] px-4 pt-4 pb-3">
+  <!-- ZONE C: SEARCH CARD (hidden by default, fades + slides in at top-0 when hero is scrolled past) -->
+  <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3"
+    [style.opacity]="showSearchCard() ? 1 : 0"
+    [style.transform]="showSearchCard() ? 'translateY(0)' : 'translateY(-12px)'"
+    [style.pointer-events]="showSearchCard() ? 'auto' : 'none'"
+    style="transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
