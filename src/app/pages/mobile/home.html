@@ -2,13 +2,13 @@
 
 <style>@keyframes cardSlideIn { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }</style>
 
-  <!-- ZONE A: WELCOME CARD (full-width, no horizontal margin) -->
-  <div class="bg-gradient-to-l from-[var(--primary)] to-[var(--primary-hover)] rounded-none border-b border-[var(--primary-hover)] px-5 py-5 shadow-md">
-    <div class="flex items-center gap-4">
-      <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold shrink-0">&#x2665;</div>
+  <!-- ZONE A: WELCOME CARD (full-width, white background, half hero height = 140px) -->
+  <div class="bg-[var(--bg-card)] rounded-none px-5 shadow-sm flex items-center" style="min-height:140px">
+    <div class="flex items-center gap-4 w-full">
+      <div class="w-14 h-14 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary)] text-2xl font-bold shrink-0">&#x2665;</div>
       <div class="flex flex-col min-w-0">
-        <span class="text-lg font-extrabold text-white truncate">{{ welcomeGreeting() }}</span>
-        <span class="text-[13px] text-white/80 font-medium">احجز رحلتك بسهولة</span>
+        <span class="text-xl font-extrabold text-[var(--text-primary)] truncate">{{ welcomeGreeting() }}</span>
+        <span class="text-[14px] text-[var(--text-muted)] font-medium">احجز رحلتك بسهولة</span>
       </div>
     </div>
   </div>
