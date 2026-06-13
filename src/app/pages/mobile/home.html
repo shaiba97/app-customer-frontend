@@ -1,16 +1,35 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-<style>@keyframes cardSlideIn { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }</style>
+  <!-- ══════════════════════════════════════ -->
+  <!-- WELCOME CARD — above hero              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="block md:hidden w-full
+              bg-[var(--bg-card)]
+              px-5 pt-6 pb-5
+              flex flex-col gap-1"
+       dir="rtl"
+       style="min-height:140px">
 
-  <!-- ZONE A: WELCOME CARD (full-width, white background, half hero height = 140px) -->
-  <div class="bg-[var(--bg-card)] rounded-none px-5 shadow-sm" style="min-height:140px">
-    <div class="flex flex-col justify-center h-full gap-0.5">
-      <span class="text-base font-medium text-[var(--text-muted)]">مرحباً</span>
-      @if (authStore.customerName()) {
-        <span class="text-2xl font-extrabold text-[var(--text-primary)] leading-tight">{{ authStore.customerName() }}</span>
-      }
-      <span class="text-sm text-[var(--text-muted)] mt-1">سافر بأمان وراحة في السودان</span>
-    </div>
+    <!-- Line 1: greeting -->
+    <span class="text-sm font-medium
+                 text-[var(--text-muted)]">
+      أهلاً بك،
+    </span>
+
+    <!-- Line 2: user name — larger -->
+    <span class="text-2xl font-extrabold
+                 text-[var(--text-primary)]
+                 leading-tight">
+      {{ userName() }}
+    </span>
+
+    <!-- Line 3: platform message -->
+    <span class="text-xs
+                 text-[var(--text-muted)]
+                 mt-0.5">
+      نتمنى لك رحلة سعيدة وآمنة معنا 🚌
+    </span>
+
   </div>
 
   <!-- ZONE B: HERO HEADER (in normal flow, fixed 280px height) -->
@@ -21,7 +40,7 @@
     <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:24px 24px"></div>
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-2">
       <div class="flex items-center gap-3">
-        <img src="/customerLogo.png" alt="رحلة" class="w-16 h-16 object-contain brightness-0 invert">
+        <img src="/customer/assets/customerLogo.png" alt="رحلة" class="w-16 h-16 object-contain drop-shadow-sm">
         <span class="text-3xl font-extrabold text-white">رحلة</span>
       </div>
       <p class="text-white/80 text-sm font-medium">سافر بأمان وراحة في السودان</p>
@@ -29,7 +48,7 @@
   </div>
 
   <!-- ZONE C: FULL SEARCH FORM (always visible below hero) -->
-  <div class="bg-[var(--bg-base)] px-4 pt-4 pb-3">
+  <div #mainSearchCard class="bg-[var(--bg-base)] px-4 pt-4 pb-3">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
@@ -97,24 +116,56 @@
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </div>
 
-  <!-- ZONE C2: COMPACT SEARCH BAR (hidden by default, appears sticky at top-0 when full form scrolls past) -->
-  @if (showCompactBar()) {
-    <div class="sticky top-0 z-[9999] bg-[var(--bg-card)] border-b border-[var(--border)]"
-      style="animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
-      <div class="flex items-center justify-between px-4 h-[52px]">
-        <button (click)="openSearchModal()" class="flex-1 flex items-center gap-2 text-right overflow-hidden min-w-0">
-          <svg lucideSearch class="w-4 h-4 flex-shrink-0 text-[var(--primary)]"></svg>
-          <div class="flex flex-col text-right flex-1 min-w-0">
-            <span class="text-[14px] font-bold text-[var(--text-primary)] truncate">{{ routeLabel() }}</span>
-            @if (selectedDate()) {
-              <span class="text-[10px] text-[var(--text-muted)]">{{ selectedDate() | date:'EEE d MMM':'':'ar' }}</span>
-            }
-          </div>
-        </button>
-        <button (click)="openSearchModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-[var(--primary-light)] text-[var(--primary)] flex-shrink-0 mr-2 active:scale-90 transition-all duration-150">
-          <svg lucidePencil class="w-4 h-4"></svg>
-        </button>
+  <!-- ══════════════════════════════════════ -->
+  <!-- COMPACT SEARCH BAR — sticky, conditional -->
+  <!-- ══════════════════════════════════════ -->
+  @if (showCompactSearchBar()) {
+    <div class="block md:hidden
+                fixed top-0 left-0 right-0
+                z-30
+                bg-[var(--bg-card)]
+                border-b border-[var(--border)]
+                shadow-[0_2px_12px_var(--shadow)]
+                px-4 py-3
+                flex items-center justify-between
+                gap-3
+                animate-in fade-in
+                slide-in-from-top-2
+                duration-200"
+         dir="rtl"
+         (click)="openSearchModal()">
+
+      <!-- Right: pencil icon -->
+      <div class="w-9 h-9 rounded-xl
+                  bg-[var(--primary-light)]
+                  flex items-center justify-center
+                  flex-shrink-0">
+        <svg lucidePencil
+             class="w-4 h-4 text-[var(--primary)]">
+        </svg>
       </div>
+
+      <!-- Middle: route + date -->
+      <div class="flex-1 flex flex-col
+                  items-start gap-0.5 min-w-0">
+        <span class="text-sm font-bold
+                     text-[var(--text-primary)]
+                     truncate">
+          {{ compactSearchRouteLabel() }}
+        </span>
+        <span class="text-[11px]
+                     text-[var(--text-muted)]">
+          {{ compactSearchDateLabel() }}
+        </span>
+      </div>
+
+      <!-- Left: label -->
+      <span class="text-xs font-bold
+                   text-[var(--primary)]
+                   flex-shrink-0">
+        ابحث عن رحلة
+      </span>
+
     </div>
   }
 

@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgClass, DatePipe } from '@angular/common';
@@ -16,7 +16,7 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
   imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
-export class Home implements OnInit, AfterViewInit {
+export class Home implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private tripSvc = inject(TripSearchService);
@@ -24,6 +24,9 @@ export class Home implements OnInit, AfterViewInit {
   private hostElement = inject(ElementRef<HTMLElement>);
   private destroyRef = inject(DestroyRef);
   authStore = inject(AuthStoreService);
+
+  @ViewChild('mainSearchCard') mainSearchCard!: ElementRef<HTMLElement>;
+  private observer?: IntersectionObserver;
 
 
 
@@ -42,7 +45,19 @@ export class Home implements OnInit, AfterViewInit {
 
   scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
   heroOpacity = computed(() => Math.max(0, 1 - this.scrollProgress() * 2));
-  showCompactBar = computed(() => this.scrollY() >= 600);
+  showCompactSearchBar = signal(false);
+  userName = computed(() => this.authStore.customerName() || 'مستخدم رحلة');
+  compactSearchRouteLabel = computed(() => {
+    const f = this.from();
+    const t = this.to();
+    if (f && t) return `${f} ← ${t}`;
+    return 'إلى أين تريد السفر؟';
+  });
+  compactSearchDateLabel = computed(() => {
+    const d = this.date();
+    if (!d) return 'اختر التاريخ';
+    return new Date(d).toLocaleDateString('ar-SA', { weekday: 'short', day: 'numeric', month: 'short' });
+  });
   swapped = signal<boolean>(false);
 
   routeLabel = computed(() => {
@@ -98,6 +113,23 @@ export class Home implements OnInit, AfterViewInit {
       el.addEventListener('scroll', handler, { passive: true });
       this.destroyRef.onDestroy(() => el.removeEventListener('scroll', handler));
     }
+
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        this.showCompactSearchBar.set(
+          !entry.isIntersecting &&
+          (entry.boundingClientRect.top < 0)
+        );
+      },
+      { threshold: 0 }
+    );
+    if (this.mainSearchCard) {
+      this.observer.observe(this.mainSearchCard.nativeElement);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
   }
 
   swap(): void { const t = this.from(); this.from.set(this.to()); this.to.set(t); this.swapped.set(!this.swapped()); }
