@@ -1,14 +1,12 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-  <!-- ZONE A: WELCOME CARD -->
-  <div class="mx-4 mt-3">
-    <div class="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] px-4 py-3 shadow-sm">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-[var(--primary)] text-base font-bold">&#x2764;</div>
-        <div class="flex flex-col">
-          <span class="text-sm font-bold text-[var(--text-primary)]">مرحباً بك</span>
-          <span class="text-[11px] text-[var(--text-muted)]">احجز رحلتك بسهولة</span>
-        </div>
+  <!-- ZONE A: WELCOME CARD (full-width, no horizontal margin) -->
+  <div class="bg-gradient-to-l from-[var(--primary)] to-[var(--primary-hover)] rounded-none border-b border-[var(--primary-hover)] px-5 py-5 shadow-md">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white text-xl font-bold shrink-0">&#x2665;</div>
+      <div class="flex flex-col min-w-0">
+        <span class="text-lg font-extrabold text-white truncate">{{ welcomeGreeting() }}</span>
+        <span class="text-[13px] text-white/80 font-medium">احجز رحلتك بسهولة</span>
       </div>
     </div>
   </div>

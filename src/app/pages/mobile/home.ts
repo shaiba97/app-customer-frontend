@@ -7,6 +7,7 @@ import { TripSearchService } from '../../services/trip-search/trip-search.servic
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 import { CitiesService } from '../../services/cities/cities.service';
 import { CitySelectComponent } from '../../shared/city-select/city-select';
+import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class Home implements OnInit, AfterViewInit {
   private citiesSvc = inject(CitiesService);
   private hostElement = inject(ElementRef<HTMLElement>);
   private destroyRef = inject(DestroyRef);
+  private authStore = inject(AuthStoreService);
 
 
 
@@ -41,6 +43,10 @@ export class Home implements OnInit, AfterViewInit {
   scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
   heroOpacity = computed(() => Math.max(0, 1 - this.scrollProgress() * 2));
   showSearchCard = computed(() => this.scrollY() >= 280);
+  welcomeGreeting = computed(() => {
+    const name = this.authStore.customerName();
+    return name ? `مرحباً بك يا ${name}` : 'مرحباً بك';
+  });
   swapped = signal<boolean>(false);
 
   routeLabel = computed(() => {
