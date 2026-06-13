@@ -1,6 +1,6 @@
 <div dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
-<style>@keyframes cardSlideIn { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }</style>
+
 
   <!-- ZONE A: WELCOME CARD (full-width, white background, half hero height = 140px) -->
   <div class="bg-[var(--bg-card)] rounded-none px-5 shadow-sm flex items-center" style="min-height:140px">
@@ -28,10 +28,8 @@
     </div>
   </div>
 
-  <!-- ZONE C: SEARCH CARD (hidden by default via @if, cardSlideIn animation when the hero is scrolled past) -->
-  @if (showSearchCard()) {
-    <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3"
-      style="animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);">
+  <!-- ZONE C: SEARCH CARD (sticky — sits below hero by default, sticks at top-0 on scroll) -->
+  <div class="sticky top-0 z-[9999] bg-[var(--bg-base)] px-4 pt-4 pb-3">
     <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] shadow-[0_-4px_0_0_var(--bg-card),0_8px_32px_rgba(13,148,136,0.18)] overflow-hidden">
 
       <!-- FROM -->
@@ -98,7 +96,6 @@
     </div>
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </div>
-  }
 
   <!-- ZONE D: SCROLL CONTENT (pb-24 for bottom nav clearance) -->
   <div class="px-4 pb-24 flex flex-col gap-4">

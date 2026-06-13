@@ -42,7 +42,6 @@ export class Home implements OnInit, AfterViewInit {
 
   scrollProgress = computed(() => Math.min(1, this.scrollY() / 600));
   heroOpacity = computed(() => Math.max(0, 1 - this.scrollProgress() * 2));
-  showSearchCard = computed(() => this.scrollY() >= 420);
   welcomeGreeting = computed(() => {
     const name = this.authStore.customerName();
     return name ? `مرحباً بك يا ${name}` : 'مرحباً بك';
