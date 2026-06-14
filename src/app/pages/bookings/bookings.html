@@ -59,6 +59,9 @@
                     <span class="mx-1">·</span>
                     <span>{{ t?.departureDate | date:'EEE d MMM':'':'ar' | arabicNumber }}</span>
                   </span>
+                  @if (b.orderID) {
+                    <span class="text-[10px] text-[var(--text-muted)] mt-0.5">رقم الحجز: {{ b.orderID }}</span>
+                  }
                 </div>
               </div>
               <span class="px-3 py-1 rounded-full text-[11px] font-bold flex-shrink-0" [ngClass]="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
