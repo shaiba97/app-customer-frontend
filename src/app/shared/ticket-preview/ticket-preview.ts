@@ -2,6 +2,7 @@ import { Component, input, output, inject, signal, effect } from '@angular/core'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideX } from '@lucide/angular';
 import { environment } from '../../../environments/environment';
+import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-ticket-preview',
@@ -76,6 +77,7 @@ export class TicketPreviewComponent {
   closed = output<void>();
 
   private sanitizer = inject(DomSanitizer);
+  private authStore = inject(AuthStoreService);
   private fileUrl = environment.fileUrl;
 
   safeUrl = signal<SafeResourceUrl>('');
@@ -91,9 +93,10 @@ export class TicketPreviewComponent {
       if (url.startsWith('data:')) {
         this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
       } else {
+        const token = this.authStore.token();
         this.safeUrl.set(
           this.sanitizer.bypassSecurityTrustResourceUrl(
-            this.fileUrl + '/api-customer/tickets/view/' + id,
+            this.fileUrl + '/api-customer/tickets/view/' + id + '?token=' + token,
           ),
         );
       }

@@ -100,12 +100,14 @@ export class BookingsComponent implements OnInit, OnDestroy {
   downloadTicket(e: Event, booking: any): void {
     e.stopPropagation();
     if (!booking?.id) return;
-    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id);
+    const token = this.authStore.token();
+    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + token);
   }
 
   showTicketView(e: Event, booking: any): void {
     e.stopPropagation();
-    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id);
+    const token = this.authStore.token();
+    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + token);
   }
 
   closeTicketView(): void {
