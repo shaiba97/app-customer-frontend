@@ -101,12 +101,12 @@ export class Bookings implements OnInit, OnDestroy {
   downloadTicket(e: Event, booking: any): void {
     e.stopPropagation();
     if (!booking?.id) return;
-    window.open(this.fileUrl + '/api-customer/tickets/download/' + booking.id);
+    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id);
   }
 
   showTicketView(e: Event, booking: any): void {
     e.stopPropagation();
-    this.selectedBooking.set(booking);
+    window.open(this.fileUrl + '/api-customer/tickets/html/' + booking.id);
   }
 
   closeTicketView(): void {
