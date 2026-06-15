@@ -4,7 +4,6 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
-  LucideBus,
   LucideSun,
   LucideMoon,
   LucideUserRound,
@@ -25,7 +24,6 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
   standalone: true,
   imports: [
     RouterLink,
-    LucideBus,
     LucideSun,
     LucideMoon,
     LucideUserRound,
