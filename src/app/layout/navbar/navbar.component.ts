@@ -2,7 +2,7 @@ import {
   Component, signal, inject,
   HostListener, computed,
 } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   LucideBus,
   LucideSun,
@@ -25,7 +25,6 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
   standalone: true,
   imports: [
     RouterLink,
-    RouterOutlet,
     LucideBus,
     LucideSun,
     LucideMoon,

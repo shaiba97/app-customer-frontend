@@ -10,6 +10,7 @@ import {
 } from '@lucide/angular';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { NotificationsService } from '../../core/services/notifications/notifications.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-web-shell',
@@ -21,6 +22,7 @@ import { NotificationsService } from '../../core/services/notifications/notifica
     LucideCalendarClock,
     LucideBell,
     LucideUser,
+    NavbarComponent,
   ],
   templateUrl: './webshell.html',
 })
