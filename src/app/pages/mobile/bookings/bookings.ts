@@ -101,46 +101,10 @@ export class Bookings implements OnInit, OnDestroy {
     if (!booking?.id) return;
 
     const token = this.authStore.token();
-    const orderID = booking.orderID || booking.id;
-
-    try {
-      const resp = await fetch(environment.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + token);
-      const html = await resp.text();
-
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'fixed';
-      iframe.style.top = '-9999px';
-      iframe.style.left = '0';
-      iframe.style.width = '480px';
-      iframe.style.height = '0';
-      iframe.style.border = 'none';
-      iframe.style.zIndex = '-1';
-      document.body.appendChild(iframe);
-
-      const doc = iframe.contentWindow!.document;
-      doc.open();
-      doc.write(html);
-      doc.close();
-
-      await new Promise(r => setTimeout(r, 500));
-      await doc.fonts.ready;
-
-      const html2canvas = (await import('html2canvas')).default;
-      const canvas = await html2canvas(doc.body.firstElementChild as HTMLElement, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
-      const link = document.createElement('a');
-      link.download = `ticket-${orderID}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-
-      document.body.removeChild(iframe);
-    } catch (err) {
-      console.error('Download failed:', err);
-    }
+    window.open(
+      environment.fileUrl + '/api-customer/tickets/view/' + booking.id + '?token=' + token,
+      '_blank',
+    );
   }
 
   showTicketView(e: Event, booking: any): void {
