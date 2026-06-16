@@ -97,20 +97,48 @@ export class BookingsComponent implements OnInit, OnDestroy {
     return map[status?.toLowerCase()] ?? status;
   }
 
-  downloadTicket(e: Event, booking: any): void {
+  async downloadTicket(e: Event, booking: any): Promise<void> {
     e.stopPropagation();
     if (!booking?.id) return;
-    const token = this.authStore.token();
-    if (!token) return;
-    window.open(this.fileUrl + '/api-customer/tickets/download/' + booking.id + '?token=' + token);
+
+    const url = this.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + this.authStore.token();
+    const orderID = booking.orderID || booking.id;
+
+    try {
+      const resp = await fetch(url);
+      const html = await resp.text();
+
+      const container = document.createElement('div');
+      container.innerHTML = html;
+      container.style.position = 'absolute';
+      container.style.left = '-9999px';
+      container.style.top = '0';
+      document.body.appendChild(container);
+
+      await document.fonts.ready;
+
+      const html2pdf = (await import('html2pdf.js')).default;
+      await html2pdf()
+        .set({
+          margin: 0,
+          filename: `ticket-${orderID}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        })
+        .from(container)
+        .save();
+
+      document.body.removeChild(container);
+    } catch (err) {
+      console.error('PDF download failed:', err);
+    }
   }
 
   showTicketView(e: Event, booking: any): void {
     e.stopPropagation();
     if (!booking?.id) return;
-    const token = this.authStore.token();
-    if (!token) return;
-    window.open(this.fileUrl + '/api-customer/tickets/view/' + booking.id + '?token=' + token);
+    this.selectedBooking.set(booking);
   }
 
   closeTicketView(): void {

@@ -118,7 +118,6 @@
 </div>
 
 <app-ticket-preview
-  [ticketUrl]="selectedBooking()?.TicketPDF?.ticketUrl"
   [bookingId]="selectedBooking()?.id"
   [visible]="!!selectedBooking()"
   (closed)="closeTicketView()"

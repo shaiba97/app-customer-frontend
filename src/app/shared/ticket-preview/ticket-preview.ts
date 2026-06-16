@@ -1,12 +1,12 @@
 import { Component, input, output, inject, signal, effect } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { LucideX } from '@lucide/angular';
+import { LucideX, LucidePrinter } from '@lucide/angular';
 import { environment } from '../../../environments/environment';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-ticket-preview',
-  imports: [LucideX],
+  imports: [LucideX, LucidePrinter],
   template: `
     @if (visible()) {
       <div 
@@ -19,7 +19,7 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="close()"></div>
 
         <div
-          class="relative w-full sm:max-w-lg max-h-[90vh] bg-[var(--bg-card)] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-slide-up"
+          class="relative w-full sm:max-w-3xl max-h-[90vh] bg-[var(--bg-card)] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-slide-up"
           (click)="$event.stopPropagation()"
         >
           <div class="flex sm:hidden items-center justify-center pt-3 pb-1">
@@ -28,26 +28,32 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
           <div class="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
             <h2 class="text-base font-bold text-[var(--text-primary)]">عرض التذكرة</h2>
-            <button
-              (click)="close()"
-              class="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--primary-light)] hover:text-[var(--primary)] transition-all duration-150"
-              aria-label="إغلاق"
-            >
-              <svg lucideX class="w-5 h-5"></svg>
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                (click)="print()"
+                class="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--primary-light)] hover:text-[var(--primary)] transition-all duration-150"
+                aria-label="طباعة"
+              >
+                <svg lucidePrinter class="w-5 h-5"></svg>
+              </button>
+              <button
+                (click)="close()"
+                class="w-9 h-9 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--primary-light)] hover:text-[var(--primary)] transition-all duration-150"
+                aria-label="إغلاق"
+              >
+                <svg lucideX class="w-5 h-5"></svg>
+              </button>
+            </div>
           </div>
 
           <div class="flex-1 overflow-auto bg-[var(--bg-base)] min-h-[50vh]">
-            @if (ticketUrl()) {
-              <object
-                [data]="safeUrl()"
-                type="application/pdf"
-                class="w-full h-[70vh] sm:h-[65vh]"
-              >
-                <div class="flex items-center justify-center h-[50vh] text-sm text-[var(--text-muted)]">
-                  تعذر تحميل التذكرة
-                </div>
-              </object>
+            @if (safeUrl()) {
+              <iframe
+                [src]="safeUrl()"
+                class="w-full h-[80vh] sm:h-[75vh]"
+                style="border: none;"
+                title="عرض التذكرة"
+              ></iframe>
             } @else {
               <div class="flex items-center justify-center h-[50vh] text-sm text-[var(--text-muted)]">
                 لا توجد تذكرة متاحة
@@ -71,7 +77,6 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
   ],
 })
 export class TicketPreviewComponent {
-  ticketUrl = input<string>('');
   bookingId = input<string>('');
   visible = input<boolean>(false);
   closed = output<void>();
@@ -84,26 +89,32 @@ export class TicketPreviewComponent {
 
   constructor() {
     effect(() => {
-      const url = this.ticketUrl();
       const id = this.bookingId();
-      if (!url || !id) {
+      if (!id) {
         this.safeUrl.set('');
         return;
       }
-      if (url.startsWith('data:')) {
-        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
-      } else {
-        const token = this.authStore.token();
-        this.safeUrl.set(
-          this.sanitizer.bypassSecurityTrustResourceUrl(
-            this.fileUrl + '/api-customer/tickets/view/' + id + '?token=' + token,
-          ),
-        );
+      const token = this.authStore.token();
+      if (!token) {
+        this.safeUrl.set('');
+        return;
       }
+      this.safeUrl.set(
+        this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.fileUrl + '/api-customer/tickets/html/' + id + '?token=' + token,
+        ),
+      );
     });
   }
 
   close(): void {
     this.closed.emit();
+  }
+
+  print(): void {
+    const iframe = document.querySelector('iframe');
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.print();
+    }
   }
 }
