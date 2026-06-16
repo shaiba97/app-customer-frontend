@@ -105,21 +105,19 @@ export class BookingsComponent implements OnInit, OnDestroy {
       const resp = await fetch('/api-customer/tickets/html/' + booking.id + '?token=' + token);
       const html = await resp.text();
 
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'fixed';
-      iframe.style.left = '-9999px';
-      iframe.style.top = '0';
-      iframe.style.width = '800px';
-      iframe.style.height = '1200px';
-      iframe.style.border = 'none';
-      document.body.appendChild(iframe);
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.top = '-9999px';
+      container.style.left = '0';
+      container.style.width = '480px';
+      container.style.zIndex = '-1';
+      container.innerHTML = html.replace(
+        /\*,\*::before,\*::after\{box-sizing:border-box;margin:0;padding:0\}/,
+        '',
+      );
+      document.body.appendChild(container);
 
-      const doc = iframe.contentDocument!;
-      doc.open();
-      doc.write(html);
-      doc.close();
-
-      await (doc as any).fonts?.ready;
+      await document.fonts.ready;
 
       const html2pdf = (await import('html2pdf.js')).default;
       await html2pdf()
@@ -130,10 +128,10 @@ export class BookingsComponent implements OnInit, OnDestroy {
           html2canvas: { scale: 2, useCORS: true, logging: false },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         })
-        .from(doc.body)
+        .from(container)
         .save();
 
-      document.body.removeChild(iframe);
+      document.body.removeChild(container);
     } catch (err) {
       console.error('PDF download failed:', err);
     }
