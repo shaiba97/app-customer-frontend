@@ -112,10 +112,12 @@ export class Bookings implements OnInit, OnDestroy {
       container.style.left = '0';
       container.style.width = '480px';
       container.style.zIndex = '-1';
-      container.innerHTML = html.replace(
-        /\*,\*::before,\*::after\{box-sizing:border-box;margin:0;padding:0\}/,
-        '',
-      );
+      container.innerHTML = html
+        .replace(
+          /\*,\*::before,\*::after\{box-sizing:border-box;margin:0;padding:0\}/,
+          '',
+        )
+        .replace(/html,body\{[^}]*\}/, 'body{}');
       document.body.appendChild(container);
 
       await document.fonts.ready;
