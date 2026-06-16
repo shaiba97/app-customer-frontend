@@ -7,7 +7,6 @@ import { BookingService } from '../../services/booking/booking.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { WsService } from '../../services/ws.service';
 import { NgClass, DatePipe } from '@angular/common';
-import { environment } from '../../../environments/environment';
 import { TicketPreviewComponent } from '../../shared/ticket-preview/ticket-preview';
 
 @Component({
@@ -20,8 +19,6 @@ export class BookingsComponent implements OnInit, OnDestroy {
   private bookingSvc = inject(BookingService);
   private ws = inject(WsService);
   authStore = inject(AuthStoreService);
-
-  private fileUrl = environment.fileUrl;
 
   bookings = signal<any[]>([]);
   isLoading = signal<boolean>(false);
@@ -101,11 +98,11 @@ export class BookingsComponent implements OnInit, OnDestroy {
     e.stopPropagation();
     if (!booking?.id) return;
 
-    const url = this.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + this.authStore.token();
+    const token = this.authStore.token();
     const orderID = booking.orderID || booking.id;
 
     try {
-      const resp = await fetch(url);
+      const resp = await fetch('/api-customer/tickets/html/' + booking.id + '?token=' + token);
       const html = await resp.text();
 
       const iframe = document.createElement('iframe');
@@ -122,11 +119,6 @@ export class BookingsComponent implements OnInit, OnDestroy {
       doc.write(html);
       doc.close();
 
-      await new Promise<void>(resolve => {
-        iframe.onload = () => resolve();
-        setTimeout(resolve, 2000);
-      });
-
       await (doc as any).fonts?.ready;
 
       const html2pdf = (await import('html2pdf.js')).default;
@@ -138,7 +130,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
           html2canvas: { scale: 2, useCORS: true, logging: false },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         })
-        .from(iframe)
+        .from(doc.body)
         .save();
 
       document.body.removeChild(iframe);
