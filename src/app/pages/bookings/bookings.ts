@@ -103,7 +103,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const orderID = booking.orderID || booking.id;
 
     try {
-      const resp = await fetch(environment.fileUrl + '/api/tickets/html/' + booking.id + '?token=' + token);
+      const resp = await fetch(environment.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + token);
       const html = await resp.text();
 
       const container = document.createElement('div');

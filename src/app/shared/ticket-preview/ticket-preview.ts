@@ -100,7 +100,7 @@ export class TicketPreviewComponent {
       }
       this.safeUrl.set(
         this.sanitizer.bypassSecurityTrustResourceUrl(
-          environment.fileUrl + '/api/tickets/html/' + id + '?token=' + token,
+          environment.fileUrl + '/api-customer/tickets/html/' + id + '?token=' + token,
         ),
       );
     });
