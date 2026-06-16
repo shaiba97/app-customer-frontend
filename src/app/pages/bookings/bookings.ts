@@ -108,14 +108,26 @@ export class BookingsComponent implements OnInit, OnDestroy {
       const resp = await fetch(url);
       const html = await resp.text();
 
-      const container = document.createElement('div');
-      container.innerHTML = html;
-      container.style.position = 'absolute';
-      container.style.left = '-9999px';
-      container.style.top = '0';
-      document.body.appendChild(container);
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.left = '-9999px';
+      iframe.style.top = '0';
+      iframe.style.width = '800px';
+      iframe.style.height = '1200px';
+      iframe.style.border = 'none';
+      document.body.appendChild(iframe);
 
-      await document.fonts.ready;
+      const doc = iframe.contentDocument!;
+      doc.open();
+      doc.write(html);
+      doc.close();
+
+      await new Promise<void>(resolve => {
+        iframe.onload = () => resolve();
+        setTimeout(resolve, 2000);
+      });
+
+      await (doc as any).fonts?.ready;
 
       const html2pdf = (await import('html2pdf.js')).default;
       await html2pdf()
@@ -126,10 +138,10 @@ export class BookingsComponent implements OnInit, OnDestroy {
           html2canvas: { scale: 2, useCORS: true, logging: false },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         })
-        .from(container)
+        .from(iframe)
         .save();
 
-      document.body.removeChild(container);
+      document.body.removeChild(iframe);
     } catch (err) {
       console.error('PDF download failed:', err);
     }
