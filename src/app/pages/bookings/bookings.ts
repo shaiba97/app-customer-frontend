@@ -7,6 +7,7 @@ import { BookingService } from '../../services/booking/booking.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { WsService } from '../../services/ws.service';
 import { NgClass, DatePipe } from '@angular/common';
+import { environment } from '../../../environments/environment';
 import { TicketPreviewComponent } from '../../shared/ticket-preview/ticket-preview';
 
 @Component({
@@ -102,7 +103,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
     const orderID = booking.orderID || booking.id;
 
     try {
-      const resp = await fetch('/api-customer/tickets/html/' + booking.id + '?token=' + token);
+      const resp = await fetch(environment.fileUrl + '/api/tickets/html/' + booking.id + '?token=' + token);
       const html = await resp.text();
 
       const container = document.createElement('div');

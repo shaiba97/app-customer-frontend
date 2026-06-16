@@ -1,6 +1,7 @@
 import { Component, input, output, inject, signal, effect } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LucideX, LucidePrinter } from '@lucide/angular';
+import { environment } from '../../../environments/environment';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
@@ -99,7 +100,7 @@ export class TicketPreviewComponent {
       }
       this.safeUrl.set(
         this.sanitizer.bypassSecurityTrustResourceUrl(
-          '/api-customer/tickets/html/' + id + '?token=' + token,
+          environment.fileUrl + '/api/tickets/html/' + id + '?token=' + token,
         ),
       );
     });
