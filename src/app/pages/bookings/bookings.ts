@@ -122,17 +122,17 @@ export class BookingsComponent implements OnInit, OnDestroy {
 
       await document.fonts.ready;
 
-      const html2pdf = (await import('html2pdf.js')).default;
-      await html2pdf()
-        .set({
-          margin: 0,
-          filename: `ticket-${orderID}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, logging: false },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        })
-        .from(container)
-        .save();
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(container, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+      });
+      const link = document.createElement('a');
+      link.download = `ticket-${orderID}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
 
       document.body.removeChild(container);
     } catch (err) {
