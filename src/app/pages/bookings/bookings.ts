@@ -106,24 +106,26 @@ export class BookingsComponent implements OnInit, OnDestroy {
       const resp = await fetch(environment.fileUrl + '/api-customer/tickets/html/' + booking.id + '?token=' + token);
       const html = await resp.text();
 
-      const container = document.createElement('div');
-      container.style.position = 'fixed';
-      container.style.top = '-9999px';
-      container.style.left = '0';
-      container.style.width = '480px';
-      container.style.zIndex = '-1';
-      container.innerHTML = html
-        .replace(
-          /\*,\*::before,\*::after\{box-sizing:border-box;margin:0;padding:0\}/,
-          '',
-        )
-        .replace(/html,body\{[^}]*\}/, 'body{}');
-      document.body.appendChild(container);
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.top = '-9999px';
+      iframe.style.left = '0';
+      iframe.style.width = '480px';
+      iframe.style.height = '0';
+      iframe.style.border = 'none';
+      iframe.style.zIndex = '-1';
+      document.body.appendChild(iframe);
 
-      await document.fonts.ready;
+      const doc = iframe.contentWindow!.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+
+      await new Promise(r => setTimeout(r, 500));
+      await doc.fonts.ready;
 
       const html2canvas = (await import('html2canvas')).default;
-      const canvas = await html2canvas(container, {
+      const canvas = await html2canvas(doc.body.firstElementChild as HTMLElement, {
         scale: 2,
         useCORS: true,
         logging: false,
@@ -134,9 +136,9 @@ export class BookingsComponent implements OnInit, OnDestroy {
       link.href = canvas.toDataURL('image/png');
       link.click();
 
-      document.body.removeChild(container);
+      document.body.removeChild(iframe);
     } catch (err) {
-      console.error('PDF download failed:', err);
+      console.error('Download failed:', err);
     }
   }
 
