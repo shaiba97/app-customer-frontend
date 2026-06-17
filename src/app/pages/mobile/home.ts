@@ -1,7 +1,7 @@
 import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, OnDestroy, ViewChild, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgClass, DatePipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { TripSearchService } from '../../services/trip-search/trip-search.service';
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
@@ -11,9 +11,9 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, DatePipe, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
+  imports: [FormsModule, NgClass, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit, OnDestroy {
