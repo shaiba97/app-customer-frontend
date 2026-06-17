@@ -39,6 +39,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/notification-detail/notification-detail').then(m => m.NotificationDetailPage),
       },
       {
+        path: 'terms',
+        loadComponent: () => import('./pages/terms/terms').then(m => m.TermsPage),
+      },
+      {
         path: 'blogs',
         loadComponent: () => import('./pages/blog/blog').then(m => m.BlogComponent),
       },
