@@ -8,7 +8,7 @@
     </div>
   }
 
-  <div class="flex-1 overflow-y-auto leading-relaxed" [ngClass]="isMobile() ? 'px-4 py-5' : 'px-6 py-8'">
+  <div class="flex-1 overflow-y-auto leading-relaxed" [class.px-4]="isMobile()" [class.py-5]="isMobile()" [class.px-6]="!isMobile()" [class.py-8]="!isMobile()">
     <div class="max-w-3xl mx-auto text-[15px] text-[var(--text-primary)]">
 
       @if (!isMobile()) {

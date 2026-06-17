@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Location, NgClass } from '@angular/common';
+import { Location, NgClass, NgTemplateOutlet } from '@angular/common';
 import { LucideArrowRight, LucideChevronRight } from '@lucide/angular';
 import { useIsMobile } from '../../shared/is-mobile';
 
 @Component({
   selector: 'app-terms',
-  imports: [NgClass, LucideArrowRight, LucideChevronRight],
+  imports: [NgClass, NgTemplateOutlet, LucideArrowRight, LucideChevronRight],
   templateUrl: './terms.html',
 })
 export class TermsPage {
