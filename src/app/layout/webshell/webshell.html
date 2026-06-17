@@ -1,18 +1,23 @@
-<div dir="rtl" class="h-dvh w-full bg-[var(--bg-base)] flex flex-col">
+<div dir="rtl" class="h-dvh w-full bg-[var(--bg-base)] flex flex-col"
+     [style.paddingTop]="capService.isNative() ? 'var(--safe-top)' : undefined">
 
   <!-- ==================== DESKTOP TOP BAR ==================== -->
   <app-navbar class="hidden md:block flex-shrink-0" />
 
   <!-- ==================== CONTENT (shared) ==================== -->
-  <main class="flex-1 overflow-y-auto pb-[88px] md:pb-0" style="overscroll-behavior-y: auto; touch-action: pan-y; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;" >
+  <main class="flex-1 overflow-y-auto md:pb-0"
+        [style.paddingBottom]="capService.isNative() ? 'calc(88px + var(--safe-bottom))' : '88px'"
+        style="overscroll-behavior-y: auto; touch-action: pan-y; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
     <router-outlet />
   </main>
 
   <!-- ==================== MOBILE BOTTOM NAV ==================== -->
   <nav class="md:hidden sticky bottom-0 left-0 right-0 z-[99999]
-              flex items-center justify-around px-2 py-1
+              flex items-center justify-around px-2
               bg-[var(--bg-card)] border-t border-[var(--border)]
-              shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+              shadow-[0_-2px_12px_rgba(0,0,0,0.05)]"
+       [style.paddingBottom]="capService.isNative() ? 'calc(4px + var(--safe-bottom))' : '4px'"
+       [style.paddingTop]="'4px'">
 
   <a routerLink="/home"
     class="flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200 no-underline"

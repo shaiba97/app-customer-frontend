@@ -9,6 +9,7 @@ import {
   LucideUser,
 } from '@lucide/angular';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
+import { CapacitorService } from '../../core/services/capacitor/capacitor.service';
 import { NotificationsService } from '../../core/services/notifications/notifications.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 
@@ -27,6 +28,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   templateUrl: './webshell.html',
 })
 export class WebShell implements OnInit, OnDestroy {
+  capService = inject(CapacitorService);
   private notifSvc = inject(NotificationsService);
   authStore = inject(AuthStoreService);
   private router = inject(Router);
