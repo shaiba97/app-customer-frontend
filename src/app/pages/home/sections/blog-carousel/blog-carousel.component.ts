@@ -1,4 +1,4 @@
-import { Component, inject, signal, ElementRef, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, inject, signal, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BlogService, BlogPost } from '../../../../core/services/blog/blog.service';
@@ -28,12 +28,10 @@ import { environment } from '../../../../../environments/environment';
   ],
   templateUrl: './blog-carousel.component.html',
 })
-export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BlogCarouselComponent implements OnInit, OnDestroy {
   private blogSvc = inject(BlogService);
   private router = inject(Router);
   private elementRef = inject(ElementRef);
-
-  @ViewChild('trackContainer') trackContainer!: ElementRef<HTMLElement>;
 
   posts = signal<BlogPost[]>([]);
   loading = signal(true);
@@ -41,7 +39,6 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   currentIndex = signal(0);
 
   visibleCards = 3;
-  containerWidth = 0;
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private resizeObserver: ResizeObserver | null = null;
 
@@ -56,7 +53,6 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     if (typeof window !== 'undefined') {
       this.resizeObserver = new ResizeObserver(() => {
         this.updateVisibleCards();
-        this.measureContainer();
       });
       this.resizeObserver.observe(this.elementRef.nativeElement);
     }
@@ -65,7 +61,6 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
       next: res => {
         this.posts.set(res);
         this.loading.set(false);
-        requestAnimationFrame(() => this.measureContainer());
         this.startAutoPlay();
       },
       error: () => {
@@ -75,19 +70,9 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
-    requestAnimationFrame(() => this.measureContainer());
-  }
-
   ngOnDestroy(): void {
     this.stopAutoPlay();
     this.resizeObserver?.disconnect();
-  }
-
-  private measureContainer(): void {
-    if (this.trackContainer?.nativeElement) {
-      this.containerWidth = this.trackContainer.nativeElement.offsetWidth;
-    }
   }
 
   private updateVisibleCards(): void {
@@ -128,8 +113,9 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get transformStyle(): string {
-    const cardW = this.containerWidth / this.visibleCards;
-    return `translateX(${-this.currentIndex() * cardW}px)`;
+    const total = this.posts().length;
+    if (total === 0) return 'translateX(0px)';
+    return `translateX(${-this.currentIndex() * 100 / total}%)`;
   }
 
   get maxIndex(): number {
