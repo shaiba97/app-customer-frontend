@@ -18,6 +18,7 @@ import {
 } from '@lucide/angular';
 import { ThemeService } from '../../core/services/theme.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
+import { NotificationBellComponent } from '../../shared/notification-bell/notification-bell.component';
 
 @Component({
   selector: 'app-navbar',
@@ -35,6 +36,7 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
     LucideUserPlus,
     LucideX,
     LucideMenu,
+    NotificationBellComponent,
   ],
   templateUrl: './navbar.component.html',
 })
