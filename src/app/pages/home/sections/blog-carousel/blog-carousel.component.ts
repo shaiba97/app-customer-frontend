@@ -53,10 +53,19 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.updateVisibleCards();
 
+    if (typeof window !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateVisibleCards();
+        this.measureContainer();
+      });
+      this.resizeObserver.observe(this.elementRef.nativeElement);
+    }
+
     this.blogSvc.getPosts().subscribe({
       next: res => {
         this.posts.set(res);
         this.loading.set(false);
+        requestAnimationFrame(() => this.measureContainer());
         this.startAutoPlay();
       },
       error: () => {
@@ -67,15 +76,7 @@ export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.measureContainer();
-
-    if (typeof window !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.updateVisibleCards();
-        this.measureContainer();
-      });
-      this.resizeObserver.observe(this.elementRef.nativeElement);
-    }
+    requestAnimationFrame(() => this.measureContainer());
   }
 
   ngOnDestroy(): void {
