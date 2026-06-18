@@ -3,6 +3,7 @@ import { SearchHeroComponent } from '../search-hero/search-hero';
 import { HowItWorksComponent } from '../sections/how-it-works/how-it-works.component';
 import { WhyRihlaComponent } from '../sections/why-rihla/why-rihla.component';
 import { AppDownloadComponent } from '../sections/app-download/app-download.component';
+import { BlogCarouselComponent } from '../sections/blog-carousel/blog-carousel.component';
 import { BottomCtaComponent } from '../sections/bottom-cta/bottom-cta.component';
 import { HomeFooterComponent } from '../sections/home-footer/home-footer.component';
 
@@ -13,6 +14,7 @@ import { HomeFooterComponent } from '../sections/home-footer/home-footer.compone
     HowItWorksComponent,
     WhyRihlaComponent,
     AppDownloadComponent,
+    BlogCarouselComponent,
     BottomCtaComponent,
     HomeFooterComponent,
   ],
