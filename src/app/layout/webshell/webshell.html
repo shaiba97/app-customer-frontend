@@ -5,7 +5,7 @@
   <app-navbar class="hidden md:block flex-shrink-0" />
 
   <!-- ==================== CONTENT (shared) ==================== -->
-  <main class="flex-1 overflow-y-auto md:pb-0"
+  <main class="flex-1 overflow-y-auto md:pb-0 flex flex-col"
         [style.paddingBottom]="capService.isNative() ? 'calc(88px + var(--safe-bottom))' : '88px'"
         style="overscroll-behavior-y: auto; touch-action: pan-y; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
     <router-outlet />
