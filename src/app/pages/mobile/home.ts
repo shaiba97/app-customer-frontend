@@ -5,7 +5,6 @@ import { NgClass } from '@angular/common';
 import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { TripSearchService } from '../../services/trip-search/trip-search.service';
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
-import { BlogCarouselComponent } from '../home/sections/blog-carousel/blog-carousel.component';
 import { CitiesService } from '../../services/cities/cities.service';
 import { CitySelectComponent } from '../../shared/city-select/city-select';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
@@ -14,7 +13,7 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
   selector: 'app-home',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent, BlogCarouselComponent],
+  imports: [FormsModule, NgClass, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit, OnDestroy {
