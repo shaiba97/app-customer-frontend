@@ -48,9 +48,9 @@
            (mouseleave)="resume()">
 
         <!-- Track wrapper -->
-        <div class="overflow-hidden rounded-2xl">
+        <div #trackContainer class="overflow-hidden rounded-2xl">
           <div class="flex transition-transform duration-500 ease-in-out"
-               [style.transform]="translateX"
+               [style.transform]="transformStyle"
                style="will-change: transform">
 
             @for (post of posts(); track post.id) {

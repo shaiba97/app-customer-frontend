@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal, ElementRef, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { BlogService, BlogPost } from '../../../../core/services/blog/blog.service';
@@ -28,17 +28,22 @@ import { environment } from '../../../../../environments/environment';
   ],
   templateUrl: './blog-carousel.component.html',
 })
-export class BlogCarouselComponent implements OnInit, OnDestroy {
+export class BlogCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   private blogSvc = inject(BlogService);
   private router = inject(Router);
+  private elementRef = inject(ElementRef);
+
+  @ViewChild('trackContainer') trackContainer!: ElementRef<HTMLElement>;
 
   posts = signal<BlogPost[]>([]);
   loading = signal(true);
   error = signal(false);
   currentIndex = signal(0);
-  private intervalId: ReturnType<typeof setInterval> | null = null;
 
-  visibleCards = 0;
+  visibleCards = 3;
+  containerWidth = 0;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
+  private resizeObserver: ResizeObserver | null = null;
 
   getFileUrl(path: string): string {
     if (!path || path.startsWith('http')) return path;
@@ -46,12 +51,7 @@ export class BlogCarouselComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const w = typeof window !== 'undefined' ? window.innerWidth : 1200;
-    this.visibleCards = w < 640 ? 1 : w < 1024 ? 2 : 3;
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', this.onResize);
-    }
+    this.updateVisibleCards();
 
     this.blogSvc.getPosts().subscribe({
       next: res => {
@@ -66,23 +66,37 @@ export class BlogCarouselComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.stopAutoPlay();
+  ngAfterViewInit(): void {
+    this.measureContainer();
+
     if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.onResize);
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateVisibleCards();
+        this.measureContainer();
+      });
+      this.resizeObserver.observe(this.elementRef.nativeElement);
     }
   }
 
-  private onResize = (): void => {
+  ngOnDestroy(): void {
+    this.stopAutoPlay();
+    this.resizeObserver?.disconnect();
+  }
+
+  private measureContainer(): void {
+    if (this.trackContainer?.nativeElement) {
+      this.containerWidth = this.trackContainer.nativeElement.offsetWidth;
+    }
+  }
+
+  private updateVisibleCards(): void {
     const w = window.innerWidth;
     this.visibleCards = w < 640 ? 1 : w < 1024 ? 2 : 3;
-  };
+  }
 
   private startAutoPlay(): void {
     this.stopAutoPlay();
-    this.intervalId = setInterval(() => {
-      this.next();
-    }, 4000);
+    this.intervalId = setInterval(() => this.next(), 4000);
   }
 
   private stopAutoPlay(): void {
@@ -92,16 +106,12 @@ export class BlogCarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  pause(): void {
-    this.stopAutoPlay();
-  }
-
-  resume(): void {
-    this.startAutoPlay();
-  }
+  pause(): void { this.stopAutoPlay(); }
+  resume(): void { this.startAutoPlay(); }
 
   next(): void {
-    this.currentIndex.update(i => (i >= this.maxIndex ? 0 : i + 1));
+    const max = this.maxIndex;
+    this.currentIndex.update(i => (i >= max ? 0 : i + 1));
   }
 
   prev(): void {
@@ -116,9 +126,9 @@ export class BlogCarouselComponent implements OnInit, OnDestroy {
     this.router.navigate(['/blogs/blog', slug]);
   }
 
-  get translateX(): string {
-    const pct = this.currentIndex() * (100 / this.visibleCards);
-    return `translateX(${-pct}%)`;
+  get transformStyle(): string {
+    const cardW = this.containerWidth / this.visibleCards;
+    return `translateX(${-this.currentIndex() * cardW}px)`;
   }
 
   get maxIndex(): number {
