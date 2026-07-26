@@ -1,22 +1,47 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LucideUser, LucideLogOut, LucideLogIn, LucidePencil, LucideCheck, LucideX, LucideAlertCircle, LucideTrash2, LucideMail, LucidePhone } from '@lucide/angular';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
+import { AwardsService, AwardPack, UserAward } from '../../core/services/awards/awards.service';
 
 @Component({
   selector: 'app-profile',
   imports: [FormsModule, LucideUser, LucideLogOut, LucideLogIn, LucidePencil, LucideCheck, LucideX, LucideAlertCircle, LucideTrash2, LucideMail, LucidePhone],
   templateUrl: './profile.html',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   private router = inject(Router);
+  private awardsSvc = inject(AwardsService);
   authStore = inject(AuthStoreService);
 
   isLoggedIn = computed(() => this.authStore.isLoggedIn());
   customerName = computed(() => this.authStore.customerName());
   customerPhone = computed(() => this.authStore.customerPhone());
   customerEmail = computed(() => this.authStore.customerEmail());
+
+  packs = signal<AwardPack[]>([]);
+  myAwards = signal<UserAward[]>([]);
+  awardsLoading = signal(false);
+  earnedIds = computed(() => new Set(this.myAwards().filter(a => a.status === 'APPROVED').map(a => a.pack.id)));
+  pendingIds = computed(() => new Set(this.myAwards().filter(a => a.status === 'PENDING').map(a => a.pack.id)));
+
+  ngOnInit() {
+    if (this.isLoggedIn()) {
+      this.loadAwards();
+    }
+  }
+
+  private loadAwards() {
+    this.awardsLoading.set(true);
+    this.awardsSvc.getPacks().subscribe(packs => {
+      this.packs.set(packs);
+      this.awardsLoading.set(false);
+    });
+    this.awardsSvc.getMyAwards().subscribe(awards => {
+      this.myAwards.set(awards);
+    });
+  }
 
   editMode = signal<boolean>(false);
   editName = signal<string>('');
