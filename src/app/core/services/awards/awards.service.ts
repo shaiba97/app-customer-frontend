@@ -9,9 +9,6 @@ export interface AwardPack {
   description: string;
   icon: string;
   minBookings: number;
-  minTrips: number;
-  activeDays: number;
-  consecutiveDays: number;
   awardValue: string;
   isActive: boolean;
   createdAt: string;
@@ -27,8 +24,6 @@ export interface UserAward {
 export interface UserStats {
   totalBookings: number;
   uniqueTrips: number;
-  activeDays: number;
-  consecutiveDays: number;
 }
 
 @Injectable({ providedIn: 'root' })
