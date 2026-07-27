@@ -12,6 +12,10 @@ export interface AwardPack {
   awardValue: string;
   isActive: boolean;
   createdAt: string;
+  userTotalBookings: number;
+  eligible: boolean;
+  earned: boolean;
+  pending: boolean;
 }
 
 export interface UserAward {
@@ -21,9 +25,10 @@ export interface UserAward {
   createdAt: string;
 }
 
-export interface UserStats {
+export interface PackDetailResponse {
+  pack: AwardPack;
+  awards: UserAward[];
   totalBookings: number;
-  uniqueTrips: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -37,5 +42,13 @@ export class AwardsService {
 
   getPacks(): Observable<AwardPack[]> {
     return this.http.get<AwardPack[]>(`${this.api}/awards/packs`);
+  }
+
+  requestAward(packId: string): Observable<any> {
+    return this.http.post(`${this.api}/awards/request/${packId}`, {});
+  }
+
+  getPackDetail(packId: string): Observable<PackDetailResponse> {
+    return this.http.get<PackDetailResponse>(`${this.api}/awards/pack/${packId}`);
   }
 }

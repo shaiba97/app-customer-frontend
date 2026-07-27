@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LucideUser, LucideLogOut, LucideLogIn, LucidePencil, LucideCheck, LucideX, LucideAlertCircle, LucideTrash2, LucideMail, LucidePhone } from '@lucide/angular';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
-import { AwardsService, AwardPack, UserAward } from '../../core/services/awards/awards.service';
+import { AwardsService, AwardPack } from '../../core/services/awards/awards.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,27 +21,38 @@ export class ProfileComponent implements OnInit {
   customerEmail = computed(() => this.authStore.customerEmail());
 
   packs = signal<AwardPack[]>([]);
-  myAwards = signal<UserAward[]>([]);
   awardsLoading = signal(false);
-  earnedIds = computed(() => new Set(this.myAwards().filter(a => a.status === 'APPROVED').map(a => a.pack.id)));
-  pendingIds = computed(() => new Set(this.myAwards().filter(a => a.status === 'PENDING').map(a => a.pack.id)));
+  requesting = signal<string | null>(null);
 
   ngOnInit() {
     if (this.isLoggedIn()) {
-      this.loadAwards();
+      this.loadPacks();
     }
   }
 
-  private loadAwards() {
+  private loadPacks() {
     this.awardsLoading.set(true);
-    this.awardsSvc.getPacks().subscribe(packs => {
-      this.packs.set(packs);
-      this.awardsLoading.set(false);
-    });
-    this.awardsSvc.getMyAwards().subscribe(awards => {
-      this.myAwards.set(awards);
+    this.awardsSvc.getPacks().subscribe({
+      next: (packs: AwardPack[]) => { this.packs.set(packs); this.awardsLoading.set(false); },
+      error: () => { this.awardsLoading.set(false); },
     });
   }
+
+  requestAward(packId: string) {
+    this.requesting.set(packId);
+    this.awardsSvc.requestAward(packId).subscribe({
+      next: () => { this.requesting.set(null); this.loadPacks(); },
+      error: () => { this.requesting.set(null); },
+    });
+  }
+
+  viewPackDetail(packId: string) {
+    this.router.navigate(['/awards/pack', packId]);
+  }
+
+  toArabic(n: number | string): string { return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]); }
+  formatAmount(n: number | string): string { return this.toArabic(Math.round(Number(n)).toLocaleString('en')); }
+  progressWidth(bookings: number, min: number): number { return min > 0 ? Math.min(100, (bookings / min) * 100) : 0; }
 
   editMode = signal<boolean>(false);
   editName = signal<string>('');
