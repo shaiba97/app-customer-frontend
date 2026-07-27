@@ -89,6 +89,10 @@ export const routes: Routes = [
             loadComponent: () => import('./pages/mobile/profile/profile').then(m => m.Profile),
           },
           {
+            path: 'awards/pack/:packId',
+            loadComponent: () => import('./pages/awards/pack-detail/pack-detail').then(m => m.PackDetailComponent),
+          },
+          {
             path: 'notifications',
             loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
           },
