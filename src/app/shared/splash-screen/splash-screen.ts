@@ -14,25 +14,13 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
         <div class="splash-ring splash-ring--inner"></div>
 
         <div class="splash-logo-wrap">
-          <svg
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="splash-logo-svg"
-            role="img"
-            aria-label="رحلة"
-          >
-            <circle cx="32" cy="32" r="32" fill="#0D9488"/>
-            <path
-              d="M42 20 C42 20 44 32 36 40 C30 46 20 46 18 44"
-              stroke="#FFFFFF"
-              stroke-width="3.5"
-              stroke-linecap="round"
-              fill="none"
-            />
-            <circle cx="18" cy="44" r="4" fill="#FFFFFF"/>
-            <circle cx="42" cy="20" r="2.5" fill="#CCFBF1"/>
-          </svg>
+          <img
+            src="/customerLogo.png"
+            alt="رحلة"
+            class="splash-logo-img"
+            width="100"
+            height="100"
+          />
         </div>
 
         <p class="splash-brand" lang="ar">رحلة</p>
@@ -50,7 +38,7 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
     :host { display: contents; }
     .splash-root {
       position: fixed; inset: 0; z-index: 9999;
-      background: #0A0F0D;
+      background: #FFFFFF;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -74,12 +62,12 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
     }
     .splash-ring--outer {
       width: 280px; height: 280px;
-      background: rgba(13,148,136,0.06);
+      background: rgba(13,148,136,0.04);
       animation: ringExpand 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
     }
     .splash-ring--inner {
       width: 200px; height: 200px;
-      background: rgba(13,148,136,0.12);
+      background: rgba(13,148,136,0.08);
       animation: ringExpand 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
     }
     @keyframes ringExpand {
@@ -90,8 +78,10 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
       width: 100px; height: 100px; position: relative; z-index: 1;
       animation: logoSpring 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;
       margin-bottom: 28px;
+      border-radius: 20px;
+      overflow: hidden;
     }
-    .splash-logo-svg { width: 100%; height: 100%; display: block; }
+    .splash-logo-img { width: 100%; height: 100%; display: block; object-fit: contain; }
     @keyframes logoSpring {
       from { opacity: 0; transform: scale(0.78); }
       to   { opacity: 1; transform: scale(1); }
@@ -99,15 +89,14 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
     .splash-brand {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: clamp(2rem, 8vw, 2.8rem);
-      font-weight: 800; color: #F0FDFA;
+      font-weight: 800; color: #0D9488;
       letter-spacing: 0.02em; margin: 0 0 8px; line-height: 1;
       animation: slideUpFade 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.35s both;
     }
     .splash-tagline {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
       font-size: clamp(0.8rem, 3.5vw, 1rem);
-      font-weight: 400; color: #5EEAD4; margin: 0;
-      letter-spacing: 0.04em;
+      font-weight: 400; color: #64748B; margin: 0;
       animation: slideUpFade 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.5s both;
     }
     @keyframes slideUpFade {
@@ -127,7 +116,7 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
     .splash-dot:nth-child(2) { animation-delay: 0.2s; opacity: 0.7; }
     .splash-dot:nth-child(3) { animation-delay: 0.4s; opacity: 0.45; }
     @keyframes dotPulse {
-      0%, 100% { transform: scale(1);   opacity: 0.45; }
+      0%, 100% { transform: scale(1);   opacity: 0.3; }
       50%       { transform: scale(1.5); opacity: 1;    }
     }
   `],
