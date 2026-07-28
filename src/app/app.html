@@ -1,5 +1,14 @@
 
+@if (!splashDone()) {
+  <app-splash-screen (done)="splashDone.set(true)" />
+}
 
-<main class="min-h-screen bg-[var(--bg-base)]">
-  <router-outlet />
-</main>
+<div
+  [style.visibility]="splashDone() ? 'visible' : 'hidden'"
+  [style.opacity]="splashDone() ? '1' : '0'"
+  [style.transition]="'opacity 0.3s cubic-bezier(0.25,0.1,0.25,1)'"
+>
+  <main class="min-h-screen bg-[var(--bg-base)]">
+    <router-outlet />
+  </main>
+</div>
