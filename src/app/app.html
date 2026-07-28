@@ -1,14 +1,19 @@
 
 @if (!splashDone()) {
-  <app-splash-screen (done)="splashDone.set(true)" />
+  <app-splash-screen (done)="onSplashDone()" />
 }
 
-<div
-  [style.visibility]="splashDone() ? 'visible' : 'hidden'"
-  [style.opacity]="splashDone() ? '1' : '0'"
-  [style.transition]="'opacity 0.3s cubic-bezier(0.25,0.1,0.25,1)'"
->
-  <main class="min-h-screen bg-[var(--bg-base)]">
-    <router-outlet />
-  </main>
-</div>
+@if (showOnboarding()) {
+  <app-onboarding-screen (done)="showOnboarding.set(false)" />
+}
+
+@if (splashDone() && !showOnboarding()) {
+  <div
+    [style.visibility]="'visible'"
+    [style.opacity]="'1'"
+  >
+    <main class="min-h-screen bg-[var(--bg-base)]">
+      <router-outlet />
+    </main>
+  </div>
+}
