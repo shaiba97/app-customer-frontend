@@ -16,14 +16,14 @@ import { Component, output, signal, ChangeDetectionStrategy, OnInit } from '@ang
         <div class="splash-logo-wrap">
           <img
             src="/customerLogo.png"
-            alt="رحلة"
+            alt="تفية"
             class="splash-logo-img"
             width="100"
             height="100"
           />
         </div>
 
-        <p class="splash-brand" lang="ar">رحلة</p>
+        <p class="splash-brand" lang="ar">تفية</p>
         <p class="splash-tagline" lang="ar">النقل البري في السودان</p>
 
         <div class="splash-dots" aria-hidden="true">
