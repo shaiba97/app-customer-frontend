@@ -60,5 +60,5 @@ export class ProfileSettings implements OnInit {
     });
   }
 
-  back() { this.router.navigate(['/profile']); }
+  back() { this.router.navigate(['/m/profile']); }
 }

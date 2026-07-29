@@ -33,6 +33,6 @@ export class Profile {
     });
   }
 
-  goToAwards(): void { this.router.navigate(['/profile/awards']); }
-  goToSettings(): void { this.router.navigate(['/profile/settings']); }
+  goToAwards(): void { this.router.navigate(['/m/profile/awards']); }
+  goToSettings(): void { this.router.navigate(['/m/profile/settings']); }
 }
