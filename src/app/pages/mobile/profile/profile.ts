@@ -33,6 +33,8 @@ export class Profile {
     });
   }
 
-  goToAwards(): void { this.router.navigate(['/m/profile/awards']); }
-  goToSettings(): void { this.router.navigate(['/m/profile/settings']); }
+  private p = (path: string) => this.router.url.startsWith('/m/') ? `/m${path}` : path;
+
+  goToAwards(): void { this.router.navigate([this.p('/profile/awards')]); }
+  goToSettings(): void { this.router.navigate([this.p('/profile/settings')]); }
 }
