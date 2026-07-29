@@ -31,6 +31,14 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/responsive/profile').then(m => m.ResponsiveProfile),
       },
       {
+        path: 'profile/awards',
+        loadComponent: () => import('./pages/awards/awards-page/awards-page').then(m => m.AwardsPage),
+      },
+      {
+        path: 'profile/settings',
+        loadComponent: () => import('./pages/profile/settings/settings').then(m => m.ProfileSettings),
+      },
+      {
         path: 'awards/pack/:packId',
         loadComponent: () => import('./pages/awards/pack-detail/pack-detail').then(m => m.PackDetailComponent),
       },
@@ -38,14 +46,6 @@ export const routes: Routes = [
         path: 'notifications',
         loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
       },
-          {
-            path: 'awards/pack/:packId',
-            loadComponent: () => import('./pages/awards/pack-detail/pack-detail').then(m => m.PackDetailComponent),
-          },
-          {
-            path: 'notifications',
-            loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
-          },
           {
             path: 'blogs',
         loadComponent: () => import('./pages/blog/blog').then(m => m.BlogComponent),
@@ -87,6 +87,14 @@ export const routes: Routes = [
           {
             path: 'profile',
             loadComponent: () => import('./pages/mobile/profile/profile').then(m => m.Profile),
+          },
+          {
+            path: 'profile/awards',
+            loadComponent: () => import('./pages/awards/awards-page/awards-page').then(m => m.AwardsPage),
+          },
+          {
+            path: 'profile/settings',
+            loadComponent: () => import('./pages/profile/settings/settings').then(m => m.ProfileSettings),
           },
           {
             path: 'awards/pack/:packId',
