@@ -12,7 +12,7 @@
   </main>
 
   <!-- ==================== MOBILE BOTTOM NAV ==================== -->
-  <nav class="md:hidden sticky bottom-0 left-0 right-0 z-[99999]
+  <nav aria-label="التنقل الرئيسي" class="md:hidden sticky bottom-0 left-0 right-0 z-[99999]
               w-full max-w-full box-border shrink-0
               flex items-center justify-around gap-0 px-1
               bg-[var(--bg-card)] border-t border-[var(--border)]
@@ -25,7 +25,7 @@
     [class.bg-[var(--primary-light)]]="isHomeActive()"
     [class.text-[var(--text-secondary)]]="isHomeActive()"
     [class.text-[var(--primary)]]="!isHomeActive()">
-    <svg lucideHome class="w-5 h-5 transition-colors duration-200"></svg>
+    <svg lucideHome class="w-5 h-5 transition-colors duration-200" aria-hidden="true"></svg>
     <span class="text-[10px] font-bold truncate w-full max-w-full text-center transition-colors duration-200">الرئيسية</span>
   </a>
 
@@ -34,7 +34,7 @@
     [class.bg-[var(--primary-light)]]="isBookingsActive()"
     [class.text-[var(--text-secondary)]]="isBookingsActive()"
     [class.text-[var(--primary)]]="!isBookingsActive()">
-     <svg lucideCalendarClock class="w-5 h-5 transition-colors duration-200"></svg>
+     <svg lucideCalendarClock class="w-5 h-5 transition-colors duration-200" aria-hidden="true"></svg>
     <span class="text-[10px] font-bold truncate w-full max-w-full text-center transition-colors duration-200">حجوزاتي</span>
   </a>
 
@@ -44,7 +44,7 @@
     [class.text-[var(--text-secondary)]]="isNotifsActive()"
     [class.text-[var(--primary)]]="!isNotifsActive()">
     <div class="relative">
-      <svg lucideBell class="w-5 h-5 transition-colors duration-200"></svg>
+      <svg lucideBell class="w-5 h-5 transition-colors duration-200" aria-hidden="true"></svg>
       @if (isLoggedIn() && unreadCount() > 0) {
         <span class="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] rounded-full
                      bg-red-500 text-white text-[8px] font-extrabold
@@ -63,7 +63,7 @@
     [class.bg-[var(--primary-light)]]="isBlogActive()"
     [class.text-[var(--text-secondary)]]="isBlogActive()"
     [class.text-[var(--primary)]]="!isBlogActive()">
-    <svg lucideNewspaper class="w-5 h-5 transition-colors duration-200"></svg>
+    <svg lucideNewspaper class="w-5 h-5 transition-colors duration-200" aria-hidden="true"></svg>
     <span class="text-[10px] font-bold truncate w-full max-w-full text-center transition-colors duration-200">المدونة</span>
   </a>
 
@@ -72,7 +72,7 @@
     [class.bg-[var(--primary-light)]]="isProfileActive()"
     [class.text-[var(--text-secondary)]]="isProfileActive()"
     [class.text-[var(--primary)]]="!isProfileActive()">
-    <svg lucideUser class="w-5 h-5 transition-colors duration-200"></svg>
+    <svg lucideUser class="w-5 h-5 transition-colors duration-200" aria-hidden="true"></svg>
     <span class="text-[10px] font-bold truncate w-full max-w-full text-center transition-colors duration-200">حسابي</span>
   </a>
   </nav>

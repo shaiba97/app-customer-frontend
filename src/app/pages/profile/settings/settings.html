@@ -1,7 +1,7 @@
-<div dir="rtl" class="min-h-[calc(100vh-4rem)] bg-[var(--bg-base)]">
-  <div class="max-w-2xl mx-auto px-4 md:px-6 py-6 md:py-8">
-    <button (click)="back()" class="flex items-center gap-1.5 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-4">
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+<section dir="rtl" class="min-h-[calc(100vh-4rem)] bg-[var(--bg-base)]">
+  <form class="max-w-2xl mx-auto px-4 md:px-6 py-6 md:py-8">
+    <button type="button" (click)="back()" class="flex items-center gap-1.5 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-4">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
       <span>العودة</span>
     </button>
 
@@ -68,23 +68,23 @@
 
     @if (editMode()) {
       <div class="flex items-center gap-3">
-        <button (click)="saveProfile()" [disabled]="isSaving()"
+        <button type="button" (click)="saveProfile()" [disabled]="isSaving()"
           class="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[var(--primary)] text-white font-bold text-sm active:scale-[0.98] transition-all"
           [class.opacity-60]="isSaving()">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           <span>{{ isSaving() ? 'جاري الحفظ...' : 'حفظ التغييرات' }}</span>
         </button>
-        <button (click)="cancelEdit()"
+        <button type="button" (click)="cancelEdit()"
           class="flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl border border-[var(--border)] text-[var(--text-secondary)] font-bold text-sm active:scale-[0.98] transition-all">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           <span>إلغاء</span>
         </button>
       </div>
     } @else {
-      <button (click)="startEdit()" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm active:scale-[0.98] transition-all">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="M15 5l4 4"/></svg>
+      <button type="button" (click)="startEdit()" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl border border-[var(--border)] text-[var(--text-primary)] font-bold text-sm active:scale-[0.98] transition-all">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="M15 5l4 4"/></svg>
         <span>تعديل البيانات</span>
       </button>
     }
-  </div>
-</div>
+  </form>
+</section>
