@@ -2,6 +2,8 @@ import { Component, inject, computed, signal, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
+import { JsonLdService } from '../../../services/json-ld/json-ld.service';
+import { currentPath, pageGraph } from '../../../services/json-ld/json-ld';
 
 @Component({
   selector: 'app-profile-settings',
@@ -11,6 +13,7 @@ import { AuthStoreService } from '../../../services/auth-store/auth-store.servic
 export class ProfileSettings implements OnInit {
   private router = inject(Router);
   authStore = inject(AuthStoreService);
+  private jsonLd = inject(JsonLdService);
 
   isLoggedIn = computed(() => this.authStore.isLoggedIn());
   customerName = computed(() => this.authStore.customerName());
@@ -26,6 +29,8 @@ export class ProfileSettings implements OnInit {
   saveSuccess = signal('');
 
   ngOnInit() {
+    const path = currentPath(this.router.url);
+    this.jsonLd.set('page', pageGraph('الإعدادات', path, [{ name: 'حسابي', url: `${path.replace(/\/settings$/, '')}` }, { name: 'الإعدادات' }]));
     this.editName.set(this.customerName());
     this.editPhone.set(this.customerPhone());
     this.editEmail.set(this.customerEmail());
