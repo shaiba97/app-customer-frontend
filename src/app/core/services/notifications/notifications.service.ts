@@ -193,9 +193,14 @@ export class NotificationsService {
 
     const user = this.auth.customerData();
     if (!user) return;
+    // The gateway verifies this JWT during the handshake; without it the
+    // server rejects joining the personal notification room.
+    const token = this.auth.token();
+    if (!token) return;
 
     this.socket = io(this.wsUrl, {
       transports: ['polling', 'websocket'],
+      auth: { token },
     });
 
     this.socket.on('connect', () => {
