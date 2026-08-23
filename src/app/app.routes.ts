@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,10 +25,12 @@ export const routes: Routes = [
       },
       {
         path: 'bookings',
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/responsive/bookings').then(m => m.ResponsiveBookings),
       },
       {
         path: 'profile',
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/responsive/profile').then(m => m.ResponsiveProfile),
       },
       {
@@ -36,6 +39,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile/settings',
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/profile/settings/settings').then(m => m.ProfileSettings),
       },
       {
@@ -44,6 +48,7 @@ export const routes: Routes = [
       },
       {
         path: 'notifications',
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
       },
       {
@@ -82,10 +87,12 @@ export const routes: Routes = [
           },
           {
             path: 'bookings',
+            canActivate: [authGuard],
             loadComponent: () => import('./pages/mobile/bookings/bookings').then(m => m.Bookings),
           },
           {
             path: 'profile',
+            canActivate: [authGuard],
             loadComponent: () => import('./pages/mobile/profile/profile').then(m => m.Profile),
           },
           {
@@ -94,6 +101,7 @@ export const routes: Routes = [
           },
           {
             path: 'profile/settings',
+            canActivate: [authGuard],
             loadComponent: () => import('./pages/profile/settings/settings').then(m => m.ProfileSettings),
           },
           {
@@ -102,10 +110,12 @@ export const routes: Routes = [
           },
           {
             path: 'notifications',
+            canActivate: [authGuard],
             loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
           },
           {
             path: 'notifications/:id',
+            canActivate: [authGuard],
             loadComponent: () => import('./pages/notification-detail/notification-detail').then(m => m.NotificationDetailPage),
           },
           {

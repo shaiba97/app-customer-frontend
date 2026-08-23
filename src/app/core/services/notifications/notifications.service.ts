@@ -68,6 +68,9 @@ export class NotificationsService {
 
   private startPolling(): void {
     this.stopPolling();
+    // Only poll while authenticated — anonymous visitors would otherwise
+    // emit a silent 401 every 15 seconds.
+    if (!this.auth.token()) return;
     this.pollTimer = setInterval(() => this.fetch(), 15000);
   }
 
@@ -77,6 +80,7 @@ export class NotificationsService {
   }
 
   async fetch(): Promise<void> {
+    if (!this.auth.token()) return;
     try {
       const res: any = await firstValueFrom(
         this.http.get(`${this.api}/notifications?limit=40`),

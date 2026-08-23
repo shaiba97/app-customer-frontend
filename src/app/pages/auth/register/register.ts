@@ -54,7 +54,14 @@ export class Register implements OnInit {
     const phone = isEmail ? undefined : id;
     const email = isEmail ? id : undefined;
     this.authStore.register({ name: n, phone, email, password: pw }).pipe(
-      switchMap(() => this.authStore.login({ email: id, password: pw })),
+      switchMap((reg) => {
+        // Registration failures (e.g. duplicate account) arrive as a normal
+        // response — only chain into auto-login on actual success.
+        if (!reg?.success || !reg?.data) {
+          throw new Error(reg?.message || 'فشل إنشاء الحساب');
+        }
+        return this.authStore.login({ email: id, password: pw });
+      }),
     ).subscribe({
       next: (res: LoginResponse) => {
         const token = res.token;
@@ -67,7 +74,7 @@ export class Register implements OnInit {
       },
       error: (err: any) => {
         this.isLoading.set(false);
-        const msg = err?.error?.message;
+        const msg = err?.error?.message || err?.message;
         if (msg) {
           this.error.set(msg);
         } else {
