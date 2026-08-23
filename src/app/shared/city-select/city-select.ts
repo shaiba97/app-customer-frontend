@@ -187,11 +187,13 @@ export class CitySelectComponent {
   }
 
   private attach(): void {
+    if (typeof window === 'undefined') return;
     window.addEventListener('scroll', this.onScroll, { capture: true, passive: true });
     window.addEventListener('resize', this.onResize, { passive: true });
   }
 
   private detach(): void {
+    if (typeof window === 'undefined') return;
     window.removeEventListener('scroll', this.onScroll, { capture: true });
     window.removeEventListener('resize', this.onResize);
   }

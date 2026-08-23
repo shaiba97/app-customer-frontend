@@ -77,6 +77,7 @@ export class PassengerDetails implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (typeof window === 'undefined') return;
     window.removeEventListener('popstate', this.onPop);
   }
 

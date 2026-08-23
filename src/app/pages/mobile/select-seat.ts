@@ -106,6 +106,7 @@ export class SelectSeat implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.wsCleanups.forEach(fn => fn());
+    if (typeof window === 'undefined') return;
     window.removeEventListener('popstate', this.onPop);
   }
 
