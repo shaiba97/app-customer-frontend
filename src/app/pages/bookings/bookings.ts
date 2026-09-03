@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye } from '@lucide/angular';
+import { LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload } from '@lucide/angular';
 import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
 import { TimeFormatPipe } from '../../pipes/time-format/time-format-pipe';
 import { BookingService } from '../../services/booking/booking.service';
@@ -8,13 +8,12 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { WsService } from '../../services/ws.service';
 import { NgClass, DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { TicketPreviewComponent } from '../../shared/ticket-preview/ticket-preview';
 import { JsonLdService } from '../../services/json-ld/json-ld.service';
 import { currentPath, pageGraph } from '../../services/json-ld/json-ld';
 
 @Component({
   selector: 'app-bookings',
-  imports: [LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye, ArabicNumberPipe, TimeFormatPipe, NgClass, DatePipe, TicketPreviewComponent],
+  imports: [LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, ArabicNumberPipe, TimeFormatPipe, NgClass, DatePipe],
   templateUrl: './bookings.html',
 })
 export class BookingsComponent implements OnInit, OnDestroy {
@@ -27,7 +26,6 @@ export class BookingsComponent implements OnInit, OnDestroy {
   bookings = signal<any[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string>('');
-  selectedBooking = signal<any | null>(null);
   supportContacts = signal<any[]>([]);
   private wsCleanups: (() => void)[] = [];
 
@@ -108,16 +106,6 @@ export class BookingsComponent implements OnInit, OnDestroy {
       environment.fileUrl + '/api-customer/tickets/pdf/' + booking.id + '?token=' + token,
       '_blank',
     );
-  }
-
-  showTicketView(e: Event, booking: any): void {
-    e.stopPropagation();
-    if (!booking?.id) return;
-    this.selectedBooking.set(booking);
-  }
-
-  closeTicketView(): void {
-    this.selectedBooking.set(null);
   }
 
   bookingTime(date: string): string {

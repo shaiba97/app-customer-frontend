@@ -90,7 +90,7 @@
                   <svg lucideDownload class="w-3 h-3" aria-hidden="true"></svg>
                   تذكرة
                 </button>
-                <button type="button" (click)="showTicketView($event, b)" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-[10px] font-bold active:scale-95 transition-all bg-[var(--bg-card)]">
+                <button type="button" (click)="downloadTicket($event, b)" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-[10px] font-bold active:scale-95 transition-all bg-[var(--bg-card)]">
                   <svg lucideEye class="w-3 h-3" aria-hidden="true"></svg>
                   عرض
                 </button>
@@ -116,9 +116,3 @@
     </section>
   }
 </section>
-
-<app-ticket-preview
-  [bookingId]="selectedBooking()?.id"
-  [visible]="!!selectedBooking()"
-  (closed)="closeTicketView()"
- />
