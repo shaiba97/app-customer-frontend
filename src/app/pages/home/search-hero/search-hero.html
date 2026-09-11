@@ -30,12 +30,14 @@
     </div>
 
     <div aria-hidden="true"
-         class="absolute inset-y-0 left-0 w-[30%] hidden md:block pointer-events-none">
+         class="absolute inset-y-0 left-0 w-[30%] hidden md:block pointer-events-none
+                [mask-image:linear-gradient(to_right,black_0%,black_50%,transparent_100%)]
+                [-webkit-mask-image:linear-gradient(to_right,black_0%,black_50%,transparent_100%)]">
       <img ngSrc="/busimage.png" width="307" height="325" priority
            alt=""
            class="w-full h-full object-cover">
       <div class="absolute inset-0"
-           style="background:linear-gradient(to right, transparent 0%, var(--primary) 100%)"></div>
+           style="background:linear-gradient(to right, transparent 0%, transparent 45%, color-mix(in srgb, var(--primary) 55%, transparent) 70%, var(--primary) 100%)"></div>
     </div>
 
     <div class="relative z-10 max-w-5xl mx-auto">
