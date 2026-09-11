@@ -10,7 +10,6 @@ import { join } from 'node:path';
 const allowedHosts = [
   'app-customer-frontend.onrender.com',
   'app-backend-production-4da9.up.railway.app',
-  'rihla-backend-rbh7.onrender.com',
   'localhost',
   '0.0.0.0',
 ];

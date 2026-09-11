@@ -4,11 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --allowed-hosts",
-    "build": "node tools/set-env.js && ng build",
+    "build": "node tools/set-env.js && ng build && node tools/verify-env.js customer",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:customer": "node dist/customer/server/server.mjs",
-    "build:mobile": "node tools/set-env.js && ng build --configuration production,mobile",
+    "build:mobile": "node tools/set-env.js && ng build --configuration production,mobile && node tools/verify-env.js customer",
     "cap:sync": "npx cap sync",
     "apk": "npm run build:mobile && npx cap sync android && cd android && ./gradlew assembleDebug"
   },
