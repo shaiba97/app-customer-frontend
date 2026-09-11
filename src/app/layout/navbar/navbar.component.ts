@@ -4,8 +4,6 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
-  LucideSun,
-  LucideMoon,
   LucideUserRound,
   LucideChevronDown,
   LucideCalendarCheck,
@@ -16,7 +14,6 @@ import {
   LucideX,
   LucideMenu,
 } from '@lucide/angular';
-import { ThemeService } from '../../core/services/theme.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { NotificationBellComponent } from '../../shared/notification-bell/notification-bell.component';
 
@@ -25,8 +22,6 @@ import { NotificationBellComponent } from '../../shared/notification-bell/notifi
   standalone: true,
   imports: [
     RouterLink,
-    LucideSun,
-    LucideMoon,
     LucideUserRound,
     LucideChevronDown,
     LucideCalendarCheck,
@@ -41,7 +36,6 @@ import { NotificationBellComponent } from '../../shared/notification-bell/notifi
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
-  themeService = inject(ThemeService);
   authStore = inject(AuthStoreService);
 
   showUserMenu = signal<boolean>(false);

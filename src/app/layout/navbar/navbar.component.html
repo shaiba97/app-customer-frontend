@@ -40,28 +40,26 @@
     <!-- LEFT: Actions -->
     <div class="flex items-center gap-2">
 
-      <!-- Theme toggle -->
+      <!-- App store buttons -->
       <button
         type="button"
-        (click)="themeService.toggle()"
-        aria-label="تبديل السمة"
-        class="w-9 h-9 rounded-xl
-               flex items-center justify-center
+        class="px-3 h-9 rounded-xl
+               text-sm font-semibold
                text-[var(--text-secondary)]
                hover:bg-[var(--primary-light)]
                hover:text-[var(--primary)]
                transition-all duration-150">
-        @if (themeService.isDark()) {
-          <svg lucideSun
-               class="w-[18px] h-[18px] text-warning"
-               aria-hidden="true">
-          </svg>
-        } @else {
-          <svg lucideMoon
-               class="w-[18px] h-[18px]"
-               aria-hidden="true">
-          </svg>
-        }
+        ايفون
+      </button>
+      <button
+        type="button"
+        class="px-3 h-9 rounded-xl
+               text-sm font-semibold
+               text-[var(--text-secondary)]
+               hover:bg-[var(--primary-light)]
+               hover:text-[var(--primary)]
+               transition-all duration-150">
+        اندرويد
       </button>
 
       <!-- NOT LOGGED IN -->
