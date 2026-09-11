@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 import {
   LucideBus,
   LucideArrowLeftRight,
@@ -25,6 +26,7 @@ interface DatePill {
   standalone: true,
   imports: [
     FormsModule,
+    NgOptimizedImage,
     LucideBus,
     LucideArrowLeftRight,
     LucideCalendar,
