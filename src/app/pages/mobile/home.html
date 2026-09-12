@@ -1,49 +1,61 @@
 <section dir="rtl" class="h-full w-full bg-[var(--bg-base)]" style="overflow-anchor: none; scroll-behavior: smooth; overscroll-behavior: contain;">
 
   <!-- ══════════════════════════════════════ -->
-  <!-- WELCOME CARD — above hero              -->
+  <!-- HERO CAROUSEL — 200px, 3 slides, dots  -->
   <!-- ══════════════════════════════════════ -->
-  <header class="block md:hidden w-full
-              bg-[var(--bg-card)]
-              px-5 pt-6 pb-5
-              flex flex-col gap-1"
-       dir="rtl"
-       style="min-height:140px">
+  <section dir="rtl" role="region" aria-roledescription="carousel" aria-label="رسائل وعروض تفيّة"
+    class="relative h-[200px] overflow-hidden rounded-b-3xl select-none"
+    (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)"
+    (mouseenter)="heroPaused.set(true)" (mouseleave)="heroPaused.set(false)"
+    (focusin)="heroPaused.set(true)" (focusout)="heroPaused.set(false)"
+    tabindex="0" (keydown.arrowright)="prevHero()" (keydown.arrowleft)="nextHero()">
 
-    <!-- Line 1: greeting -->
-    <span class="text-sm font-medium
-                 text-[var(--text-secondary)]">
-      أهلاً بك،
-    </span>
-
-    <!-- Line 2: user name — larger -->
-    <h1 class="text-2xl font-extrabold
-                 text-[var(--text-primary)]
-                 leading-tight">
-      {{ userName() }}
-    </h1>
-
-    <!-- Line 3: platform message -->
-    <span class="text-xs
-                 text-[var(--text-secondary)]
-                 mt-0.5">
-      نتمنى لك رحلة سعيدة وآمنة معنا
-    </span>
-
-  </header>
-
-  <!-- ZONE B: HERO HEADER (in normal flow, fixed 280px height) -->
-  <section class="relative h-[280px] overflow-hidden mt-3"
-    [style.opacity]="heroOpacity()"
-    style="transition: opacity 0.3s ease;">
-    <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--primary-hover)] to-[var(--primary)]"></div>
-    <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:24px 24px"></div>
-    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center gap-2">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl font-extrabold text-white">تفية</span>
+    @for (slide of heroSlides; track $index) {
+      <div class="absolute inset-0 flex items-center transition-opacity duration-500"
+        [class.opacity-100]="heroPage() === $index"
+        [class.opacity-0]="heroPage() !== $index"
+        [class.pointer-events-none]="heroPage() !== $index"
+        [attr.aria-hidden]="heroPage() !== $index"
+        [style.background-image]="'linear-gradient(to bottom left, ' + slide.from + ', ' + slide.to + ')'">
+        <div class="flex-1 min-w-0 flex flex-col justify-center gap-1.5 px-5 pb-7">
+          <h2 class="text-white text-[19px] font-extrabold leading-snug">{{ slide.title }}</h2>
+          <p class="text-white/85 text-[13px] leading-snug">{{ slide.subtitle }}</p>
+        </div>
+        <div class="px-5 pb-7 flex-shrink-0">
+          @if ($index === 0) {
+            <img ngSrc="/busimage.png" width="110" height="110" priority class="w-[110px] h-[110px] rounded-full object-cover" alt="" aria-hidden="true">
+          } @else {
+            <img ngSrc="/busimage.png" width="110" height="110" class="w-[110px] h-[110px] rounded-full object-cover" alt="" aria-hidden="true">
+          }
+        </div>
       </div>
-      <p class="text-white/80 text-sm font-medium">سافر بأمان وراحة في السودان</p>
+    }
+
+    <!-- Dot indicators -->
+    <div class="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5">
+      @for (slide of heroSlides; track $index) {
+        <button type="button"
+          [attr.aria-label]="'الشريحة ' + ($index + 1) + ' من ' + heroSlides.length"
+          [attr.aria-current]="heroPage() === $index ? 'true' : null"
+          (click)="setHeroPage($index)"
+          [class.bg-white]="heroPage() === $index"
+          [class.bg-white/45]="heroPage() !== $index"
+          [class.w-[18px]]="heroPage() === $index"
+          [class.w-[6px]]="heroPage() !== $index"
+          class="h-[6px] rounded-full transition-all duration-150"></button>
+      }
     </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- WELCOME STRIP — card below hero        -->
+  <!-- ══════════════════════════════════════ -->
+  <section dir="rtl" aria-label="تحية" class="mx-4 mt-2 mb-3 bg-[var(--bg-card)] rounded-[14px] px-3.5 py-3">
+    <div class="flex items-center gap-2">
+      <svg lucideHand class="w-5 h-5 flex-shrink-0 text-[var(--primary)]" aria-hidden="true"></svg>
+      <h1 class="text-[15px] font-extrabold text-[var(--text-primary)] leading-snug">{{ welcomeText() }}</h1>
+    </div>
+    <p class="mt-0.5 text-xs text-[var(--text-secondary)]">سافر بثقة، رحلتك مؤمّنة</p>
   </section>
 
   <!-- ZONE C: FULL SEARCH FORM (always visible below hero) -->
@@ -55,7 +67,7 @@
         <div class="flex items-center gap-3 px-4 py-3.5">
           <svg lucideMapPin class="w-5 h-5 flex-shrink-0 text-[var(--primary)]" aria-hidden="true"></svg>
           <div class="flex flex-col flex-1 min-w-0">
-            <span class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">من</span>
+            <span class="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">من</span>
             <app-city-select #homeFromCitySelect [placeholder]="'مدينة المغادرة'" [allCities]="cities()" [(value)]="from"></app-city-select>
           </div>
         </div>
@@ -78,7 +90,7 @@
         <div class="flex items-center gap-3 px-4 py-3.5">
           <svg lucideBus class="w-5 h-5 flex-shrink-0 text-[var(--primary)]" aria-hidden="true"></svg>
           <div class="flex flex-col flex-1 min-w-0">
-            <span class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">إلى</span>
+            <span class="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">إلى</span>
             <app-city-select #homeToCitySelect [placeholder]="'مدينة الوصول'" [allCities]="cities()" [(value)]="to"></app-city-select>
           </div>
         </div>
@@ -109,11 +121,33 @@
       <!-- Search button -->
       <button type="button" (click)="onSearch()" class="w-full flex items-center justify-center gap-2 py-4 px-6 bg-[var(--primary)] hover:bg-[var(--primary-hover)] active:scale-[0.98] text-white font-bold text-[15px] transition-all duration-150">
         <svg lucideSearch class="w-5 h-5" aria-hidden="true"></svg>
-        <span>ابحث عن رحلة</span>
+        <span>ابحث عن الباصات</span>
       </button>
     </div>
     @if (error()) { <p class="mt-2 text-center text-sm text-red-500 font-medium">{{ error() }}</p> }
   </form>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SHORTCUTS — 4 advantage badges         -->
+  <!-- ══════════════════════════════════════ -->
+  <section aria-label="مزايا تفيّة" class="px-4 flex items-stretch gap-2">
+    <div class="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-[14px] border-[1.5px] border-[var(--border)] bg-[var(--bg-card)] py-3 px-1">
+      <svg lucideAward class="w-6 h-6 text-[var(--primary)]" aria-hidden="true"></svg>
+      <span class="text-[11px] font-semibold text-[var(--text-primary)] text-center leading-tight">الأفضل</span>
+    </div>
+    <div class="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-[14px] border-[1.5px] border-[var(--border)] bg-[var(--bg-card)] py-3 px-1">
+      <svg lucideFileText class="w-6 h-6 text-[var(--primary)]" aria-hidden="true"></svg>
+      <span class="text-[11px] font-semibold text-[var(--text-primary)] text-center leading-tight">تذكرة رقمية</span>
+    </div>
+    <div class="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-[14px] border-[1.5px] border-[var(--border)] bg-[var(--bg-card)] py-3 px-1">
+      <svg lucideArmchair class="w-6 h-6 text-[var(--primary)]" aria-hidden="true"></svg>
+      <span class="text-[11px] font-semibold text-[var(--text-primary)] text-center leading-tight">اختر مقعدك</span>
+    </div>
+    <div class="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-[14px] border-[1.5px] border-[var(--border)] bg-[var(--bg-card)] py-3 px-1">
+      <svg lucideWallet class="w-6 h-6 text-[var(--primary)]" aria-hidden="true"></svg>
+      <span class="text-[11px] font-semibold text-[var(--text-primary)] text-center leading-tight">الدفع الإلكتروني</span>
+    </div>
+  </section>
 
   <!-- ══════════════════════════════════════ -->
   <!-- COMPACT SEARCH BAR — sticky, conditional -->
@@ -169,7 +203,7 @@
   }
 
   <!-- ZONE D: SCROLL CONTENT (pb-0 — webshell handles nav clearance) -->
-  <section class="px-4 pb-0 flex flex-col gap-4" aria-label="الرحلات المتاحة">
+  <section class="px-4 pb-0 flex flex-col gap-4 mt-4" aria-label="الرحلات المتاحة">
     <div class="flex items-center justify-between">
       <h2 class="text-base font-bold text-[var(--text-primary)]"> 
         كل الرحلات  
@@ -177,9 +211,8 @@
     </div>
     <div class="flex flex-col gap-3">
       @if (featuredTrips().length === 0) {
-        <div class="flex flex-col items-center py-10 gap-3 text-[var(--text-secondary)]">
-          <svg lucideBus class="w-10 h-10" aria-hidden="true"></svg>
-          <p class="text-sm">ابحث عن رحلتك أعلاه</p>
+        <div class="flex flex-col items-center py-10 gap-3">
+          <p class="text-sm text-[#6B7280]">لا توجد رحلات متاحة حالياً</p>
         </div>
       }
       @for (trip of featuredTrips(); track trip.id) {
@@ -208,7 +241,7 @@
             <div class="flex items-center gap-3 px-4 py-3.5">
               <svg lucideMapPin class="w-5 h-5 flex-shrink-0 text-[var(--primary)]" aria-hidden="true"></svg>
               <div class="flex flex-col flex-1">
-                <span class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">من</span>
+                <span class="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">من</span>
                 <app-city-select #modalFromCitySelect [placeholder]="'مدينة المغادرة'" [allCities]="cities()" [(value)]="from"></app-city-select>
               </div>
             </div>
@@ -227,7 +260,7 @@
             <div class="flex items-center gap-3 px-4 py-3.5">
               <svg lucideBus class="w-5 h-5 flex-shrink-0 text-[var(--primary)]" aria-hidden="true"></svg>
               <div class="flex flex-col flex-1">
-                <span class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">إلى</span>
+                <span class="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">إلى</span>
                 <app-city-select #modalToCitySelect [placeholder]="'مدينة الوصول'" [allCities]="cities()" [(value)]="to"></app-city-select>
               </div>
             </div>
@@ -258,7 +291,7 @@
           <!-- Search button -->
           <button type="button" (click)="onSearchFromModal()" class="w-full flex items-center justify-center gap-2 py-4 px-6 bg-[var(--primary)] hover:bg-[var(--primary-hover)] active:scale-[0.98] text-white font-bold text-[15px] transition-all duration-150">
             <svg lucideSearch class="w-5 h-5" aria-hidden="true"></svg>
-            <span>ابحث عن رحلة</span>
+            <span>ابحث عن الباصات</span>
           </button>
         </div>
       </div>

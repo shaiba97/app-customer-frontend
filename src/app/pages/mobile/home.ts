@@ -1,8 +1,8 @@
-import { Component, signal, computed, inject, OnInit, ElementRef, AfterViewInit, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, AfterViewInit, ElementRef, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
-import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
+import { NgClass, NgOptimizedImage } from '@angular/common';
+import { LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, LucideHand, LucideAward, LucideFileText, LucideArmchair, LucideWallet } from '@lucide/angular';
 import { TripSearchService } from '../../services/trip-search/trip-search.service';
 import { MobileTripCardComponent } from '../../shared/mobile-trip-card';
 import { CitySelectComponent } from '../../shared/city-select/city-select';
@@ -11,11 +11,18 @@ import { CitiesService } from '../../services/cities/cities.service';
 import { JsonLdService } from '../../services/json-ld/json-ld.service';
 import { currentPath, pageGraph, tripItemList } from '../../services/json-ld/json-ld';
 
+interface HeroSlide {
+  title: string;
+  subtitle: string;
+  from: string;
+  to: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, NgClass, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, MobileTripCardComponent, CitySelectComponent],
+  imports: [FormsModule, NgClass, NgOptimizedImage, LucideBus, LucideMapPin, LucideSearch, LucidePencil, LucideX, LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, LucideHand, LucideAward, LucideFileText, LucideArmchair, LucideWallet, MobileTripCardComponent, CitySelectComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit, AfterViewInit {
@@ -41,19 +48,23 @@ export class Home implements OnInit, AfterViewInit {
   scrollY = signal<number>(0);
   showSearchModal = signal<boolean>(false);
 
-  protected readonly Math = Math;
+  heroSlides: readonly HeroSlide[] = [
+    { title: 'رحلاتك بين المدن أسهل من أي وقت', subtitle: 'احجز مقعدك في أقل من دقيقة', from: '#0D9488', to: '#134E4A' },
+    { title: 'وفّر أكثر مع عروض التفيّة', subtitle: 'خصومات موسمية على أشهر المسارات', from: '#0F766E', to: '#0D9488' },
+    { title: 'رحلة مؤمّنة… راحة بال', subtitle: 'استرداد فوري عند الإلغاء', from: '#115E59', to: '#0F766E' },
+  ];
+  heroPage = signal<number>(0);
+  heroPaused = signal<boolean>(false);
+  private touchX = 0;
 
-  scrollProgress = computed(() => Math.min(1, this.scrollY() / 200));
-  toggleBarOpacity = computed(() => this.scrollProgress());
-  heroOpacity = computed(() => 1 - this.scrollProgress());
-  heroHeight = computed(() => Math.max(0, 280 * (1 - this.scrollProgress())));
-  heroOverlap = computed(() => this.heroHeight() * 0.25);
-  searchCardProgress = computed(() => this.scrollProgress());
   swapped = signal<boolean>(false);
 
-  userName = computed(() => this.authStore.customerName() || 'المستخدم');
+  welcomeText = computed(() => {
+    const name = this.authStore.customerName()?.trim();
+    return name ? `أهلاً ${name} في تفيّة` : 'أهلاً بك في تفيّة';
+  });
 
-  showCompactSearchBar = computed(() => this.scrollY() > 300);
+  showCompactSearchBar = computed(() => this.scrollY() > 280);
 
   compactSearchRouteLabel = computed(() => {
     const f = this.from();
@@ -116,6 +127,7 @@ export class Home implements OnInit, AfterViewInit {
       error: () => this.isLoadingTrips.set(false),
     });
     this.date.set(this.today);
+    this.startHeroAutoplay();
   }
 
   ngAfterViewInit(): void {
@@ -125,6 +137,27 @@ export class Home implements OnInit, AfterViewInit {
       el.addEventListener('scroll', handler, { passive: true });
       this.destroyRef.onDestroy(() => el.removeEventListener('scroll', handler));
     }
+  }
+
+  private startHeroAutoplay(): void {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => {
+      if (this.heroPaused() || document.hidden) return;
+      this.nextHero();
+    }, 6000);
+    this.destroyRef.onDestroy(() => clearInterval(id));
+  }
+
+  setHeroPage(i: number): void { this.heroPage.set(i % this.heroSlides.length); }
+  nextHero(): void { this.setHeroPage(this.heroPage() + 1); }
+  prevHero(): void { this.setHeroPage((this.heroPage() - 1 + this.heroSlides.length) % this.heroSlides.length); }
+
+  onTouchStart(e: TouchEvent): void { this.touchX = e.touches[0]?.clientX ?? 0; }
+  onTouchEnd(e: TouchEvent): void {
+    const dx = (e.changedTouches[0]?.clientX ?? this.touchX) - this.touchX;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0) this.nextHero(); else this.prevHero();
   }
 
   swap(): void { const t = this.from(); this.from.set(this.to()); this.to.set(t); this.swapped.set(!this.swapped()); }
