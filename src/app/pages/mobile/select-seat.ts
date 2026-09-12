@@ -1,7 +1,7 @@
 import { Component, signal, inject, OnInit, OnDestroy, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgClass, DatePipe } from '@angular/common';
-import { LucideArrowRight, LucideArmchair, LucideLogIn } from '@lucide/angular';
+import { LucideArrowRight, LucideArmchair, LucideLogIn, LucideInfo, LucideX, LucideBus } from '@lucide/angular';
 import { BookingService } from '../../services/booking/booking.service';
 import { SessionService } from '../../services/session/session.service';
 import { TimeFormatPipe } from '../../pipes/time-format/time-format-pipe';
@@ -17,7 +17,7 @@ interface Seat { number: number; status: SeatStatus; }
 @Component({
   selector: 'app-select-seat',
   standalone: true,
-  imports: [NgClass, DatePipe, TimeFormatPipe, ArabicNumberPipe, LucideArrowRight, LucideArmchair, LucideLogIn],
+  imports: [NgClass, DatePipe, TimeFormatPipe, ArabicNumberPipe, LucideArrowRight, LucideArmchair, LucideLogIn, LucideInfo, LucideX, LucideBus],
   templateUrl: './select-seat.html',
 })
 export class SelectSeat implements OnInit, OnDestroy {
@@ -41,6 +41,7 @@ export class SelectSeat implements OnInit, OnDestroy {
   isLoading = signal<boolean>(true);
   platformFeePct = signal<number>(0);
   showLoginPrompt = signal<boolean>(false);
+  noticeDismissed = signal<boolean>(false);
 
   baseAmount = computed(() => (this.trip()?.price ?? 0) * this.selectedSeats().length);
   platformFeeAmount = computed(() => Math.round(this.baseAmount() * this.platformFeePct() / 100));

@@ -29,6 +29,16 @@
       </div>
     </header>
 
+    @if (!noticeDismissed() && selectedSeats().length === 0) {
+    <div class="mx-3.5 mt-2 px-3 py-2 rounded-xl flex items-start gap-2 bg-[rgba(217,119,6,0.12)]">
+      <svg lucideInfo class="w-[17px] h-[17px] mt-0.5 flex-shrink-0 text-[#D97706]" aria-hidden="true"></svg>
+      <p class="text-[11.5px] leading-relaxed text-[var(--text-primary)] flex-1">إذا خرجت من أي خطوة ستتحرَّر مقاعدك وقد يحجزها غيرك — أكمل الحجز لتأمين مقعدك.</p>
+      <button type="button" (click)="noticeDismissed.set(true)" aria-label="إغلاق التنبيه" class="flex-shrink-0">
+        <svg lucideX class="w-4 h-4 text-[#6B7280]" aria-hidden="true"></svg>
+      </button>
+    </div>
+    }
+
     <div class="flex items-center justify-around px-4 py-3 bg-[var(--bg-card)] border-b border-[var(--border)]">
       <div class="flex items-center gap-1.5"><svg lucideArmchair class="w-5 h-5 text-[var(--border)]" aria-hidden="true"></svg><span class="text-[11px] text-[var(--text-secondary)]">متاح</span></div>
       <div class="flex items-center gap-1.5"><svg lucideArmchair class="w-5 h-5 text-[var(--primary)]" aria-hidden="true"></svg><span class="text-[11px] text-[var(--text-secondary)]">مختار</span></div>
@@ -37,7 +47,7 @@
 
     <section class="flex-1 overflow-y-auto px-4 py-5 pb-32" aria-label="خريطة المقاعد">
       <div class="bg-[var(--bg-card)] rounded-3xl border border-[var(--border)] p-5 mx-auto max-w-xs flex flex-col gap-3">
-        <div class="flex justify-end mb-1"><div class="w-10 h-10 rounded-full border-4 border-[var(--border)] flex items-center justify-center"><svg lucideArmchair class="w-5 h-5 text-[var(--text-secondary)] rotate-45" aria-hidden="true"></svg></div></div>
+        <div class="flex justify-center mb-1"><div class="flex flex-col items-center"><div class="w-10 h-10 rounded-full border-[1.5px] border-[var(--border)] bg-[var(--bg-card)] flex items-center justify-center"><svg lucideBus class="w-5 h-5 text-[var(--text-secondary)]" aria-hidden="true"></svg></div><span class="text-[9px] text-[#6B7280] mt-0.5">السائق</span></div></div>
 
         @for (row of mainRows(); track $index) {
           <div class="flex items-center justify-center gap-1">

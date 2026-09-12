@@ -2,7 +2,7 @@ import { Component, signal, inject, OnInit, OnDestroy, computed } from '@angular
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle } from '@lucide/angular';
+import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle, LucideAlertCircle, LucideShieldCheck } from '@lucide/angular';
 import { BookingService } from '../../services/booking/booking.service';
 import { SessionService } from '../../services/session/session.service';
 import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
@@ -14,7 +14,7 @@ import { currentPath, pageGraph, reservation } from '../../services/json-ld/json
 
 @Component({
   selector: 'app-payment-details',
-  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle],
+  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle, LucideAlertCircle, LucideShieldCheck],
   templateUrl: './payment-details.html',
 })
 export class PaymentDetails implements OnInit, OnDestroy {

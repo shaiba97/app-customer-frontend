@@ -44,6 +44,7 @@ export class SearchResults implements OnInit {
   editMonth = signal<string>(this.today.slice(0, 7));
 
   canGoPrevEdit = computed(() => this.editMonth() > this.today.slice(0, 7));
+  canGoPrevDay = computed(() => this.date() > this.today);
 
   searchLabel = computed(() => {
     const f = this.from();
@@ -111,6 +112,14 @@ export class SearchResults implements OnInit {
   prevEditMonth(): void { const [y, m] = this.editMonth().split('-').map(Number); const d = new Date(y, m - 2, 1); this.editMonth.set(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`); }
   nextEditMonth(): void { const [y, m] = this.editMonth().split('-').map(Number); const d = new Date(y, m, 1); this.editMonth.set(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`); }
   applyEdit(): void { if (!this.editFrom() || !this.editTo() || !this.editDate()) return; this.showEdit.set(false); this.router.navigate(['../results'], { relativeTo: this.route, queryParams: { from: this.editFrom(), to: this.editTo(), date: this.editDate() } }); }
+  shiftDay(days: number): void {
+    const [y, m, d] = this.date().split('-').map(Number);
+    const next = new Date(y, m - 1, d + days);
+    const todayD = new Date(this.today + 'T00:00:00');
+    if (next < todayD) return;
+    const value = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}-${String(next.getDate()).padStart(2, '0')}`;
+    this.router.navigate(['../results'], { relativeTo: this.route, queryParams: { from: this.from(), to: this.to(), date: value } });
+  }
   goBack(): void { history.back(); }
   onTripSelected(trip: any): void {
     if (!this.authStore.isLoggedIn()) {

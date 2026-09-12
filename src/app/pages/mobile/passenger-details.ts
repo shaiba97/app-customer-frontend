@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { NgClass } from '@angular/common';
-import { LucideArrowRight, LucideUser, LucideSmartphone, LucideAlertCircle, LucideLogIn } from '@lucide/angular';
+import { LucideArrowRight, LucideUser, LucideSmartphone, LucideAlertCircle, LucideLogIn, LucideBadgeCheck } from '@lucide/angular';
 import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
 import { SessionService } from '../../services/session/session.service';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
@@ -13,7 +13,7 @@ import { currentPath, pageGraph } from '../../services/json-ld/json-ld';
 @Component({
   selector: 'app-passenger-details',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, ArabicNumberPipe, LucideArrowRight, LucideUser, LucideSmartphone, LucideAlertCircle, LucideLogIn],
+  imports: [ReactiveFormsModule, NgClass, ArabicNumberPipe, LucideArrowRight, LucideUser, LucideSmartphone, LucideAlertCircle, LucideLogIn, LucideBadgeCheck],
   templateUrl: './passenger-details.html',
 })
 export class PassengerDetails implements OnInit, OnDestroy {
@@ -42,6 +42,15 @@ export class PassengerDetails implements OnInit, OnDestroy {
   private contactStatus = toSignal(this.contactGroup.statusChanges, { initialValue: 'INVALID' });
   private passengerStatus = toSignal(this.passengersGroup.statusChanges, { initialValue: 'INVALID' });
   canProceed = computed(() => this.contactStatus() === 'VALID' && this.passengerStatus() === 'VALID' && this.selectedSeats().length > 0);
+
+  dateLabel = computed(() => {
+    const d = this.trip()?.tripDate;
+    if (!d) return '';
+    const date = new Date(d);
+    return isNaN(date.getTime())
+      ? String(d)
+      : date.toLocaleDateString('ar-SA', { weekday: 'short', day: 'numeric', month: 'long' });
+  });
 
   ngOnInit(): void {
     this.jsonLd.set('page', pageGraph('بيانات الركاب', currentPath(this.router.url), [{ name: 'بيانات الركاب' }]));
