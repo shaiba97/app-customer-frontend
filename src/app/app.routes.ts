@@ -24,6 +24,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/responsive/register').then(m => m.ResponsiveRegister),
       },
       {
+        path: 'terms',
+        loadComponent: () => import('./pages/terms/terms').then(m => m.TermsPage),
+      },
+      {
         path: 'bookings',
         canActivate: [authGuard],
         loadComponent: () => import('./pages/responsive/bookings').then(m => m.ResponsiveBookings),

@@ -1,6 +1,5 @@
 import { Component, inject, signal, computed, effect, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
-import { NgClass } from '@angular/common';
 import { LucideCalendarClock, LucideUser, LucideHome, LucideBell, LucideNewspaper } from '@lucide/angular';
 import { filter } from 'rxjs/operators';
 import { NotificationsService } from '../../../core/services/notifications/notifications.service';
@@ -8,12 +7,12 @@ import { AuthStoreService } from '../../../services/auth-store/auth-store.servic
 
 @Component({
   selector: 'app-mobile-shell',
-  imports: [RouterOutlet, RouterLink, NgClass, LucideCalendarClock, LucideUser, LucideHome, LucideBell, LucideNewspaper],
+  imports: [RouterOutlet, RouterLink, LucideCalendarClock, LucideUser, LucideHome, LucideBell, LucideNewspaper],
   templateUrl: './mobile-shell.html',
 })
 export class MobileShell implements OnInit, OnDestroy {
   private router = inject(Router);
-  private notifSvc = inject(NotificationsService);
+  notifSvc = inject(NotificationsService);
   private authStore = inject(AuthStoreService);
   currentUrl = signal<string>(this.router.url);
 

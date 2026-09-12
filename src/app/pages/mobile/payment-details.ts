@@ -190,7 +190,7 @@ export class PaymentDetails implements OnInit, OnDestroy {
 
   goToLogin(): void {
     this.sessionSvc.exit(this.trip()?.id);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/m/login']);
   }
   goHome(): void {
     this.sessionSvc.exit(this.trip()?.id);

@@ -143,7 +143,7 @@ export class SelectSeat implements OnInit, OnDestroy {
     }});
   }
   goToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/m/login']);
   }
   goBack(): void {
     this.sessionSvc.exit(this._tripId);

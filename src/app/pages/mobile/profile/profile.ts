@@ -25,7 +25,7 @@ export class Profile implements OnInit {
     this.jsonLd.set('page', pageGraph('حسابي', currentPath(this.router.url), [{ name: 'حسابي' }]));
   }
 
-  login(): void { this.router.navigate(['/login']); }
+  login(): void { this.router.navigate(['/m/login']); }
   logout(): void { this.authStore.logout(); }
 
   openDeleteConfirm(): void { this.showConfirmDelete.set(true); this.deleteError.set(''); }

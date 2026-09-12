@@ -91,7 +91,7 @@ export class PassengerDetails implements OnInit, OnDestroy {
   }
 
   goToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/m/login']);
   }
   goBack(): void { history.back(); }
 }

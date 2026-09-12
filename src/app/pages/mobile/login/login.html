@@ -1,44 +1,54 @@
-<section dir="rtl" class="h-screen overflow-hidden bg-[var(--bg-base)] flex flex-col">
-  <header class="bg-[var(--bg-card)] px-4 py-3 border-b border-[var(--border)] flex items-center gap-3 flex-shrink-0">
-    <button type="button" (click)="goBack()" aria-label="العودة" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-[var(--bg-base)]">
-      <svg lucideArrowRight class="w-5 h-5 text-[var(--text-primary)]" aria-hidden="true"></svg>
-    </button>
-    <span class="text-[16px] font-bold text-[var(--text-primary)]">تسجيل الدخول</span>
-  </header>
+<section dir="rtl" class="min-h-screen bg-[var(--bg-base)] flex items-center justify-center px-6 py-10 overflow-y-auto">
+  <div class="w-full max-w-sm flex flex-col items-center">
+    <img ngSrc="/customerLogo.png" width="80" height="80" class="w-20 h-20 rounded-2xl" alt="شعار تفية">
+    <h1 class="mt-2 text-[22px] font-extrabold text-[var(--primary)]">تفية</h1>
 
-  <div class="flex-1 flex flex-col items-center justify-center px-6 gap-6">
-    <div class="flex flex-col items-center gap-3">
-      <div class="w-14 h-14 rounded-full bg-[var(--primary-light)] flex items-center justify-center">
-        <svg lucidePhone class="w-7 h-7 text-[var(--primary)]" aria-hidden="true"></svg>
-      </div>
-      <h1 class="text-xl font-extrabold text-[var(--text-primary)]">مرحباً بك</h1>
-      <p class="text-sm text-[var(--text-secondary)] text-center">سجل دخولك لمتابعة حجوزاتك</p>
+    <div class="mt-3.5 w-full">
+      <h2 class="text-center text-[20px] font-extrabold text-[var(--text-primary)]">تسجيل الدخول</h2>
+      <p class="mt-1 text-center text-[13px] text-[#6B7280]">مرحباً بعودتك إلى تفيّة</p>
     </div>
 
-    <form class="flex flex-col gap-4 w-full max-w-sm">
+    <form class="mt-6 w-full flex flex-col gap-3.5" (ngSubmit)="submit()">
       <div class="flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]">
-        <svg lucidePhone class="w-5 h-5 text-[var(--text-secondary)] flex-shrink-0" aria-hidden="true"></svg>
-        <input type="text" [ngModel]="identifier()" (ngModelChange)="identifier.set($event)" placeholder="رقم الهاتف أو البريد الإلكتروني" class="flex-1 bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] placeholder:font-normal">
+        <svg lucideUser class="w-5 h-5 text-[#6B7280] flex-shrink-0" aria-hidden="true"></svg>
+        <input type="text" inputmode="email" [ngModel]="identifier()" (ngModelChange)="identifier.set($event)" name="identifier" placeholder="البريد الإلكتروني أو رقم الهاتف" dir="ltr" class="flex-1 bg-transparent outline-none text-[15px] font-semibold text-right text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] placeholder:font-normal">
       </div>
 
       <div class="flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]">
-        <svg lucideLock class="w-5 h-5 text-[var(--text-secondary)] flex-shrink-0" aria-hidden="true"></svg>
-        <input type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" placeholder="كلمة المرور" class="flex-1 bg-transparent outline-none text-[15px] font-semibold text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] placeholder:font-normal">
+        <svg lucideLock class="w-5 h-5 text-[#6B7280] flex-shrink-0" aria-hidden="true"></svg>
+        <input [type]="showPassword() ? 'text' : 'password'" [ngModel]="password()" (ngModelChange)="password.set($event)" name="password" placeholder="كلمة المرور" dir="ltr" class="flex-1 bg-transparent outline-none text-[15px] font-semibold text-right text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] placeholder:font-normal">
+        <button type="button" (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'" class="flex-shrink-0 p-1 -m-1 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]">
+          @if (showPassword()) {
+            <svg lucideEyeOff class="w-5 h-5 text-[#6B7280]" aria-hidden="true"></svg>
+          } @else {
+            <svg lucideEye class="w-5 h-5 text-[#6B7280]" aria-hidden="true"></svg>
+          }
+        </button>
       </div>
 
       @if (error()) {
-        <p class="text-sm text-red-500 font-semibold text-center">{{ error() }}</p>
+        <div role="alert" class="flex items-start gap-2 px-3 py-3 rounded-[10px] bg-[#FEE2E2]">
+          <svg lucideAlertCircle class="w-[18px] h-[18px] text-[#DC2626] flex-shrink-0 mt-0.5" aria-hidden="true"></svg>
+          <p class="text-[13px] text-[#DC2626] font-medium flex-1">{{ error() }}</p>
+        </div>
       }
 
-      <button type="button" (click)="submit()" class="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[var(--primary)] text-white font-bold text-[15px] active:scale-[0.98] transition-all duration-150 shadow-lg">
-        <svg lucideLogIn class="w-5 h-5" aria-hidden="true"></svg>
-        <span>تسجيل الدخول</span>
+      <button type="button" (click)="submit()" [disabled]="isLoading()" class="mt-4 h-[50px] w-full rounded-[12px] bg-[var(--primary)] text-white text-[15px] font-extrabold flex items-center justify-center gap-2 active:scale-[0.98] transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed">
+        @if (isLoading()) {
+          <span class="w-[22px] h-[22px] border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
+        } @else {
+          <span>دخول</span>
+        }
       </button>
 
-      <div class="text-center">
-        <span class="text-[13px] text-[var(--text-secondary)]">ليس لديك حساب؟ </span>
-        <a (click)="goToRegister()" class="text-[13px] font-bold text-[var(--primary)] cursor-pointer">إنشاء حساب</a>
-      </div>
+      <a (click)="goToRegister()" class="text-center text-[13px] font-bold text-[var(--primary)] cursor-pointer mt-3">ليس لديك حساب؟ سجّل الآن</a>
+
+      <p class="text-center text-[12px] text-[#6B7280] mt-1">
+        أوافق على
+        <a routerLink="/terms" class="text-[var(--primary)] font-bold underline">الشروط والأحكام</a>
+        و
+        <a routerLink="/terms" class="text-[var(--primary)] font-bold underline">سياسة الخصوصية</a>
+      </p>
     </form>
   </div>
 </section>

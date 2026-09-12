@@ -1,14 +1,15 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { LucideArrowRight, LucidePhone, LucideLock, LucideLogIn } from '@lucide/angular';
+import { NgOptimizedImage } from '@angular/common';
+import { LucideUser, LucideLock, LucideEye, LucideEyeOff, LucideAlertCircle } from '@lucide/angular';
 import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
 import { JsonLdService } from '../../../services/json-ld/json-ld.service';
 import { currentPath, pageGraph } from '../../../services/json-ld/json-ld';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, LucideArrowRight, LucidePhone, LucideLock, LucideLogIn],
+  imports: [FormsModule, RouterLink, NgOptimizedImage, LucideUser, LucideLock, LucideEye, LucideEyeOff, LucideAlertCircle],
   templateUrl: './login.html',
 })
 export class Login implements OnInit {
@@ -20,6 +21,7 @@ export class Login implements OnInit {
   password = signal<string>('');
   error = signal<string>('');
   isLoading = signal<boolean>(false);
+  showPassword = signal<boolean>(false);
 
   ngOnInit(): void {
     this.jsonLd.set('page', pageGraph('تسجيل الدخول', currentPath(this.router.url), [{ name: 'تسجيل الدخول' }]));
@@ -29,7 +31,7 @@ export class Login implements OnInit {
     const id = this.identifier().trim();
     const pw = this.password().trim();
     if (!id) {
-      this.error.set('يرجى إدخال رقم الهاتف أو البريد الإلكتروني');
+      this.error.set('يرجى إدخال البريد أو الهاتف');
       return;
     }
     if (!pw) {
@@ -38,7 +40,7 @@ export class Login implements OnInit {
     }
     this.error.set('');
     this.isLoading.set(true);
-    this.authStore.login({ email: id, password: pw }).subscribe({
+    this.authStore.login({ email: id, phone: id, password: pw }).subscribe({
       next: (res: any) => {
         const token = res?.token;
         const user = res?.user;
@@ -49,7 +51,7 @@ export class Login implements OnInit {
         }
         this.authStore.setSession(token, user);
         this.isLoading.set(false);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/m/home']);
       },
       error: (err: any) => {
         this.error.set(err?.error?.message ?? 'بيانات الدخول غير صحيحة');
@@ -58,11 +60,7 @@ export class Login implements OnInit {
     });
   }
 
-  goBack(): void {
-    history.back();
-  }
-
   goToRegister(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/m/register']);
   }
 }

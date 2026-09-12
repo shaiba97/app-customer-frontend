@@ -14,6 +14,7 @@ export interface CustomerData {
 
 export interface LoginPayload {
   email: string;
+  phone?: string;
   password: string;
 }
 
