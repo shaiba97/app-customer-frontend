@@ -205,9 +205,12 @@
   <!-- ZONE D: SCROLL CONTENT (pb-0 — webshell handles nav clearance) -->
   <section class="px-4 pb-0 flex flex-col gap-4 mt-4" aria-label="الرحلات المتاحة">
     <div class="flex items-center justify-between">
-      <h2 class="text-base font-bold text-[var(--text-primary)]"> 
-        كل الرحلات  
-      </h2>
+      <h2 class="text-base font-bold text-[var(--text-primary)]">الرحلات المتاحة</h2>
+      @if (featuredTrips().length > 3) {
+        <button type="button" (click)="toggleTripsVisibility()" class="text-[12px] font-bold text-[var(--primary)]">
+          {{ showAllTrips() ? 'إظهار أقل' : 'عرض الكل' }}
+        </button>
+      }
     </div>
     <div class="flex flex-col gap-3">
       @if (featuredTrips().length === 0) {
@@ -215,7 +218,7 @@
           <p class="text-sm text-[#6B7280]">لا توجد رحلات متاحة حالياً</p>
         </div>
       }
-      @for (trip of featuredTrips(); track trip.id) {
+      @for (trip of visibleTrips(); track trip.id) {
         <app-mobile-trip-card [trip]="trip" (selected)="goToSeat($event)"></app-mobile-trip-card>
       }
     </div>

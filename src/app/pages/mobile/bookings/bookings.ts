@@ -1,19 +1,19 @@
-import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload } from '@lucide/angular';
+import { LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye } from '@lucide/angular';
 import { ArabicNumberPipe } from '../../../pipes/arabic-number/arabic-number-pipe';
 import { TimeFormatPipe } from '../../../pipes/time-format/time-format-pipe';
 import { BookingService } from '../../../services/booking/booking.service';
 import { AuthStoreService } from '../../../services/auth-store/auth-store.service';
 import { WsService } from '../../../services/ws.service';
-import { NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { JsonLdService } from '../../../services/json-ld/json-ld.service';
 import { currentPath, pageGraph } from '../../../services/json-ld/json-ld';
 
 @Component({
   selector: 'app-bookings',
-  imports: [LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, ArabicNumberPipe, TimeFormatPipe, NgClass, DatePipe],
+  imports: [LucideCalendarClock, LucideBus, LucideLoaderCircle, LucideLogIn, LucideArrowLeft, LucideDownload, LucideEye, ArabicNumberPipe, TimeFormatPipe, DatePipe],
   templateUrl: './bookings.html',
 })
 export class Bookings implements OnInit, OnDestroy {
@@ -27,7 +27,24 @@ export class Bookings implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   error = signal<string>('');
   supportContacts = signal<any[]>([]);
+  filter = signal<string>('');
+  filters: { v: string; label: string }[] = [
+    { v: '', label: 'الكل' },
+    { v: 'pending', label: 'معلق' },
+    { v: 'confirmed', label: 'مؤكد' },
+    { v: 'cancelled', label: 'ملغي' },
+  ];
+  filteredBookings = computed(() => {
+    const all = this.bookings();
+    const f = this.filter();
+    if (!f) return all;
+    return all.filter(b => (b.status || '').toLowerCase() === f);
+  });
   private wsCleanups: (() => void)[] = [];
+
+  setFilter(value: string): void {
+    this.filter.set(value);
+  }
 
   ngOnInit(): void {
     this.jsonLd.set('page', pageGraph('حجوزاتي', currentPath(this.router.url), [{ name: 'حجوزاتي' }]));

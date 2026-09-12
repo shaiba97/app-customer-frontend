@@ -1,6 +1,20 @@
 <section dir="rtl" class="min-h-full bg-[var(--bg-base)] flex flex-col">
   <header class="bg-[var(--bg-card)] px-4 py-4 border-b border-[var(--border)]">
     <h1 class="text-[18px] font-extrabold text-[var(--text-primary)]">حجوزاتي</h1>
+    <div class="flex items-center gap-2 mt-3 overflow-x-auto no-scrollbar" role="tablist" aria-label="تصفية الحجوزات">
+      @for (f of filters; track f.v) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="filter() === f.v"
+          (click)="setFilter(f.v)"
+          class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-[12.5px] transition-colors duration-150"
+          [class]="filter() === f.v
+            ? 'bg-[var(--primary-light)] border border-[var(--primary)] text-[var(--primary)] font-extrabold'
+            : 'border border-[var(--border)] text-[var(--text-muted)] font-semibold'"
+        >{{ f.label }}</button>
+      }
+    </div>
   </header>
 
   @if (!authStore.isLoggedIn()) {
@@ -23,12 +37,12 @@
       <svg lucideCalendarClock class="w-12 h-12 text-[var(--text-secondary)]" aria-hidden="true"></svg>
       <p class="text-sm font-semibold text-[var(--text-primary)]">{{ error() }}</p>
     </div>
-  } @else if (bookings().length === 0) {
+  } @else if (filteredBookings().length === 0) {
     <div class="flex-1 flex flex-col items-center justify-center px-6 gap-4 text-center">
       <svg lucideBus class="w-14 h-14 text-[var(--text-secondary)]" aria-hidden="true"></svg>
       <div class="flex flex-col gap-1">
-        <p class="text-sm font-bold text-[var(--text-primary)]">لا توجد حجوزات</p>
-        <p class="text-[13px] text-[var(--text-secondary)]">احجز رحلتك الأولى الآن</p>
+        <p class="text-sm font-bold text-[var(--text-primary)]">لا توجد حجوزات هنا</p>
+        <p class="text-[13px] text-[var(--text-secondary)]">ابحث عن رحلة</p>
       </div>
       <button type="button" (click)="goHome()" class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-[var(--primary)] text-white font-bold text-[15px] active:scale-[0.98] transition-all duration-150 shadow-lg">
         <svg lucideBus class="w-5 h-5" aria-hidden="true"></svg>
@@ -37,7 +51,7 @@
     </div>
   } @else {
     <section class="flex flex-col gap-3 px-4 py-4" aria-label="قائمة الحجوزات">
-      @for (b of bookings(); track b.id) {
+      @for (b of filteredBookings(); track b.id) {
         @let t = b.Trip;
         <article class="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-4 shadow-sm">
           <div class="flex items-start justify-between mb-3">
@@ -67,7 +81,7 @@
                 }
               </div>
             </div>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold flex-shrink-0 mt-0.5" [ngClass]="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold flex-shrink-0 mt-0.5" [class]="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
           </div>
           @if (b.cancellationReason && b.status === 'CANCELLED') {
             <div class="flex items-center gap-1 mb-2">

@@ -2,7 +2,7 @@ import { Component, signal, inject, OnInit, OnDestroy, computed } from '@angular
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle, LucideAlertCircle, LucideShieldCheck } from '@lucide/angular';
+import { LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideAlertCircle, LucideShieldCheck } from '@lucide/angular';
 import { BookingService } from '../../services/booking/booking.service';
 import { SessionService } from '../../services/session/session.service';
 import { ArabicNumberPipe } from '../../pipes/arabic-number/arabic-number-pipe';
@@ -14,7 +14,7 @@ import { currentPath, pageGraph, reservation } from '../../services/json-ld/json
 
 @Component({
   selector: 'app-payment-details',
-  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideCheckCircle, LucideAlertCircle, LucideShieldCheck],
+  imports: [ReactiveFormsModule, ArabicNumberPipe, LucideArrowRight, LucideClock, LucideUpload, LucideCreditCard, LucideCopy, LucideCheck, LucideLogIn, LucideAlertCircle, LucideShieldCheck],
   templateUrl: './payment-details.html',
 })
 export class PaymentDetails implements OnInit, OnDestroy {
@@ -46,13 +46,30 @@ export class PaymentDetails implements OnInit, OnDestroy {
 
   paymentAccounts = signal<any[]>([]);
 
+  bookingId = signal<string>('');
+
+  private gatewayColor(name: string): string {
+    const n = name?.toLowerCase();
+    if (n?.includes('بنكك') || n?.includes('bankak')) return '#EA580C';
+    if (n?.includes('فوري') || n?.includes('fawry')) return '#2563EB';
+    if (n?.includes('مشرق') || n?.includes('mashriq')) return '#16A34A';
+    if (n?.includes('برافو') || n?.includes('bravo')) return '#9333EA';
+    return '#0D9488';
+  }
+
   paymentMethods = computed(() =>
     this.paymentAccounts().map(a => ({
       id: a.id,
       label: a.gatewayName,
       icon: this.iconForGateway(a.gatewayName),
+      color: this.gatewayColor(a.gatewayName),
+      initial: (a.gatewayName ?? '؟').trim().charAt(0),
     }))
   );
+
+  isSelectedMethod(id: string): boolean {
+    return this.paymentForm.get('paymentMethod')?.value === id;
+  }
 
   private iconForGateway(name: string): string {
     const n = name?.toLowerCase();
@@ -169,6 +186,7 @@ export class PaymentDetails implements OnInit, OnDestroy {
         const booking = res?.data ?? res;
         const bookingId = booking?.id;
         if (bookingId) {
+          this.bookingId.set(bookingId);
           const trip = this.trip();
           const tripName = trip
             ? `${trip.boardingCity ?? ''} إلى ${trip.destCity ?? ''}`
@@ -195,6 +213,11 @@ export class PaymentDetails implements OnInit, OnDestroy {
   goHome(): void {
     this.sessionSvc.exit(this.trip()?.id);
     this.router.navigate(['/home']);
+  }
+
+  goToBookings(): void {
+    this.sessionSvc.exit(this.trip()?.id);
+    this.router.navigate(['/m/bookings']);
   }
 
   goBack(): void {

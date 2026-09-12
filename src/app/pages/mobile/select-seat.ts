@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit, OnDestroy, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgClass, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { LucideArrowRight, LucideArmchair, LucideLogIn, LucideInfo, LucideX, LucideBus } from '@lucide/angular';
 import { BookingService } from '../../services/booking/booking.service';
 import { SessionService } from '../../services/session/session.service';
@@ -11,13 +11,13 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { JsonLdService } from '../../services/json-ld/json-ld.service';
 import { busTrip, currentPath, pageGraph } from '../../services/json-ld/json-ld';
 
-type SeatStatus = 'available' | 'reserved' | 'booked';
+type SeatStatus = 'available' | 'selected' | 'booked';
 interface Seat { number: number; status: SeatStatus; }
 
 @Component({
   selector: 'app-select-seat',
   standalone: true,
-  imports: [NgClass, DatePipe, TimeFormatPipe, ArabicNumberPipe, LucideArrowRight, LucideArmchair, LucideLogIn, LucideInfo, LucideX, LucideBus],
+  imports: [DatePipe, TimeFormatPipe, ArabicNumberPipe, LucideArrowRight, LucideArmchair, LucideLogIn, LucideInfo, LucideX, LucideBus],
   templateUrl: './select-seat.html',
 })
 export class SelectSeat implements OnInit, OnDestroy {
@@ -53,7 +53,7 @@ export class SelectSeat implements OnInit, OnDestroy {
     const sel = this.selectedSeats();
     return Array.from({ length: total }, (_, i) => {
       const n = i + 1;
-      return { number: n, status: booked.includes(n) ? 'booked' : sel.includes(n) ? 'reserved' : 'available' };
+      return { number: n, status: booked.includes(n) ? 'booked' : sel.includes(n) ? 'selected' : 'available' };
     });
   });
 
@@ -123,11 +123,28 @@ export class SelectSeat implements OnInit, OnDestroy {
     }
   }
 
-  seatColor(seat: Seat): string[] {
+  seatClasses(seat: Seat): string {
+    const base = 'relative flex flex-col items-center justify-center gap-0.5 rounded-[10px] transition-all duration-150 active:scale-110 w-[46px] h-[52px]';
     switch (seat.status) {
-      case 'reserved': return ['text-[var(--primary)]','scale-110'];
-      case 'booked': return ['text-red-400','opacity-60','cursor-not-allowed'];
-      default: return ['text-[var(--border)]','hover:text-[var(--primary)]','active:scale-110'];
+      case 'selected': return `${base} bg-[var(--primary-hover)] border-2 border-[var(--primary)] shadow-[0_2px_8px_rgba(13,148,136,0.35)]`;
+      case 'booked': return `${base} bg-[#E5E7EB] border-[1.5px] border-[var(--border)] cursor-not-allowed`;
+      default: return `${base} bg-[var(--bg-card)] border-[1.5px] border-[var(--border)] hover:border-[var(--primary)]`;
+    }
+  }
+
+  seatIconClasses(seat: Seat): string {
+    switch (seat.status) {
+      case 'selected': return 'text-white';
+      case 'booked': return 'text-[#6B7280] opacity-[0.45]';
+      default: return 'text-[var(--primary)]';
+    }
+  }
+
+  seatNumberClasses(seat: Seat): string {
+    switch (seat.status) {
+      case 'selected': return 'text-white';
+      case 'booked': return 'text-[#6B7280]';
+      default: return 'text-[var(--text-secondary)]';
     }
   }
 

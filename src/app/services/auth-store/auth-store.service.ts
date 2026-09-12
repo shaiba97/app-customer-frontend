@@ -151,6 +151,12 @@ export class AuthStoreService {
     return this.http.put<UpdateProfileResponse>(`${this.apiUrl}/users/update-user/${id}`, data);
   }
 
+  updatePassword(password: string): Observable<UpdateProfileResponse> {
+    const id = this.customerData()?.id;
+    if (!id) throw new Error('User not authenticated');
+    return this.http.put<UpdateProfileResponse>(`${this.apiUrl}/users/update-user/${id}`, { password });
+  }
+
   updateLocalProfile(data: { name?: string; phone?: string; email?: string }): void {
     const current = this.customerData();
     if (!current) return;

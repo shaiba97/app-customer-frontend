@@ -3,11 +3,7 @@
   <app-splash-screen (done)="onSplashDone()" />
 }
 
-@if (showOnboarding()) {
-  <app-onboarding-screen (done)="showOnboarding.set(false)" />
-}
-
-@if (splashDone() && !showOnboarding()) {
+@if (splashDone()) {
   <div
     [style.visibility]="'visible'"
     [style.opacity]="'1'"

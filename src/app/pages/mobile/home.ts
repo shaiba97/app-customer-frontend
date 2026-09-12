@@ -43,6 +43,8 @@ export class Home implements OnInit, AfterViewInit {
   error = signal<string>('');
   featuredTrips = signal<any[]>([]);
   isLoadingTrips = signal<boolean>(false);
+  showAllTrips = signal<boolean>(false);
+  visibleTrips = computed(() => this.showAllTrips() ? this.featuredTrips() : this.featuredTrips().slice(0, 3));
 
   currentMonth = signal<string>(this.today.slice(0, 7));
   scrollY = signal<number>(0);
@@ -127,7 +129,6 @@ export class Home implements OnInit, AfterViewInit {
       error: () => this.isLoadingTrips.set(false),
     });
     this.date.set(this.today);
-    this.startHeroAutoplay();
   }
 
   ngAfterViewInit(): void {
@@ -139,15 +140,7 @@ export class Home implements OnInit, AfterViewInit {
     }
   }
 
-  private startHeroAutoplay(): void {
-    if (typeof window === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = setInterval(() => {
-      if (this.heroPaused() || document.hidden) return;
-      this.nextHero();
-    }, 6000);
-    this.destroyRef.onDestroy(() => clearInterval(id));
-  }
+  toggleTripsVisibility(): void { this.showAllTrips.update(v => !v); }
 
   setHeroPage(i: number): void { this.heroPage.set(i % this.heroSlides.length); }
   nextHero(): void { this.setHeroPage(this.heroPage() + 1); }

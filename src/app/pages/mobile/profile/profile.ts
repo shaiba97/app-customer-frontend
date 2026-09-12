@@ -16,32 +16,33 @@ export class Profile implements OnInit {
 
   isLoggedIn = computed(() => this.authStore.isLoggedIn());
   customerName = computed(() => this.authStore.customerName());
+  customerPhone = computed(() => this.authStore.customerPhone());
+  customerEmail = computed(() => this.authStore.customerEmail());
+  initials = computed(() => {
+    const n = this.customerName().trim();
+    if (!n) return '؟';
+    return n.split(/\s+/).slice(0, 2).map(w => w.charAt(0)).join('');
+  });
 
-  isDeleting = signal(false);
-  showConfirmDelete = signal(false);
-  deleteError = signal('');
+  showConfirmLogout = signal(false);
+  notice = signal('');
 
   ngOnInit(): void {
     this.jsonLd.set('page', pageGraph('حسابي', currentPath(this.router.url), [{ name: 'حسابي' }]));
   }
 
   login(): void { this.router.navigate(['/m/login']); }
-  logout(): void { this.authStore.logout(); }
 
-  openDeleteConfirm(): void { this.showConfirmDelete.set(true); this.deleteError.set(''); }
-  cancelDelete(): void { this.showConfirmDelete.set(false); this.deleteError.set(''); }
+  openLogoutConfirm(): void { this.showConfirmLogout.set(true); }
+  cancelLogout(): void { this.showConfirmLogout.set(false); }
+  confirmLogout(): void { this.showConfirmLogout.set(false); this.authStore.logout(); }
 
-  confirmDelete(): void {
-    this.isDeleting.set(true);
-    this.deleteError.set('');
-    this.authStore.deleteAccount().subscribe({
-      next: () => { this.authStore.logout(); this.isDeleting.set(false); this.showConfirmDelete.set(false); this.router.navigate(['/home']); },
-      error: (err: any) => { this.isDeleting.set(false); this.deleteError.set(err?.error?.message ?? 'فشل حذف الحساب'); },
-    });
+  helpComingSoon(): void {
+    this.notice.set('قريباً');
+    setTimeout(() => this.notice.set(''), 2200);
   }
 
-  private p = (path: string) => this.router.url.startsWith('/m/') ? `/m${path}` : path;
-
-  goToAwards(): void { this.router.navigate([this.p('/profile/awards')]); }
-  goToSettings(): void { this.router.navigate([this.p('/profile/settings')]); }
+  goToEditProfile(): void { this.router.navigate(['/m/profile/edit']); }
+  goToBookings(): void { this.router.navigate(['/m/bookings']); }
+  goToAwards(): void { this.router.navigate(['/m/profile/awards']); }
 }

@@ -81,7 +81,16 @@ export const routes: Routes = [
     path: 'm',
     children: [
       {
+        path: 'login',
+        loadComponent: () => import('./pages/mobile/login/login').then(m => m.Login),
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./pages/mobile/register/register').then(m => m.Register),
+      },
+      {
         path: '',
+        canActivate: [authGuard],
         loadComponent: () => import('./pages/mobile/mobile-shell/mobile-shell').then(m => m.MobileShell),
         children: [
           { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -91,12 +100,10 @@ export const routes: Routes = [
           },
           {
             path: 'bookings',
-            canActivate: [authGuard],
             loadComponent: () => import('./pages/mobile/bookings/bookings').then(m => m.Bookings),
           },
           {
             path: 'profile',
-            canActivate: [authGuard],
             loadComponent: () => import('./pages/mobile/profile/profile').then(m => m.Profile),
           },
           {
@@ -104,8 +111,11 @@ export const routes: Routes = [
             loadComponent: () => import('./pages/awards/awards-page/awards-page').then(m => m.AwardsPage),
           },
           {
+            path: 'profile/edit',
+            loadComponent: () => import('./pages/mobile/profile/edit-profile/edit-profile').then(m => m.EditProfile),
+          },
+          {
             path: 'profile/settings',
-            canActivate: [authGuard],
             loadComponent: () => import('./pages/profile/settings/settings').then(m => m.ProfileSettings),
           },
           {
@@ -114,12 +124,10 @@ export const routes: Routes = [
           },
           {
             path: 'notifications',
-            canActivate: [authGuard],
             loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsPage),
           },
           {
             path: 'notifications/:id',
-            canActivate: [authGuard],
             loadComponent: () => import('./pages/notification-detail/notification-detail').then(m => m.NotificationDetailPage),
           },
           {
@@ -129,14 +137,6 @@ export const routes: Routes = [
           {
             path: 'blogs/blog/:slug',
             loadComponent: () => import('./pages/blog-detail/blog-detail').then(m => m.BlogDetailComponent),
-          },
-          {
-            path: 'login',
-            loadComponent: () => import('./pages/mobile/login/login').then(m => m.Login),
-          },
-          {
-            path: 'register',
-            loadComponent: () => import('./pages/mobile/register/register').then(m => m.Register),
           },
           {
             path: 'results',
